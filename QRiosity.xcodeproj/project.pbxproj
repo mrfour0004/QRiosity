@@ -1,0 +1,606 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		5E5D23BD24FEA95B00124551 /* QRiosityApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5D23BC24FEA95B00124551 /* QRiosityApp.swift */; };
+		5E5D23BF24FEA95B00124551 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5D23BE24FEA95B00124551 /* ContentView.swift */; };
+		5E5D23C124FEA95D00124551 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5E5D23C024FEA95D00124551 /* Assets.xcassets */; };
+		5E5D23C424FEA95D00124551 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5E5D23C324FEA95D00124551 /* Preview Assets.xcassets */; };
+		5E5D23C624FEA95D00124551 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5D23C524FEA95D00124551 /* Persistence.swift */; };
+		5E5D23C924FEA95D00124551 /* QRiosity.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5E5D23C724FEA95D00124551 /* QRiosity.xcdatamodeld */; };
+		5E5D23D424FEA95D00124551 /* QRiosityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5D23D324FEA95D00124551 /* QRiosityTests.swift */; };
+		5E5D23DF24FEA95D00124551 /* QRiosityUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5D23DE24FEA95D00124551 /* QRiosityUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		5E5D23D024FEA95D00124551 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5E5D23B124FEA95B00124551 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5E5D23B824FEA95B00124551;
+			remoteInfo = QRiosity;
+		};
+		5E5D23DB24FEA95D00124551 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5E5D23B124FEA95B00124551 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5E5D23B824FEA95B00124551;
+			remoteInfo = QRiosity;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		5E5D23B924FEA95B00124551 /* QRiosity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QRiosity.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5E5D23BC24FEA95B00124551 /* QRiosityApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRiosityApp.swift; sourceTree = "<group>"; };
+		5E5D23BE24FEA95B00124551 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		5E5D23C024FEA95D00124551 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		5E5D23C324FEA95D00124551 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		5E5D23C524FEA95D00124551 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
+		5E5D23C824FEA95D00124551 /* QRiosity.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = QRiosity.xcdatamodel; sourceTree = "<group>"; };
+		5E5D23CA24FEA95D00124551 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5E5D23CF24FEA95D00124551 /* QRiosityTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QRiosityTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5E5D23D324FEA95D00124551 /* QRiosityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRiosityTests.swift; sourceTree = "<group>"; };
+		5E5D23D524FEA95D00124551 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5E5D23DA24FEA95D00124551 /* QRiosityUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QRiosityUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5E5D23DE24FEA95D00124551 /* QRiosityUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRiosityUITests.swift; sourceTree = "<group>"; };
+		5E5D23E024FEA95D00124551 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		5E5D23B624FEA95B00124551 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5E5D23CC24FEA95D00124551 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5E5D23D724FEA95D00124551 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		5E5D23B024FEA95B00124551 = {
+			isa = PBXGroup;
+			children = (
+				5E5D23BB24FEA95B00124551 /* QRiosity */,
+				5E5D23D224FEA95D00124551 /* QRiosityTests */,
+				5E5D23DD24FEA95D00124551 /* QRiosityUITests */,
+				5E5D23BA24FEA95B00124551 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		5E5D23BA24FEA95B00124551 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5E5D23B924FEA95B00124551 /* QRiosity.app */,
+				5E5D23CF24FEA95D00124551 /* QRiosityTests.xctest */,
+				5E5D23DA24FEA95D00124551 /* QRiosityUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5E5D23BB24FEA95B00124551 /* QRiosity */ = {
+			isa = PBXGroup;
+			children = (
+				5E5D23BC24FEA95B00124551 /* QRiosityApp.swift */,
+				5E5D23BE24FEA95B00124551 /* ContentView.swift */,
+				5E5D23C024FEA95D00124551 /* Assets.xcassets */,
+				5E5D23C524FEA95D00124551 /* Persistence.swift */,
+				5E5D23CA24FEA95D00124551 /* Info.plist */,
+				5E5D23C724FEA95D00124551 /* QRiosity.xcdatamodeld */,
+				5E5D23C224FEA95D00124551 /* Preview Content */,
+			);
+			path = QRiosity;
+			sourceTree = "<group>";
+		};
+		5E5D23C224FEA95D00124551 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				5E5D23C324FEA95D00124551 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		5E5D23D224FEA95D00124551 /* QRiosityTests */ = {
+			isa = PBXGroup;
+			children = (
+				5E5D23D324FEA95D00124551 /* QRiosityTests.swift */,
+				5E5D23D524FEA95D00124551 /* Info.plist */,
+			);
+			path = QRiosityTests;
+			sourceTree = "<group>";
+		};
+		5E5D23DD24FEA95D00124551 /* QRiosityUITests */ = {
+			isa = PBXGroup;
+			children = (
+				5E5D23DE24FEA95D00124551 /* QRiosityUITests.swift */,
+				5E5D23E024FEA95D00124551 /* Info.plist */,
+			);
+			path = QRiosityUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		5E5D23B824FEA95B00124551 /* QRiosity */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5E5D23E324FEA95D00124551 /* Build configuration list for PBXNativeTarget "QRiosity" */;
+			buildPhases = (
+				5E5D23B524FEA95B00124551 /* Sources */,
+				5E5D23B624FEA95B00124551 /* Frameworks */,
+				5E5D23B724FEA95B00124551 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = QRiosity;
+			productName = QRiosity;
+			productReference = 5E5D23B924FEA95B00124551 /* QRiosity.app */;
+			productType = "com.apple.product-type.application";
+		};
+		5E5D23CE24FEA95D00124551 /* QRiosityTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5E5D23E624FEA95D00124551 /* Build configuration list for PBXNativeTarget "QRiosityTests" */;
+			buildPhases = (
+				5E5D23CB24FEA95D00124551 /* Sources */,
+				5E5D23CC24FEA95D00124551 /* Frameworks */,
+				5E5D23CD24FEA95D00124551 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5E5D23D124FEA95D00124551 /* PBXTargetDependency */,
+			);
+			name = QRiosityTests;
+			productName = QRiosityTests;
+			productReference = 5E5D23CF24FEA95D00124551 /* QRiosityTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		5E5D23D924FEA95D00124551 /* QRiosityUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5E5D23E924FEA95D00124551 /* Build configuration list for PBXNativeTarget "QRiosityUITests" */;
+			buildPhases = (
+				5E5D23D624FEA95D00124551 /* Sources */,
+				5E5D23D724FEA95D00124551 /* Frameworks */,
+				5E5D23D824FEA95D00124551 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5E5D23DC24FEA95D00124551 /* PBXTargetDependency */,
+			);
+			name = QRiosityUITests;
+			productName = QRiosityUITests;
+			productReference = 5E5D23DA24FEA95D00124551 /* QRiosityUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		5E5D23B124FEA95B00124551 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1200;
+				LastUpgradeCheck = 1200;
+				TargetAttributes = {
+					5E5D23B824FEA95B00124551 = {
+						CreatedOnToolsVersion = 12.0;
+					};
+					5E5D23CE24FEA95D00124551 = {
+						CreatedOnToolsVersion = 12.0;
+						TestTargetID = 5E5D23B824FEA95B00124551;
+					};
+					5E5D23D924FEA95D00124551 = {
+						CreatedOnToolsVersion = 12.0;
+						TestTargetID = 5E5D23B824FEA95B00124551;
+					};
+				};
+			};
+			buildConfigurationList = 5E5D23B424FEA95B00124551 /* Build configuration list for PBXProject "QRiosity" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 5E5D23B024FEA95B00124551;
+			productRefGroup = 5E5D23BA24FEA95B00124551 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				5E5D23B824FEA95B00124551 /* QRiosity */,
+				5E5D23CE24FEA95D00124551 /* QRiosityTests */,
+				5E5D23D924FEA95D00124551 /* QRiosityUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		5E5D23B724FEA95B00124551 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5E5D23C424FEA95D00124551 /* Preview Assets.xcassets in Resources */,
+				5E5D23C124FEA95D00124551 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5E5D23CD24FEA95D00124551 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5E5D23D824FEA95D00124551 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5E5D23B524FEA95B00124551 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5E5D23C624FEA95D00124551 /* Persistence.swift in Sources */,
+				5E5D23C924FEA95D00124551 /* QRiosity.xcdatamodeld in Sources */,
+				5E5D23BF24FEA95B00124551 /* ContentView.swift in Sources */,
+				5E5D23BD24FEA95B00124551 /* QRiosityApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5E5D23CB24FEA95D00124551 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5E5D23D424FEA95D00124551 /* QRiosityTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5E5D23D624FEA95D00124551 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5E5D23DF24FEA95D00124551 /* QRiosityUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		5E5D23D124FEA95D00124551 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5E5D23B824FEA95B00124551 /* QRiosity */;
+			targetProxy = 5E5D23D024FEA95D00124551 /* PBXContainerItemProxy */;
+		};
+		5E5D23DC24FEA95D00124551 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5E5D23B824FEA95B00124551 /* QRiosity */;
+			targetProxy = 5E5D23DB24FEA95D00124551 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		5E5D23E124FEA95D00124551 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		5E5D23E224FEA95D00124551 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		5E5D23E424FEA95D00124551 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"QRiosity/Preview Content\"";
+				DEVELOPMENT_TEAM = 3XESJ7333X;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = QRiosity/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.mrfour.QRiosity;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		5E5D23E524FEA95D00124551 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"QRiosity/Preview Content\"";
+				DEVELOPMENT_TEAM = 3XESJ7333X;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = QRiosity/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.mrfour.QRiosity;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		5E5D23E724FEA95D00124551 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 3XESJ7333X;
+				INFOPLIST_FILE = QRiosityTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.mrfour.QRiosityTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/QRiosity.app/QRiosity";
+			};
+			name = Debug;
+		};
+		5E5D23E824FEA95D00124551 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 3XESJ7333X;
+				INFOPLIST_FILE = QRiosityTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.mrfour.QRiosityTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/QRiosity.app/QRiosity";
+			};
+			name = Release;
+		};
+		5E5D23EA24FEA95D00124551 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 3XESJ7333X;
+				INFOPLIST_FILE = QRiosityUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.mrfour.QRiosityUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = QRiosity;
+			};
+			name = Debug;
+		};
+		5E5D23EB24FEA95D00124551 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 3XESJ7333X;
+				INFOPLIST_FILE = QRiosityUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.mrfour.QRiosityUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = QRiosity;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		5E5D23B424FEA95B00124551 /* Build configuration list for PBXProject "QRiosity" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5E5D23E124FEA95D00124551 /* Debug */,
+				5E5D23E224FEA95D00124551 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5E5D23E324FEA95D00124551 /* Build configuration list for PBXNativeTarget "QRiosity" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5E5D23E424FEA95D00124551 /* Debug */,
+				5E5D23E524FEA95D00124551 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5E5D23E624FEA95D00124551 /* Build configuration list for PBXNativeTarget "QRiosityTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5E5D23E724FEA95D00124551 /* Debug */,
+				5E5D23E824FEA95D00124551 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5E5D23E924FEA95D00124551 /* Build configuration list for PBXNativeTarget "QRiosityUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5E5D23EA24FEA95D00124551 /* Debug */,
+				5E5D23EB24FEA95D00124551 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		5E5D23C724FEA95D00124551 /* QRiosity.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				5E5D23C824FEA95D00124551 /* QRiosity.xcdatamodel */,
+			);
+			currentVersion = 5E5D23C824FEA95D00124551 /* QRiosity.xcdatamodel */;
+			path = QRiosity.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 5E5D23B124FEA95B00124551 /* Project object */;
+}
