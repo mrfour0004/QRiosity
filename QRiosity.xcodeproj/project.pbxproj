@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -12,9 +12,12 @@
 		5E5D23C124FEA95D00124551 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5E5D23C024FEA95D00124551 /* Assets.xcassets */; };
 		5E5D23C424FEA95D00124551 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5E5D23C324FEA95D00124551 /* Preview Assets.xcassets */; };
 		5E5D23C624FEA95D00124551 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5D23C524FEA95D00124551 /* Persistence.swift */; };
-		5E5D23C924FEA95D00124551 /* QRiosity.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5E5D23C724FEA95D00124551 /* QRiosity.xcdatamodeld */; };
 		5E5D23D424FEA95D00124551 /* QRiosityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5D23D324FEA95D00124551 /* QRiosityTests.swift */; };
 		5E5D23DF24FEA95D00124551 /* QRiosityUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5D23DE24FEA95D00124551 /* QRiosityUITests.swift */; };
+		5ECE0CAA24FFE5260084C73B /* AVScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 5ECE0CA924FFE5260084C73B /* AVScanner */; };
+		5ECE0CAD24FFE6F80084C73B /* CodeReader.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5ECE0CAB24FFE6F70084C73B /* CodeReader.xcdatamodeld */; };
+		5ECE0CB024FFE7BF0084C73B /* CodeRecord+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECE0CAE24FFE7BF0084C73B /* CodeRecord+CoreDataClass.swift */; };
+		5ECE0CB124FFE7BF0084C73B /* CodeRecord+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECE0CAF24FFE7BF0084C73B /* CodeRecord+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,7 +44,6 @@
 		5E5D23C024FEA95D00124551 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5E5D23C324FEA95D00124551 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		5E5D23C524FEA95D00124551 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
-		5E5D23C824FEA95D00124551 /* QRiosity.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = QRiosity.xcdatamodel; sourceTree = "<group>"; };
 		5E5D23CA24FEA95D00124551 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5E5D23CF24FEA95D00124551 /* QRiosityTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QRiosityTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E5D23D324FEA95D00124551 /* QRiosityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRiosityTests.swift; sourceTree = "<group>"; };
@@ -49,6 +51,10 @@
 		5E5D23DA24FEA95D00124551 /* QRiosityUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QRiosityUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E5D23DE24FEA95D00124551 /* QRiosityUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRiosityUITests.swift; sourceTree = "<group>"; };
 		5E5D23E024FEA95D00124551 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5EC4BCA324FFF717001570C2 /* QRiosity.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = QRiosity.entitlements; sourceTree = "<group>"; };
+		5ECE0CAC24FFE6F70084C73B /* CodeReader.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CodeReader.xcdatamodel; sourceTree = "<group>"; };
+		5ECE0CAE24FFE7BF0084C73B /* CodeRecord+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodeRecord+CoreDataClass.swift"; sourceTree = "<group>"; };
+		5ECE0CAF24FFE7BF0084C73B /* CodeRecord+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodeRecord+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +62,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5ECE0CAA24FFE5260084C73B /* AVScanner in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -99,12 +106,14 @@
 		5E5D23BB24FEA95B00124551 /* QRiosity */ = {
 			isa = PBXGroup;
 			children = (
-				5E5D23BC24FEA95B00124551 /* QRiosityApp.swift */,
-				5E5D23BE24FEA95B00124551 /* ContentView.swift */,
-				5E5D23C024FEA95D00124551 /* Assets.xcassets */,
-				5E5D23C524FEA95D00124551 /* Persistence.swift */,
+				5EC4BCA324FFF717001570C2 /* QRiosity.entitlements */,
 				5E5D23CA24FEA95D00124551 /* Info.plist */,
-				5E5D23C724FEA95D00124551 /* QRiosity.xcdatamodeld */,
+				5E5D23BE24FEA95B00124551 /* ContentView.swift */,
+				5E5D23C524FEA95D00124551 /* Persistence.swift */,
+				5E5D23BC24FEA95B00124551 /* QRiosityApp.swift */,
+				5E5D23C024FEA95D00124551 /* Assets.xcassets */,
+				5ECE0CAB24FFE6F70084C73B /* CodeReader.xcdatamodeld */,
+				5ECE0CB224FFE7C40084C73B /* Core Data Models */,
 				5E5D23C224FEA95D00124551 /* Preview Content */,
 			);
 			path = QRiosity;
@@ -136,6 +145,15 @@
 			path = QRiosityUITests;
 			sourceTree = "<group>";
 		};
+		5ECE0CB224FFE7C40084C73B /* Core Data Models */ = {
+			isa = PBXGroup;
+			children = (
+				5ECE0CAE24FFE7BF0084C73B /* CodeRecord+CoreDataClass.swift */,
+				5ECE0CAF24FFE7BF0084C73B /* CodeRecord+CoreDataProperties.swift */,
+			);
+			path = "Core Data Models";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -152,6 +170,9 @@
 			dependencies = (
 			);
 			name = QRiosity;
+			packageProductDependencies = (
+				5ECE0CA924FFE5260084C73B /* AVScanner */,
+			);
 			productName = QRiosity;
 			productReference = 5E5D23B924FEA95B00124551 /* QRiosity.app */;
 			productType = "com.apple.product-type.application";
@@ -223,6 +244,9 @@
 				Base,
 			);
 			mainGroup = 5E5D23B024FEA95B00124551;
+			packageReferences = (
+				5ECE0CA824FFE5260084C73B /* XCRemoteSwiftPackageReference "AVScanner" */,
+			);
 			productRefGroup = 5E5D23BA24FEA95B00124551 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -266,8 +290,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				5E5D23C624FEA95D00124551 /* Persistence.swift in Sources */,
-				5E5D23C924FEA95D00124551 /* QRiosity.xcdatamodeld in Sources */,
+				5ECE0CB024FFE7BF0084C73B /* CodeRecord+CoreDataClass.swift in Sources */,
 				5E5D23BF24FEA95B00124551 /* ContentView.swift in Sources */,
+				5ECE0CB124FFE7BF0084C73B /* CodeRecord+CoreDataProperties.swift in Sources */,
+				5ECE0CAD24FFE6F80084C73B /* CodeReader.xcdatamodeld in Sources */,
 				5E5D23BD24FEA95B00124551 /* QRiosityApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -425,9 +451,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = QRiosity/QRiosity.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"QRiosity/Preview Content\"";
-				DEVELOPMENT_TEAM = 3XESJ7333X;
+				DEVELOPMENT_TEAM = CQ58SNCG49;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = QRiosity/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -435,7 +462,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.mrfour.QRiosity;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mrfour.8codereader;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -447,9 +474,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = QRiosity/QRiosity.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"QRiosity/Preview Content\"";
-				DEVELOPMENT_TEAM = 3XESJ7333X;
+				DEVELOPMENT_TEAM = CQ58SNCG49;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = QRiosity/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -457,7 +485,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.mrfour.QRiosity;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mrfour.8codereader;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -589,14 +617,33 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		5ECE0CA824FFE5260084C73B /* XCRemoteSwiftPackageReference "AVScanner" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:mrfour0004/AVScanner.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		5ECE0CA924FFE5260084C73B /* AVScanner */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5ECE0CA824FFE5260084C73B /* XCRemoteSwiftPackageReference "AVScanner" */;
+			productName = AVScanner;
+		};
+/* End XCSwiftPackageProductDependency section */
+
 /* Begin XCVersionGroup section */
-		5E5D23C724FEA95D00124551 /* QRiosity.xcdatamodeld */ = {
+		5ECE0CAB24FFE6F70084C73B /* CodeReader.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				5E5D23C824FEA95D00124551 /* QRiosity.xcdatamodel */,
+				5ECE0CAC24FFE6F70084C73B /* CodeReader.xcdatamodel */,
 			);
-			currentVersion = 5E5D23C824FEA95D00124551 /* QRiosity.xcdatamodel */;
-			path = QRiosity.xcdatamodeld;
+			currentVersion = 5ECE0CAC24FFE6F70084C73B /* CodeReader.xcdatamodel */;
+			path = CodeReader.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

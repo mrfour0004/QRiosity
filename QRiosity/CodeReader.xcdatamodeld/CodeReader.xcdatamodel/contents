@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17189" systemVersion="20A5354i" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="CodeRecord" representedClassName="CodeRecord" syncable="YES">
+        <attribute name="desc" optional="YES" attributeType="String"/>
+        <attribute name="isDeletedFromHistory" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="isFavorite" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="metadataObjectType" attributeType="String"/>
+        <attribute name="previewImageURLString" optional="YES" attributeType="String"/>
+        <attribute name="scannedAt" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="stringValue" attributeType="String"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <fetchIndex name="byStringValueIndex">
+            <fetchIndexElement property="stringValue" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <elements>
+        <element name="CodeRecord" positionX="-63" positionY="-18" width="128" height="165"/>
+    </elements>
+</model>
