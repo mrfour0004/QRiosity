@@ -86,6 +86,7 @@
 		5E5D23B024FEA95B00124551 = {
 			isa = PBXGroup;
 			children = (
+				5EFC211C25029EAF00B59CD9 /* Shared */,
 				5E5D23BB24FEA95B00124551 /* QRiosity */,
 				5E5D23D224FEA95D00124551 /* QRiosityTests */,
 				5E5D23DD24FEA95D00124551 /* QRiosityUITests */,
@@ -109,12 +110,6 @@
 				5EC4BCA324FFF717001570C2 /* QRiosity.entitlements */,
 				5E5D23CA24FEA95D00124551 /* Info.plist */,
 				5E5D23BE24FEA95B00124551 /* ContentView.swift */,
-				5E5D23C524FEA95D00124551 /* Persistence.swift */,
-				5E5D23BC24FEA95B00124551 /* QRiosityApp.swift */,
-				5E5D23C024FEA95D00124551 /* Assets.xcassets */,
-				5ECE0CAB24FFE6F70084C73B /* CodeReader.xcdatamodeld */,
-				5ECE0CB224FFE7C40084C73B /* Core Data Models */,
-				5E5D23C224FEA95D00124551 /* Preview Content */,
 			);
 			path = QRiosity;
 			sourceTree = "<group>";
@@ -152,6 +147,27 @@
 				5ECE0CAF24FFE7BF0084C73B /* CodeRecord+CoreDataProperties.swift */,
 			);
 			path = "Core Data Models";
+			sourceTree = "<group>";
+		};
+		5EFC211C25029EAF00B59CD9 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				5E5D23BC24FEA95B00124551 /* QRiosityApp.swift */,
+				5E5D23C024FEA95D00124551 /* Assets.xcassets */,
+				5ECE0CB224FFE7C40084C73B /* Core Data Models */,
+				5EFC211D25029EC300B59CD9 /* Persistance */,
+				5E5D23C224FEA95D00124551 /* Preview Content */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		5EFC211D25029EC300B59CD9 /* Persistance */ = {
+			isa = PBXGroup;
+			children = (
+				5ECE0CAB24FFE6F70084C73B /* CodeReader.xcdatamodeld */,
+				5E5D23C524FEA95D00124551 /* Persistence.swift */,
+			);
+			path = Persistance;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -453,7 +469,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = QRiosity/QRiosity.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"QRiosity/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Shared/Preview Content\"";
 				DEVELOPMENT_TEAM = CQ58SNCG49;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = QRiosity/Info.plist;
@@ -476,7 +492,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = QRiosity/QRiosity.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"QRiosity/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Shared/Preview Content\"";
 				DEVELOPMENT_TEAM = CQ58SNCG49;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = QRiosity/Info.plist;
