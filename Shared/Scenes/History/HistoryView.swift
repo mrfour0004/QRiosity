@@ -8,9 +8,22 @@
 import SwiftUI
 
 struct HistoryView: View {
+    @Environment(\.managedObjectContext) private var viewContext
+
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \CodeRecord.scannedAt, ascending: true)],
+        animation: .default)
+    private var records: FetchedResults<CodeRecord>
+
     var body: some View {
-        Text("History")
+        List {
+            ForEach(records) { record in
+                RecordView(record: record)
+            }
+        }
     }
+
+
 }
 
 struct HistoryView_Previews: PreviewProvider {

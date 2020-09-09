@@ -19,10 +19,10 @@ extension CodeRecord {
     @NSManaged public var desc: String?
     @NSManaged public var isDeletedFromHistory: Bool
     @NSManaged public var isFavorite: Bool
-    @NSManaged public var metadataObjectType: String?
+    @NSManaged public var metadataObjectType: String
     @NSManaged public var previewImageURLString: String?
-    @NSManaged public var scannedAt: Date?
-    @NSManaged public var stringValue: String?
+    @NSManaged public var scannedAt: Date
+    @NSManaged public var stringValue: String
     @NSManaged public var title: String?
 
 }

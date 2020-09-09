@@ -8,8 +8,20 @@
 import SwiftUI
 
 struct CollectedList: View {
+    @Environment(\.managedObjectContext) private var viewContext
+
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \CodeRecord.scannedAt, ascending: true)],
+        predicate: NSPredicate(format: "isFavorite == 1"),
+        animation: .default)
+    private var records: FetchedResults<CodeRecord>
+
     var body: some View {
-        Text("Collected")
+        List {
+            ForEach(records) { record in
+                RecordView(record: record)
+            }
+        }
     }
 }
 
