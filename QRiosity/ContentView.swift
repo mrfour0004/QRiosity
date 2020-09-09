@@ -16,16 +16,40 @@ struct ContentView: View {
         animation: .default)
     private var items: FetchedResults<CodeRecord>
 
+    init() {
+        let appearance = UITabBar.appearance()
+        // will set in in the future
+        appearance.barTintColor = nil
+        appearance.unselectedItemTintColor = nil
+    }
+
     var body: some View {
-        List {
-            ForEach(items) { item in
-                Text("Item at \(item.scannedAt!, formatter: itemFormatter)")
-            }
-            .onDelete(perform: deleteItems)
+        TabView {
+            Text("Scanner")
+                .tabItem {
+                    Image(systemName: "qrcode.viewfinder")
+                    Text("Scan")
+                }
+
+            CollectedList()
+                .tabItem {
+                    Image(systemName: "tray.fill")
+                    Text("Collected")
+                }
+
+            HistoryView()
+                .tabItem {
+                    Image(systemName: "rectangle.stack")
+                    Text("History")
+                }
+
+            Text("Settings")
+                .tabItem {
+                    Image(systemName: "gearshape")
+                    Text("Settings")
+                }
         }
-        .toolbar {
-            EditButton()
-        }
+        .accentColor(.primary) // need a theme
     }
 
     private func addItem() {
@@ -67,9 +91,10 @@ private let itemFormatter: DateFormatter = {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationView {
-            ContentView()
-                .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+        Group {
+            NavigationView {
+                ContentView()
+            }
         }
     }
 }
