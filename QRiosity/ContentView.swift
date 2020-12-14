@@ -25,7 +25,7 @@ struct ContentView: View {
 
     var body: some View {
         TabView {
-            Text("Scanner")
+            ScannerView()
                 .tabItem {
                     Image(systemName: "qrcode.viewfinder")
                     Text("Scan")
