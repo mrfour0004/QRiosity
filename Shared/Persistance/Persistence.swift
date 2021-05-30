@@ -18,7 +18,7 @@ struct PersistenceController {
             let instance = CodeRecord(context: viewContext)
             instance.stringValue = UUID().uuidString
             instance.scannedAt = Date()
-            instance.isFavorite = false
+            instance.isFavorite = true
             instance.metadataObjectType = AVMetadataObject.ObjectType.code39.rawValue
         }
         do {
@@ -39,7 +39,7 @@ struct PersistenceController {
 
         if inMemory {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
-            container.loadPersistentStores { _, _ in fatalError("Can't load memory persistent storage") }
+            container.loadPersistentStores { _, _ in }
             return
         }
 
