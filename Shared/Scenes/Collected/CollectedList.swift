@@ -28,5 +28,6 @@ struct CollectedList: View {
 struct CollectedList_Previews: PreviewProvider {
     static var previews: some View {
         CollectedList()
+            .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
     }
 }
