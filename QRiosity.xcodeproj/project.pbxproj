@@ -551,7 +551,7 @@
 				DEVELOPMENT_TEAM = CQ58SNCG49;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = QRiosity/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -574,7 +574,7 @@
 				DEVELOPMENT_TEAM = CQ58SNCG49;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = QRiosity/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
