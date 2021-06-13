@@ -16,10 +16,16 @@ struct HistoryView: View {
     private var records: FetchedResults<CodeRecord>
 
     var body: some View {
-        List {
-            ForEach(records) { record in
-                RecordView(record: record)
+
+        ScrollView(showsIndicators: false) {
+            LazyVStack(alignment: .leading) {
+                Text("Placeholder")
+                    .font(.title)
+                ForEach(records) { record in
+                    RecordView(record: record)
+                }
             }
+            .padding()
         }
     }
 
@@ -29,5 +35,6 @@ struct HistoryView: View {
 struct HistoryView_Previews: PreviewProvider {
     static var previews: some View {
         HistoryView()
+            .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
     }
 }

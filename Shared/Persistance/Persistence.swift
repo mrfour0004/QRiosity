@@ -14,12 +14,22 @@ struct PersistenceController {
     static var preview: PersistenceController = {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
-        for _ in 0..<10 {
+        for index in 0..<10 {
             let instance = CodeRecord(context: viewContext)
-            instance.stringValue = UUID().uuidString
             instance.scannedAt = Date()
             instance.isFavorite = true
-            instance.metadataObjectType = AVMetadataObject.ObjectType.code39.rawValue
+
+            switch index {
+            case 0:
+                instance.title = "mrfour0004 on GitHub"
+                instance.metadataObjectType = AVMetadataObject.ObjectType.qr.rawValue
+                instance.stringValue = "https://www.github.com/mrfour0004"
+            default:
+                instance.metadataObjectType = AVMetadataObject.ObjectType.code39.rawValue
+                instance.stringValue = UUID().uuidString
+            }
+
+
         }
         do {
             try viewContext.save()
@@ -63,13 +73,13 @@ struct PersistenceController {
                 // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
 
                 /*
-                Typical reasons for an error here include:
-                * The parent directory does not exist, cannot be created, or disallows writing.
-                * The persistent store is not accessible, due to permissions or data protection when the device is locked.
-                * The device is out of space.
-                * The store could not be migrated to the current model version.
-                Check the error message to determine what the actual problem was.
-                */
+                 Typical reasons for an error here include:
+                 * The parent directory does not exist, cannot be created, or disallows writing.
+                 * The persistent store is not accessible, due to permissions or data protection when the device is locked.
+                 * The device is out of space.
+                 * The store could not be migrated to the current model version.
+                 Check the error message to determine what the actual problem was.
+                 */
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
 

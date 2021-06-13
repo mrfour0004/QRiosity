@@ -12,7 +12,21 @@ import AVFoundation
 
 @objc(CodeRecord)
 public class CodeRecord: NSManagedObject {
+    enum RecordType {
+        case url
+        case string
+    }
 
+    var type: RecordType {
+        return url.flatMap { _ in RecordType.url } ?? .string
+    }
+
+    /// An URL value that the code content represents for. Returns `nil` if the content is not an URL.
+    var url: URL? {
+        let availableSchemes = ["https", "http"]
+        guard let url = URL(string: stringValue), let scheme = url.scheme, availableSchemes.contains(scheme.lowercased()) else { return nil }
+        return url
+    }
 }
 
 // MARK: - Class function

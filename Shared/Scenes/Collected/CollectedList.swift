@@ -17,10 +17,22 @@ struct CollectedList: View {
     private var records: FetchedResults<CodeRecord>
 
     var body: some View {
-        List {
-            ForEach(records) { record in
-                RecordView(record: record)
+        GeometryReader { reader in
+            ZStack {
+                Color(.displayP3, white: 0.96, opacity: 1)
+                ScrollView {
+                    LazyVStack(alignment: .leading, spacing: 32) {
+                        Text("Placeholder")
+                            .font(.title)
+                        ForEach(records) { record in
+                            RecordView(record: record)
+                        }
+                    }
+                    .padding()
+                    .padding(.top, reader.safeAreaInsets.top)
+                }
             }
+            .edgesIgnoringSafeArea(.all)
         }
     }
 }
