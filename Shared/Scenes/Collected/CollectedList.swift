@@ -22,8 +22,8 @@ struct CollectedList: View {
                 Color(.displayP3, white: 0.96, opacity: 1)
                 ScrollView {
                     LazyVStack(alignment: .leading, spacing: 32) {
-                        Text("Placeholder")
-                            .font(.title)
+                        Text("Collected")
+                            .font(.avenir(.largeTitle))
                         ForEach(records) { record in
                             RecordView(record: record)
                         }

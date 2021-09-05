@@ -24,6 +24,7 @@ struct PersistenceController {
                 instance.title = "mrfour0004 on GitHub"
                 instance.metadataObjectType = AVMetadataObject.ObjectType.qr.rawValue
                 instance.stringValue = "https://www.github.com/mrfour0004"
+                instance.previewImageURLString = "https://source.unsplash.com/user/c_v_r/100x100"
             default:
                 instance.metadataObjectType = AVMetadataObject.ObjectType.code39.rawValue
                 instance.stringValue = UUID().uuidString

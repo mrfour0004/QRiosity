@@ -15,7 +15,7 @@ extension Font {
 
         switch style {
         case .largeTitle:
-            return makeAvenir(size: 32)
+            return makeAvenir(size: 32, weight: .black)
         case .title:
             return makeAvenir(size: 28)
         case .title2:

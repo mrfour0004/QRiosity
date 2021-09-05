@@ -16,16 +16,22 @@ struct HistoryView: View {
     private var records: FetchedResults<CodeRecord>
 
     var body: some View {
-
-        ScrollView(showsIndicators: false) {
-            LazyVStack(alignment: .leading) {
-                Text("Placeholder")
-                    .font(.title)
-                ForEach(records) { record in
-                    RecordView(record: record)
+        GeometryReader { reader in
+            ZStack {
+                Color(.displayP3, white: 0.96, opacity: 1)
+                ScrollView {
+                    LazyVStack(alignment: .leading, spacing: 24) {
+                        Text("History")
+                            .font(.avenir(.largeTitle))
+                        ForEach(records) { record in
+                            RecordView(record: record)
+                        }
+                    }
+                    .padding()
+                    .padding(.top, reader.safeAreaInsets.top)
                 }
             }
-            .padding()
+            .edgesIgnoringSafeArea(.all)
         }
     }
 
