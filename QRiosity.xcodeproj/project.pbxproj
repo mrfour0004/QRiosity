@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		5E22E6102530BE04007A970B /* ScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E22E60F2530BE04007A970B /* ScannerView.swift */; };
 		5E2EE9FD267643C20037DED1 /* Font+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E2EE9FC267643C20037DED1 /* Font+.swift */; };
+		5E47417B26E484DD00A964F8 /* AVScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 5E47417A26E484DD00A964F8 /* AVScanner */; };
 		5E582E13250926B600D9F203 /* CollectedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E582E12250926B600D9F203 /* CollectedList.swift */; };
 		5E582E16250926D100D9F203 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E582E15250926D100D9F203 /* HistoryView.swift */; };
 		5E582E1925092E8500D9F203 /* RecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E582E1825092E8500D9F203 /* RecordView.swift */; };
@@ -20,7 +21,6 @@
 		5E5D23D424FEA95D00124551 /* QRiosityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5D23D324FEA95D00124551 /* QRiosityTests.swift */; };
 		5E5D23DF24FEA95D00124551 /* QRiosityUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5D23DE24FEA95D00124551 /* QRiosityUITests.swift */; };
 		5E9B307F2587588200F1CD16 /* Scanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9B307E2587588200F1CD16 /* Scanner.swift */; };
-		5E9B30A82587BEA800F1CD16 /* AVScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 5E9B30A72587BEA800F1CD16 /* AVScanner */; };
 		5ECE0CAD24FFE6F80084C73B /* CodeReader.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5ECE0CAB24FFE6F70084C73B /* CodeReader.xcdatamodeld */; };
 		5ECE0CB024FFE7BF0084C73B /* CodeRecord+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECE0CAE24FFE7BF0084C73B /* CodeRecord+CoreDataClass.swift */; };
 		5ECE0CB124FFE7BF0084C73B /* CodeRecord+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECE0CAF24FFE7BF0084C73B /* CodeRecord+CoreDataProperties.swift */; };
@@ -75,7 +75,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5E9B30A82587BEA800F1CD16 /* AVScanner in Frameworks */,
+				5E47417B26E484DD00A964F8 /* AVScanner in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -271,7 +271,7 @@
 			);
 			name = QRiosity;
 			packageProductDependencies = (
-				5E9B30A72587BEA800F1CD16 /* AVScanner */,
+				5E47417A26E484DD00A964F8 /* AVScanner */,
 			);
 			productName = QRiosity;
 			productReference = 5E5D23B924FEA95B00124551 /* QRiosity.app */;
@@ -345,7 +345,7 @@
 			);
 			mainGroup = 5E5D23B024FEA95B00124551;
 			packageReferences = (
-				5ECE0CA824FFE5260084C73B /* XCRemoteSwiftPackageReference "AVScanner" */,
+				5E47417926E4836F00A964F8 /* XCRemoteSwiftPackageReference "AVScanner" */,
 			);
 			productRefGroup = 5E5D23BA24FEA95B00124551 /* Products */;
 			projectDirPath = "";
@@ -487,7 +487,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -542,7 +541,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -563,7 +561,7 @@
 				DEVELOPMENT_TEAM = CQ58SNCG49;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = QRiosity/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -586,7 +584,7 @@
 				DEVELOPMENT_TEAM = CQ58SNCG49;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = QRiosity/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -606,7 +604,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3XESJ7333X;
 				INFOPLIST_FILE = QRiosityTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -628,7 +625,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3XESJ7333X;
 				INFOPLIST_FILE = QRiosityTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -724,9 +720,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		5ECE0CA824FFE5260084C73B /* XCRemoteSwiftPackageReference "AVScanner" */ = {
+		5E47417926E4836F00A964F8 /* XCRemoteSwiftPackageReference "AVScanner" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "git@github.com:mrfour0004/AVScanner.git";
+			repositoryURL = "https://github.com/mrfour0004/AVScanner";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.0.0;
@@ -735,9 +731,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		5E9B30A72587BEA800F1CD16 /* AVScanner */ = {
+		5E47417A26E484DD00A964F8 /* AVScanner */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5ECE0CA824FFE5260084C73B /* XCRemoteSwiftPackageReference "AVScanner" */;
+			package = 5E47417926E4836F00A964F8 /* XCRemoteSwiftPackageReference "AVScanner" */;
 			productName = AVScanner;
 		};
 /* End XCSwiftPackageProductDependency section */

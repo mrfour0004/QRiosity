@@ -3,7 +3,7 @@
     "pins": [
       {
         "package": "AVScanner",
-        "repositoryURL": "git@github.com:mrfour0004/AVScanner.git",
+        "repositoryURL": "https://github.com/mrfour0004/AVScanner",
         "state": {
           "branch": null,
           "revision": "36d0d9da79528e77731680ecb043181310c69fd4",
