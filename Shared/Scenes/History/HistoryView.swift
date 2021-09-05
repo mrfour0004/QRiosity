@@ -19,7 +19,7 @@ struct HistoryView: View {
         GeometryReader { reader in
             ZStack {
                 Color(.displayP3, white: 0.96, opacity: 1)
-                ScrollView {
+                ScrollView(showsIndicators: false) {
                     LazyVStack(alignment: .leading, spacing: 24) {
                         Text("History")
                             .font(.avenir(.largeTitle))
@@ -29,6 +29,7 @@ struct HistoryView: View {
                     }
                     .padding()
                     .padding(.top, reader.safeAreaInsets.top)
+                    .padding(.bottom, reader.safeAreaInsets.bottom)
                 }
             }
             .edgesIgnoringSafeArea(.all)

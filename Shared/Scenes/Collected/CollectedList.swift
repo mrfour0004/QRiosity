@@ -20,7 +20,7 @@ struct CollectedList: View {
         GeometryReader { reader in
             ZStack {
                 Color(.displayP3, white: 0.96, opacity: 1)
-                ScrollView {
+                ScrollView(showsIndicators: false) {
                     LazyVStack(alignment: .leading, spacing: 32) {
                         Text("Collected")
                             .font(.avenir(.largeTitle))
@@ -30,6 +30,7 @@ struct CollectedList: View {
                     }
                     .padding()
                     .padding(.top, reader.safeAreaInsets.top)
+                    .padding(.bottom, reader.safeAreaInsets.bottom)
                 }
             }
             .edgesIgnoringSafeArea(.all)
