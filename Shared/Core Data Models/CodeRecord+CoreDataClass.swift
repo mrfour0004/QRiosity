@@ -18,13 +18,17 @@ public class CodeRecord: NSManagedObject {
     }
 
     var type: RecordType {
-        return url.flatMap { _ in RecordType.url } ?? .string
+        url.flatMap { _ in RecordType.url } ?? .string
     }
 
     /// An URL value that the code content represents for. Returns `nil` if the content is not an URL.
     var url: URL? {
         let availableSchemes = ["https", "http"]
-        guard let url = URL(string: stringValue), let scheme = url.scheme, availableSchemes.contains(scheme.lowercased()) else { return nil }
+        guard
+            let url = URL(string: stringValue),
+            let scheme = url.scheme, availableSchemes.contains(scheme.lowercased())
+        else { return nil }
+
         return url
     }
 }
@@ -32,21 +36,18 @@ public class CodeRecord: NSManagedObject {
 // MARK: - Class function
 
 extension CodeRecord {
-//    class func instantiate(with stringValue: String) -> CodeRecord? {
-//        let barcodeString = stringValue
-//
-//        let request: NSFetchRequest<CodeRecord> = CodeRecord.fetchRequest()
-//        let predicate = NSPredicate(format: "stringValue = %@", barcodeString)
-//        request.predicate = predicate
-//
-//        return instantiate(with: request)
-//    }
-
-    class func instantiate(with codeObject: AVMetadataMachineReadableCodeObject, in context: NSManagedObjectContext) -> CodeRecord {
+    class func instantiate(
+        with codeObject: AVMetadataMachineReadableCodeObject,
+        in context: NSManagedObjectContext
+    ) -> CodeRecord {
         instantiate(withString: codeObject.stringValue!, type: codeObject.type, in: context)
     }
 
-    class func instantiate(withString value: String, type: AVMetadataObject.ObjectType, in context: NSManagedObjectContext) -> CodeRecord {
+    class func instantiate(
+        withString value: String,
+        type: AVMetadataObject.ObjectType,
+        in context: NSManagedObjectContext
+    ) -> CodeRecord {
         //loggingPrint("Creating an instance of CodeRecord for barcode content: \(value), and barcode type: \(type.rawValue)")
 
         let instance = CodeRecord(context: context)

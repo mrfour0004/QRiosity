@@ -13,7 +13,6 @@ struct ScannerView: View {
 
     @Environment(\.managedObjectContext) private var viewContext
 
-    @State private var presentingRecord = false
     @State private var presentedRecord: CodeRecord?
     @State private var isSessionRunning = false
 
@@ -22,29 +21,38 @@ struct ScannerView: View {
             ZStack {
                 Scanner(isSessionRunning: $isSessionRunning)
                     .onCapture { metadataObject in
-                        presentingRecord = true
+                        let existingRecord = viewContext.existingCodeRecord(withBarcode: metadataObject.stringValue!)
+                        let record = existingRecord ?? CodeRecord.instantiate(with: metadataObject, in: viewContext)
+                        record.scannedAt = Date() // update the scan time anyway
+
+                        if viewContext.hasChanges {
+                            try? viewContext.save()
+                        }
+                        
+                        presentedRecord = record
                         isSessionRunning = false
                     }
                     .onAppear { isSessionRunning = true }
                     .onDisappear { isSessionRunning = false }
             }
             .sheet(
-                isPresented: $presentingRecord,
+                isPresented: Binding(
+                    get: { presentedRecord != nil },
+                    set: { if !$0 { presentedRecord = nil } }
+                ),
                 onDismiss: {
-                    presentedRecord = nil
                     isSessionRunning = true
                 },
                 content: {
-                    Text(presentedRecord?.stringValue ?? "record not found")
+                    if let url = presentedRecord?.url {
+                        SafariView(url: url)
+                    } else {
+                        Text(presentedRecord?.stringValue ?? "record not found")
+                    }
                 }
             )
             .navigationBarTitle("Scanner", displayMode: .inline)
         }
-    }
-
-    private func onCaptureMetadataObject(_ metadataObject: AVMetadataMachineReadableCodeObject) -> Void {
-        isSessionRunning = false
-        presentingRecord = true
     }
 
     // MARK: - Generating Records

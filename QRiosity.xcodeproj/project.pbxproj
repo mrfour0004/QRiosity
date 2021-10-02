@@ -21,6 +21,9 @@
 		5E5D23D424FEA95D00124551 /* QRiosityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5D23D324FEA95D00124551 /* QRiosityTests.swift */; };
 		5E5D23DF24FEA95D00124551 /* QRiosityUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5D23DE24FEA95D00124551 /* QRiosityUITests.swift */; };
 		5E9B307F2587588200F1CD16 /* Scanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9B307E2587588200F1CD16 /* Scanner.swift */; };
+		5EC711492708427C00838BC2 /* SafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC711482708427C00838BC2 /* SafariView.swift */; };
+		5EC7114D27084DBB00838BC2 /* NSManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC7114C27084DBB00838BC2 /* NSManagedObject.swift */; };
+		5EC711512708561D00838BC2 /* NSManagedObjectContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC711502708561D00838BC2 /* NSManagedObjectContext.swift */; };
 		5ECE0CAD24FFE6F80084C73B /* CodeReader.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5ECE0CAB24FFE6F70084C73B /* CodeReader.xcdatamodeld */; };
 		5ECE0CB024FFE7BF0084C73B /* CodeRecord+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECE0CAE24FFE7BF0084C73B /* CodeRecord+CoreDataClass.swift */; };
 		5ECE0CB124FFE7BF0084C73B /* CodeRecord+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECE0CAF24FFE7BF0084C73B /* CodeRecord+CoreDataProperties.swift */; };
@@ -65,6 +68,9 @@
 		5E5D23E024FEA95D00124551 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5E9B307E2587588200F1CD16 /* Scanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scanner.swift; sourceTree = "<group>"; };
 		5EC4BCA324FFF717001570C2 /* QRiosity.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = QRiosity.entitlements; sourceTree = "<group>"; };
+		5EC711482708427C00838BC2 /* SafariView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariView.swift; sourceTree = "<group>"; };
+		5EC7114C27084DBB00838BC2 /* NSManagedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSManagedObject.swift; sourceTree = "<group>"; };
+		5EC711502708561D00838BC2 /* NSManagedObjectContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSManagedObjectContext.swift; sourceTree = "<group>"; };
 		5ECE0CAC24FFE6F70084C73B /* CodeReader.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CodeReader.xcdatamodel; sourceTree = "<group>"; };
 		5ECE0CAE24FFE7BF0084C73B /* CodeRecord+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodeRecord+CoreDataClass.swift"; sourceTree = "<group>"; };
 		5ECE0CAF24FFE7BF0084C73B /* CodeRecord+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodeRecord+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -109,6 +115,7 @@
 			isa = PBXGroup;
 			children = (
 				5E2EE9FC267643C20037DED1 /* Font+.swift */,
+				5EC7114E270855FC00838BC2 /* CoreData */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -203,6 +210,23 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		5EC711472708426800838BC2 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				5EC711482708427C00838BC2 /* SafariView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		5EC7114E270855FC00838BC2 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				5EC7114C27084DBB00838BC2 /* NSManagedObject.swift */,
+				5EC711502708561D00838BC2 /* NSManagedObjectContext.swift */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
 		5ECE0CB224FFE7C40084C73B /* Core Data Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -222,6 +246,7 @@
 				5EFC211D25029EC300B59CD9 /* Persistance */,
 				5E5D23C224FEA95D00124551 /* Preview Content */,
 				5EFC211E2502A1AC00B59CD9 /* Scenes */,
+				5EC711472708426800838BC2 /* Views */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -321,6 +346,7 @@
 			attributes = {
 				LastSwiftUpdateCheck = 1200;
 				LastUpgradeCheck = 1200;
+				ORGANIZATIONNAME = mrfour;
 				TargetAttributes = {
 					5E5D23B824FEA95B00124551 = {
 						CreatedOnToolsVersion = 12.0;
@@ -391,11 +417,14 @@
 			files = (
 				5E2EE9FD267643C20037DED1 /* Font+.swift in Sources */,
 				5E5D23C624FEA95D00124551 /* Persistence.swift in Sources */,
+				5EC711492708427C00838BC2 /* SafariView.swift in Sources */,
+				5EC7114D27084DBB00838BC2 /* NSManagedObject.swift in Sources */,
 				5E582E1925092E8500D9F203 /* RecordView.swift in Sources */,
 				5E582E16250926D100D9F203 /* HistoryView.swift in Sources */,
 				5E582E13250926B600D9F203 /* CollectedList.swift in Sources */,
 				5ECE0CB024FFE7BF0084C73B /* CodeRecord+CoreDataClass.swift in Sources */,
 				5E5D23BF24FEA95B00124551 /* ContentView.swift in Sources */,
+				5EC711512708561D00838BC2 /* NSManagedObjectContext.swift in Sources */,
 				5ECE0CB124FFE7BF0084C73B /* CodeRecord+CoreDataProperties.swift in Sources */,
 				5ECE0CAD24FFE6F80084C73B /* CodeReader.xcdatamodeld in Sources */,
 				5E5D23BD24FEA95B00124551 /* QRiosityApp.swift in Sources */,
