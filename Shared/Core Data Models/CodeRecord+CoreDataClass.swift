@@ -6,9 +6,10 @@
 //
 //
 
-import Foundation
-import CoreData
 import AVFoundation
+import CoreData
+import Foundation
+import OpenGraph
 
 @objc(CodeRecord)
 public class CodeRecord: NSManagedObject {
@@ -32,6 +33,36 @@ public class CodeRecord: NSManagedObject {
         return url
     }
 }
+
+// MARK: - Getting Link Metadata
+
+extension CodeRecord {
+    /// Fetches the metadata for the link if barcode content is a URL.
+    func fetchLinkMetadataIfNeeded(context: NSManagedObjectContext) {
+        guard let url = URL(string: stringValue) else { return }
+
+        Task {
+            guard let openGraph = try? await OpenGraph.fetch(url) else { return }
+            updateMetadata(with: openGraph)
+
+            if context.hasChanges {
+                try? context.save()
+            }
+        }
+    }
+
+    private func updateMetadata(with openGraph: OpenGraph) {
+        title = openGraph[.title]?.trimmed ?? stringValue
+
+        if title != stringValue {
+            desc = stringValue
+        }
+
+        desc = openGraph[.description]?.trimmed ?? desc
+        previewImageURLString = openGraph[.image]?.trimmed
+    }
+}
+
 
 // MARK: - Class function
 

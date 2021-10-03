@@ -24,6 +24,9 @@
 		5EC711492708427C00838BC2 /* SafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC711482708427C00838BC2 /* SafariView.swift */; };
 		5EC7114D27084DBB00838BC2 /* NSManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC7114C27084DBB00838BC2 /* NSManagedObject.swift */; };
 		5EC711512708561D00838BC2 /* NSManagedObjectContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC711502708561D00838BC2 /* NSManagedObjectContext.swift */; };
+		5EC711542708B31700838BC2 /* OpenGraph in Frameworks */ = {isa = PBXBuildFile; productRef = 5EC711532708B31700838BC2 /* OpenGraph */; };
+		5EC711572708B37B00838BC2 /* OpenGraph+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC711562708B37B00838BC2 /* OpenGraph+.swift */; };
+		5EC711592708C30800838BC2 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC711582708C30800838BC2 /* String+.swift */; };
 		5ECE0CAD24FFE6F80084C73B /* CodeReader.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5ECE0CAB24FFE6F70084C73B /* CodeReader.xcdatamodeld */; };
 		5ECE0CB024FFE7BF0084C73B /* CodeRecord+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECE0CAE24FFE7BF0084C73B /* CodeRecord+CoreDataClass.swift */; };
 		5ECE0CB124FFE7BF0084C73B /* CodeRecord+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECE0CAF24FFE7BF0084C73B /* CodeRecord+CoreDataProperties.swift */; };
@@ -71,6 +74,8 @@
 		5EC711482708427C00838BC2 /* SafariView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariView.swift; sourceTree = "<group>"; };
 		5EC7114C27084DBB00838BC2 /* NSManagedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSManagedObject.swift; sourceTree = "<group>"; };
 		5EC711502708561D00838BC2 /* NSManagedObjectContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSManagedObjectContext.swift; sourceTree = "<group>"; };
+		5EC711562708B37B00838BC2 /* OpenGraph+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OpenGraph+.swift"; sourceTree = "<group>"; };
+		5EC711582708C30800838BC2 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		5ECE0CAC24FFE6F70084C73B /* CodeReader.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CodeReader.xcdatamodel; sourceTree = "<group>"; };
 		5ECE0CAE24FFE7BF0084C73B /* CodeRecord+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodeRecord+CoreDataClass.swift"; sourceTree = "<group>"; };
 		5ECE0CAF24FFE7BF0084C73B /* CodeRecord+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodeRecord+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -82,6 +87,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5E47417B26E484DD00A964F8 /* AVScanner in Frameworks */,
+				5EC711542708B31700838BC2 /* OpenGraph in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -115,7 +121,9 @@
 			isa = PBXGroup;
 			children = (
 				5E2EE9FC267643C20037DED1 /* Font+.swift */,
+				5EC711582708C30800838BC2 /* String+.swift */,
 				5EC7114E270855FC00838BC2 /* CoreData */,
+				5EC711552708B36100838BC2 /* Packages */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -227,6 +235,14 @@
 			path = CoreData;
 			sourceTree = "<group>";
 		};
+		5EC711552708B36100838BC2 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				5EC711562708B37B00838BC2 /* OpenGraph+.swift */,
+			);
+			path = Packages;
+			sourceTree = "<group>";
+		};
 		5ECE0CB224FFE7C40084C73B /* Core Data Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -297,6 +313,7 @@
 			name = QRiosity;
 			packageProductDependencies = (
 				5E47417A26E484DD00A964F8 /* AVScanner */,
+				5EC711532708B31700838BC2 /* OpenGraph */,
 			);
 			productName = QRiosity;
 			productReference = 5E5D23B924FEA95B00124551 /* QRiosity.app */;
@@ -372,6 +389,7 @@
 			mainGroup = 5E5D23B024FEA95B00124551;
 			packageReferences = (
 				5E47417926E4836F00A964F8 /* XCRemoteSwiftPackageReference "AVScanner" */,
+				5EC711522708B31700838BC2 /* XCRemoteSwiftPackageReference "OpenGraph" */,
 			);
 			productRefGroup = 5E5D23BA24FEA95B00124551 /* Products */;
 			projectDirPath = "";
@@ -425,9 +443,11 @@
 				5ECE0CB024FFE7BF0084C73B /* CodeRecord+CoreDataClass.swift in Sources */,
 				5E5D23BF24FEA95B00124551 /* ContentView.swift in Sources */,
 				5EC711512708561D00838BC2 /* NSManagedObjectContext.swift in Sources */,
+				5EC711572708B37B00838BC2 /* OpenGraph+.swift in Sources */,
 				5ECE0CB124FFE7BF0084C73B /* CodeRecord+CoreDataProperties.swift in Sources */,
 				5ECE0CAD24FFE6F80084C73B /* CodeReader.xcdatamodeld in Sources */,
 				5E5D23BD24FEA95B00124551 /* QRiosityApp.swift in Sources */,
+				5EC711592708C30800838BC2 /* String+.swift in Sources */,
 				5E22E6102530BE04007A970B /* ScannerView.swift in Sources */,
 				5E9B307F2587588200F1CD16 /* Scanner.swift in Sources */,
 			);
@@ -757,6 +777,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		5EC711522708B31700838BC2 /* XCRemoteSwiftPackageReference "OpenGraph" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/satoshi-takano/OpenGraph";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -764,6 +792,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5E47417926E4836F00A964F8 /* XCRemoteSwiftPackageReference "AVScanner" */;
 			productName = AVScanner;
+		};
+		5EC711532708B31700838BC2 /* OpenGraph */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5EC711522708B31700838BC2 /* XCRemoteSwiftPackageReference "OpenGraph" */;
+			productName = OpenGraph;
 		};
 /* End XCSwiftPackageProductDependency section */
 

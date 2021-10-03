@@ -25,6 +25,8 @@ struct ScannerView: View {
                         let record = existingRecord ?? CodeRecord.instantiate(with: metadataObject, in: viewContext)
                         record.scannedAt = Date() // update the scan time anyway
 
+                        record.fetchLinkMetadataIfNeeded(context: viewContext)
+
                         if viewContext.hasChanges {
                             try? viewContext.save()
                         }
