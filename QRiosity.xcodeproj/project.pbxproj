@@ -27,6 +27,7 @@
 		5EC711542708B31700838BC2 /* OpenGraph in Frameworks */ = {isa = PBXBuildFile; productRef = 5EC711532708B31700838BC2 /* OpenGraph */; };
 		5EC711572708B37B00838BC2 /* OpenGraph+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC711562708B37B00838BC2 /* OpenGraph+.swift */; };
 		5EC711592708C30800838BC2 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC711582708C30800838BC2 /* String+.swift */; };
+		5EC711612709678B00838BC2 /* RecordDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC711602709678B00838BC2 /* RecordDetail.swift */; };
 		5ECE0CAD24FFE6F80084C73B /* CodeReader.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5ECE0CAB24FFE6F70084C73B /* CodeReader.xcdatamodeld */; };
 		5ECE0CB024FFE7BF0084C73B /* CodeRecord+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECE0CAE24FFE7BF0084C73B /* CodeRecord+CoreDataClass.swift */; };
 		5ECE0CB124FFE7BF0084C73B /* CodeRecord+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECE0CAF24FFE7BF0084C73B /* CodeRecord+CoreDataProperties.swift */; };
@@ -76,6 +77,7 @@
 		5EC711502708561D00838BC2 /* NSManagedObjectContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSManagedObjectContext.swift; sourceTree = "<group>"; };
 		5EC711562708B37B00838BC2 /* OpenGraph+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OpenGraph+.swift"; sourceTree = "<group>"; };
 		5EC711582708C30800838BC2 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
+		5EC711602709678B00838BC2 /* RecordDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDetail.swift; sourceTree = "<group>"; };
 		5ECE0CAC24FFE6F70084C73B /* CodeReader.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CodeReader.xcdatamodel; sourceTree = "<group>"; };
 		5ECE0CAE24FFE7BF0084C73B /* CodeRecord+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodeRecord+CoreDataClass.swift"; sourceTree = "<group>"; };
 		5ECE0CAF24FFE7BF0084C73B /* CodeRecord+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodeRecord+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -243,6 +245,14 @@
 			path = Packages;
 			sourceTree = "<group>";
 		};
+		5EC7115F2709678100838BC2 /* RecordDetail */ = {
+			isa = PBXGroup;
+			children = (
+				5EC711602709678B00838BC2 /* RecordDetail.swift */,
+			);
+			path = RecordDetail;
+			sourceTree = "<group>";
+		};
 		5ECE0CB224FFE7C40084C73B /* Core Data Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -279,6 +289,7 @@
 		5EFC211E2502A1AC00B59CD9 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				5EC7115F2709678100838BC2 /* RecordDetail */,
 				5E22E5F32530BDA1007A970B /* Scanner */,
 				5E582E1725092E7100D9F203 /* Record */,
 				5E582E14250926C400D9F203 /* History */,
@@ -434,6 +445,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5E2EE9FD267643C20037DED1 /* Font+.swift in Sources */,
+				5EC711612709678B00838BC2 /* RecordDetail.swift in Sources */,
 				5E5D23C624FEA95D00124551 /* Persistence.swift in Sources */,
 				5EC711492708427C00838BC2 /* SafariView.swift in Sources */,
 				5EC7114D27084DBB00838BC2 /* NSManagedObject.swift in Sources */,
