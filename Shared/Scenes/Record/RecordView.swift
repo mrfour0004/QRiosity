@@ -10,8 +10,8 @@ import CoreData
 
 struct RecordView: View {
     enum Design {
-        static let imageHeight: CGFloat = 100
-        static let cornerRadius: CGFloat = 12
+        static let imageHeight = 100.0
+        static let cornerRadius = 12.0
     }
 
     private var record: CodeRecord
