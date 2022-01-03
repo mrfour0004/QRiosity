@@ -154,6 +154,14 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		5E5C47FA2778ABBC00AFE71A /* Buttons */ = {
+			isa = PBXGroup;
+			children = (
+				5E5C47FB2778B0E500AFE71A /* RoundedMaterialButtonStyle.swift */,
+			);
+			path = Buttons;
+			sourceTree = "<group>";
+		};
 		5E5D23B024FEA95B00124551 = {
 			isa = PBXGroup;
 			children = (
@@ -223,6 +231,7 @@
 		5EC711472708426800838BC2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				5E5C47FA2778ABBC00AFE71A /* Buttons */,
 				5EC711482708427C00838BC2 /* SafariView.swift */,
 			);
 			path = Views;
@@ -453,6 +462,7 @@
 				5E582E16250926D100D9F203 /* HistoryView.swift in Sources */,
 				5E582E13250926B600D9F203 /* CollectedList.swift in Sources */,
 				5ECE0CB024FFE7BF0084C73B /* CodeRecord+CoreDataClass.swift in Sources */,
+				5E5C47FC2778B0E500AFE71A /* RoundedMaterialButtonStyle.swift in Sources */,
 				5E5D23BF24FEA95B00124551 /* ContentView.swift in Sources */,
 				5EC711512708561D00838BC2 /* NSManagedObjectContext.swift in Sources */,
 				5EC711572708B37B00838BC2 /* OpenGraph+.swift in Sources */,
