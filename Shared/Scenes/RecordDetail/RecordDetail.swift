@@ -9,32 +9,99 @@
 import SwiftUI
 
 struct RecordDetail: View {
-    let record: CodeRecord
+
+    @EnvironmentObject private var modalStore: ModalStore
 
     private enum Const {
         static let titlePlaceholder = "Untitled"
     }
 
+    // MARK: - Properties
+
+    let record: CodeRecord
+
+    // MARK: - Views
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            propertyItem(title: "Title", value: record.title ?? Const.titlePlaceholder)
-            propertyItem(title: "Code Type", value: record.metadataObjectType)
-            propertyItem(title: "Code Content", value: record.desc ?? Const.titlePlaceholder)
+        VStack(spacing: 16) {
+            VStack(alignment: .leading, spacing: 16) {
+                propertyItem(title: "Title", value: record.title ?? Const.titlePlaceholder)
+                propertyItem(title: "Code Type", value: record.metadataObjectType)
 
-            if let url = record.url {
-                propertyItem(title: "URL", value: url.absoluteString)
+                if let desc = record.desc {
+                    // shouldn't get here, technically
+                    propertyItem(title: "Code Content", value: desc)
+                }
+
+                if let url = record.url {
+                    propertyItem(title: "URL", value: url.absoluteString)
+                }
             }
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-        .padding()
+            .padding(24)
+            .background(
+                RoundedRectangle(cornerRadius: 24, style: .continuous)
+                    .fill(.white)
+            )
 
+            HStack(alignment: .center, spacing: 16) {
+                contentToggleButton
+                likeButton
+                deleteButton
+                Spacer()
+                closeButton
+            }
+            .buttonStyle(.roundedMaterial)
+        }
+        .padding()
     }
 
-    func propertyItem(title: String, value: String) -> some View {
+    private var contentToggleButton: some View {
+        Button {
+
+        } label: {
+            Image(systemName: "qrcode")
+                .resizable()
+        }
+    }
+
+    private var likeButton: some View {
+        Button {
+
+        } label: {
+            Image(systemName: "heart")
+                .resizable()
+        }
+    }
+
+    private var deleteButton: some View {
+        Button(role: .destructive) {
+
+        } label: {
+            Image(systemName: "trash")
+                .resizable()
+        }
+        
+    }
+
+    private var closeButton: some View {
+        Button {
+            modalStore.presentedObject = nil
+        } label: {
+            Image(systemName: "xmark")
+                .resizable()
+                .frame(width: 20, height: 20)
+        }
+    }
+
+    // MARK: - Utils
+
+    private func propertyItem(title: String, value: String) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(title)
-                .font(.avenir(.caption))
+                .font(.avenir(.headline))
+                .foregroundStyle(.secondary)
             Text(value)
+                .font(.avenir(.body))
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
@@ -67,6 +134,15 @@ struct RecordDetail_Previews: PreviewProvider {
     }
 
     static var previews: some View {
-        RecordDetail(record: makeCodeRecord())
+        ZStack(alignment: .bottom) {
+            LinearGradient(
+                colors: [Color.gray, Color.white],
+                startPoint: UnitPoint(x: 0, y: 1),
+                endPoint: UnitPoint(x: 0, y: 0)
+            )
+            .ignoresSafeArea()
+
+            RecordDetail(record: makeCodeRecord())
+        }
     }
 }
