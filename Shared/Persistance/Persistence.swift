@@ -91,6 +91,7 @@ struct PersistenceController {
             guard let oldStore = coordinator.persistentStore(for: defaultURL) else { return }
             do {
                 try coordinator.migratePersistentStore(oldStore, to: storeURL, options: nil, withType: NSSQLiteStoreType)
+                try coordinator.destroyPersistentStore(at: defaultURL, type: .sqlite, options: nil)
             } catch {
                 print(error.localizedDescription)
             }

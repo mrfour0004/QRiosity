@@ -15,6 +15,10 @@ struct HistoryView: View {
         animation: .default)
     private var records: FetchedResults<CodeRecord>
 
+    @State private var presentedCodeRecord: CodeRecord?
+
+    @EnvironmentObject private var modalStore: ModalStore
+
     var body: some View {
         GeometryReader { reader in
             ZStack {
@@ -24,7 +28,14 @@ struct HistoryView: View {
                         Text("History")
                             .font(.avenir(.largeTitle))
                         ForEach(records) { record in
-                            RecordView(record: record)
+                            Button {
+                                withAnimation {
+                                    presentedCodeRecord = record
+                                    modalStore.presentedObject = record
+                                }
+                            } label: {
+                                RecordView(record: record)
+                            }
                         }
                     }
                     .padding()

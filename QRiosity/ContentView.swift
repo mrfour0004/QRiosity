@@ -11,10 +11,14 @@ import CoreData
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
 
+    @EnvironmentObject var modalStore: ModalStore
+
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \CodeRecord.scannedAt, ascending: true)],
         animation: .default)
     private var items: FetchedResults<CodeRecord>
+
+    // MARK: - Initializers
 
     init() {
         let appearance = UITabBar.appearance()
@@ -23,33 +27,70 @@ struct ContentView: View {
         appearance.unselectedItemTintColor = nil
     }
 
+    // MARK: - Body
+
     var body: some View {
-        TabView {
-            ScannerView()
-                .tabItem {
-                    Image(systemName: "qrcode.viewfinder")
-                    Text("Scan")
-                }
+        ZStack(alignment: .bottom) {
+            TabView {
+                scannerTab
+                collectedTab
+                historyTab
+                settingsTab
+            }
+            .accentColor(.primary) // need a theme
 
-            CollectedList()
-                .tabItem {
-                    Image(systemName: "tray.fill")
-                    Text("Collected")
-                }
+            if let record = modalStore.presentedObject as? CodeRecord {
+                VisualEffect(effect: UIBlurEffect(style: .light))
+                    .edgesIgnoringSafeArea(.all)
+                    .onTapGesture {
+                        withAnimation {
+                            modalStore.presentedObject = nil
+                        }
+                    }
+                    .transition(.opacity)
 
-            HistoryView()
-                .tabItem {
-                    Image(systemName: "rectangle.stack")
-                    Text("History")
-                }
-
-            Text("Settings")
-                .tabItem {
-                    Image(systemName: "gearshape")
-                    Text("Settings")
-                }
+                RecordDetail(record: record)
+            }
         }
-        .accentColor(.primary) // need a theme
+    }
+
+}
+
+
+// MARK: - Subviews
+
+private extension ContentView {
+
+    var scannerTab: some View {
+        ScannerView()
+            .tabItem {
+                Image(systemName: "qrcode.viewfinder")
+                Text("Scan")
+            }
+    }
+
+    var collectedTab: some View {
+        CollectedList()
+            .tabItem {
+                Image(systemName: "tray.fill")
+                Text("Collected")
+            }
+    }
+
+    var historyTab: some View {
+        HistoryView()
+            .tabItem {
+                Image(systemName: "rectangle.stack")
+                Text("History")
+            }
+    }
+
+    var settingsTab: some View {
+        Text("Settings")
+            .tabItem {
+                Image(systemName: "gearshape")
+                Text("Settings")
+            }
     }
 
     private func addItem() {
@@ -90,11 +131,28 @@ private let itemFormatter: DateFormatter = {
 }()
 
 struct ContentView_Previews: PreviewProvider {
+    @Environment(\.managedObjectContext)
+    private static var viewContext
+
     static var previews: some View {
-        Group {
-            NavigationView {
-                ContentView()
-            }
-        }
+        ContentView()
+            .environmentObject(modalStore)
+    }
+
+    static var modalStore: ModalStore = {
+        let store = ModalStore()
+        store.presentedObject = Self.makeCodeRecord()
+        return store
+    }()
+
+    private static func makeCodeRecord() -> CodeRecord {
+        let record = CodeRecord(context: viewContext)
+        record.title = "code title"
+        record.desc = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. "
+        record.scannedAt = Date()
+        record.stringValue = "this is the content of barcode"
+        record.metadataObjectType = "QR"
+
+        return record
     }
 }

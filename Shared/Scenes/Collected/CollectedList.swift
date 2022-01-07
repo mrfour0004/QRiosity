@@ -16,6 +16,8 @@ struct CollectedList: View {
         animation: .default)
     private var records: FetchedResults<CodeRecord>
 
+    @EnvironmentObject private var modalStore: ModalStore
+
     var body: some View {
         GeometryReader { reader in
             ZStack {
@@ -25,7 +27,11 @@ struct CollectedList: View {
                         Text("Collected")
                             .font(.avenir(.largeTitle))
                         ForEach(records) { record in
-                            RecordView(record: record)
+                            Button {
+                                modalStore.presentedObject = record
+                            } label: {
+                                RecordView(record: record)
+                            }
                         }
                     }
                     .padding()
