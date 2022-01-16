@@ -85,7 +85,9 @@ struct RecordDetail: View {
 
     private var closeButton: some View {
         Button {
-            modalStore.presentedObject = nil
+            withAnimation {
+                modalStore.presentedObject = nil
+            }
         } label: {
             Image(systemName: "xmark")
                 .resizable()

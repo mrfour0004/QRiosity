@@ -41,15 +41,17 @@ struct ContentView: View {
 
             if let record = modalStore.presentedObject as? CodeRecord {
                 VisualEffect(effect: UIBlurEffect(style: .light))
+                    .zIndex(1)
+                    .transition(.opacity)
                     .edgesIgnoringSafeArea(.all)
                     .onTapGesture {
                         withAnimation {
                             modalStore.presentedObject = nil
                         }
                     }
-                    .transition(.opacity)
 
                 RecordDetail(record: record)
+                    .zIndex(2)
             }
         }
     }

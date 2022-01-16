@@ -15,8 +15,6 @@ struct HistoryView: View {
         animation: .default)
     private var records: FetchedResults<CodeRecord>
 
-    @State private var presentedCodeRecord: CodeRecord?
-
     @EnvironmentObject private var modalStore: ModalStore
 
     var body: some View {
@@ -30,7 +28,6 @@ struct HistoryView: View {
                         ForEach(records) { record in
                             Button {
                                 withAnimation {
-                                    presentedCodeRecord = record
                                     modalStore.presentedObject = record
                                 }
                             } label: {
