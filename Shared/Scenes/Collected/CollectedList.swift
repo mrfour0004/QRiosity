@@ -28,7 +28,9 @@ struct CollectedList: View {
                             .font(.avenir(.largeTitle))
                         ForEach(records) { record in
                             Button {
-                                modalStore.presentedObject = record
+                                withAnimation {
+                                    modalStore.presentedObject = record
+                                }
                             } label: {
                                 RecordView(record: record)
                             }

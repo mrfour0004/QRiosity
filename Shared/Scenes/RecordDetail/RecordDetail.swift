@@ -24,35 +24,43 @@ struct RecordDetail: View {
 
     var body: some View {
         VStack(spacing: 16) {
-            VStack(alignment: .leading, spacing: 16) {
-                propertyItem(title: "Title", value: record.title ?? Const.titlePlaceholder)
-                propertyItem(title: "Code Type", value: record.metadataObjectType)
-
-                if let desc = record.desc {
-                    // shouldn't get here, technically
-                    propertyItem(title: "Code Content", value: desc)
-                }
-
-                if let url = record.url {
-                    propertyItem(title: "URL", value: url.absoluteString)
-                }
-            }
-            .padding(24)
-            .background(
-                RoundedRectangle(cornerRadius: 24, style: .continuous)
-                    .fill(.white)
-            )
-
-            HStack(alignment: .center, spacing: 16) {
-                contentToggleButton
-                likeButton
-                deleteButton
-                Spacer()
-                closeButton
-            }
-            .buttonStyle(.roundedMaterial)
+            content
+            buttonStack
         }
         .padding()
+    }
+
+    private var content: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            propertyItem(title: "Title", value: record.title ?? Const.titlePlaceholder)
+            propertyItem(title: "Code Type", value: record.metadataObjectType)
+
+            if let desc = record.desc {
+                // shouldn't get here, technically
+                propertyItem(title: "Code Content", value: desc)
+            }
+
+            if let url = record.url {
+                propertyItem(title: "URL", value: url.absoluteString)
+            }
+        }
+        .padding(24)
+        .background(
+            RoundedRectangle(cornerRadius: 24, style: .continuous)
+                .fill(.white)
+        )
+
+    }
+
+    private var buttonStack: some View {
+        HStack(alignment: .center, spacing: 16) {
+            contentToggleButton
+            likeButton
+            deleteButton
+            Spacer()
+            closeButton
+        }
+        .buttonStyle(.roundedMaterial)
     }
 
     private var contentToggleButton: some View {
