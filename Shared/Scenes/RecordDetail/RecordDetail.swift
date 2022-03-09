@@ -10,6 +10,8 @@ import SwiftUI
 
 struct RecordDetail: View {
 
+    @Environment(\.managedObjectContext) private var viewContext
+
     @EnvironmentObject private var modalStore: ModalStore
 
     private enum Const {
@@ -19,6 +21,8 @@ struct RecordDetail: View {
     // MARK: - Properties
 
     let record: CodeRecord
+
+    @State private var isPromptingDeletion = false
 
     // MARK: - Views
 
@@ -74,7 +78,11 @@ struct RecordDetail: View {
 
     private var likeButton: some View {
         Button {
+            record.isFavorite.toggle()
 
+            if !record.isFavorite && record.isDeletedFromHistory {
+                deleteRecord()
+            }
         } label: {
             Image(systemName: "heart")
                 .resizable()
@@ -83,10 +91,16 @@ struct RecordDetail: View {
 
     private var deleteButton: some View {
         Button(role: .destructive) {
-
+            isPromptingDeletion = true
         } label: {
             Image(systemName: "trash")
                 .resizable()
+        }
+        .actionSheet(isPresented: $isPromptingDeletion) {
+            ActionSheet(title: Text("Delete?"), buttons: [
+                .destructive(Text("Detele"), action: deleteRecord),
+                .cancel()
+            ])
         }
         
     }
@@ -104,6 +118,14 @@ struct RecordDetail: View {
     }
 
     // MARK: - Utils
+
+    private func deleteRecord() {
+        withAnimation {
+            modalStore.presentedObject = nil
+        }
+        viewContext.delete(record)
+        try? viewContext.save()
+    }
 
     private func propertyItem(title: String, value: String) -> some View {
         VStack(alignment: .leading, spacing: 4) {
