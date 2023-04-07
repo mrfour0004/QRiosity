@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 53;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -405,8 +405,9 @@
 		5E5D23B124FEA95B00124551 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1200;
-				LastUpgradeCheck = 1200;
+				LastUpgradeCheck = 1430;
 				ORGANIZATIONNAME = mrfour;
 				TargetAttributes = {
 					5E5D23B824FEA95B00124551 = {
@@ -658,7 +659,7 @@
 				DEVELOPMENT_TEAM = CQ58SNCG49;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = QRiosity/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -681,7 +682,7 @@
 				DEVELOPMENT_TEAM = CQ58SNCG49;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = QRiosity/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
