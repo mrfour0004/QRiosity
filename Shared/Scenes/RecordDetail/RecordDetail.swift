@@ -9,7 +9,6 @@
 import SwiftUI
 
 struct RecordDetail: View {
-
     @Environment(\.managedObjectContext) private var viewContext
 
     @EnvironmentObject private var modalStore: ModalStore
@@ -20,21 +19,45 @@ struct RecordDetail: View {
 
     // MARK: - Properties
 
-    let record: CodeRecord
+    @ObservedObject
+    var record: CodeRecord
 
-    @State private var isPromptingDeletion = false
+    @State
+    private var isPromptingDeletion = false
+
+    @State
+    private var showsCode = false
 
     // MARK: - Views
 
     var body: some View {
         VStack(spacing: 16) {
             content
+
             buttonStack
         }
         .padding()
     }
 
+    @ViewBuilder
     private var content: some View {
+        Group {
+            if showsCode {
+                codeContent
+            } else {
+                listContent
+            }
+        }
+        .padding(24)
+        .frame(maxWidth: .infinity)
+        .background(
+            RoundedRectangle(cornerRadius: 24, style: .continuous)
+                .fill(.white)
+        )
+    }
+
+    @ViewBuilder
+    private var listContent: some View {
         VStack(alignment: .leading, spacing: 16) {
             propertyItem(title: "Title", value: record.title ?? Const.titlePlaceholder)
             propertyItem(title: "Code Type", value: record.metadataObjectType)
@@ -48,12 +71,14 @@ struct RecordDetail: View {
                 propertyItem(title: "URL", value: url.absoluteString)
             }
         }
-        .padding(24)
-        .background(
-            RoundedRectangle(cornerRadius: 24, style: .continuous)
-                .fill(.white)
-        )
+    }
 
+    @ViewBuilder
+    private var codeContent: some View {
+        Image(systemName: "qrcode")
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .frame(height: 200)
     }
 
     private var buttonStack: some View {
@@ -69,9 +94,9 @@ struct RecordDetail: View {
 
     private var contentToggleButton: some View {
         Button {
-
+            showsCode.toggle()
         } label: {
-            Image(systemName: "qrcode")
+            Image(systemName: showsCode ? "list.dash" : "qrcode")
                 .resizable()
         }
     }
@@ -84,8 +109,9 @@ struct RecordDetail: View {
                 deleteRecord()
             }
         } label: {
-            Image(systemName: "heart")
+            Image(systemName: record.isFavorite ? "heart.fill" : "heart")
                 .resizable()
+                .foregroundColor(record.isFavorite ? .red : .secondary)
         }
     }
 
@@ -102,7 +128,6 @@ struct RecordDetail: View {
                 .cancel()
             ])
         }
-        
     }
 
     private var closeButton: some View {
