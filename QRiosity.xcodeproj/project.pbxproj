@@ -435,6 +435,7 @@
 			packageReferences = (
 				5E47417926E4836F00A964F8 /* XCRemoteSwiftPackageReference "AVScanner" */,
 				5EC711522708B31700838BC2 /* XCRemoteSwiftPackageReference "OpenGraph" */,
+				9E3311312C0CBF9F00B7ABC3 /* XCRemoteSwiftPackageReference "Pow" */,
 			);
 			productRefGroup = 5E5D23BA24FEA95B00124551 /* Products */;
 			projectDirPath = "";
@@ -834,6 +835,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.0.0;
+			};
+		};
+		9E3311312C0CBF9F00B7ABC3 /* XCRemoteSwiftPackageReference "Pow" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:EmergeTools/Pow.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.4;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
