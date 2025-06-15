@@ -1,4 +1,5 @@
 {
+  "originHash" : "810115697b22bc9e802ac4fbc5bf920b4ec38c6cb8bc9d842c556c72b7e80934",
   "pins" : [
     {
       "identity" : "avscanner",
@@ -17,7 +18,16 @@
         "revision" : "3ef2b8b9b4972b57e9e78c91c26be770c0110057",
         "version" : "1.5.0"
       }
+    },
+    {
+      "identity" : "pow",
+      "kind" : "remoteSourceControl",
+      "location" : "git@github.com:EmergeTools/Pow.git",
+      "state" : {
+        "revision" : "f0d0f3e72d42beaf2b01f1cb798e1b55902814eb",
+        "version" : "1.0.4"
+      }
     }
   ],
-  "version" : 2
+  "version" : 3
 }
