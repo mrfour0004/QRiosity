@@ -1,5 +1,5 @@
 //
-//  RecordDetail.swift
+//  LegacyRecordDetail.swift
 //  QRiosity
 //
 //  Created by mrfour on 2021/10/3.
@@ -25,7 +25,10 @@ struct PropertyAction {
     }
 }
 
-struct RecordDetail: View {
+/// A legacy version of RecordDetail.
+///
+/// This style is legacy and doesn't fit the current liquid glass design, so we will make a new one later.
+struct LegacyRecordDetail: View {
     @Environment(\.managedObjectContext) private var viewContext
 
     @EnvironmentObject private var modalStore: ModalStore
@@ -266,7 +269,7 @@ struct RecordDetail_Previews: PreviewProvider {
             )
             .ignoresSafeArea()
 
-            RecordDetail(record: makeCodeRecord())
+            LegacyRecordDetail(record: makeCodeRecord())
         }
     }
 }

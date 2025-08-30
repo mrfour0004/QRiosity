@@ -50,7 +50,7 @@ struct ContentView: View {
                         }
                     }
 
-                RecordDetail(record: record)
+                LegacyRecordDetail(record: record)
                     .zIndex(2)
             }
         }
