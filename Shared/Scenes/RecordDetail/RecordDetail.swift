@@ -41,11 +41,13 @@ struct RecordDetail: View {
 
     @ViewBuilder
     private var content: some View {
-        Group {
+        VStack {
             if showsCode {
                 codeContent
+                    .transition(.opacity)
             } else {
                 listContent
+                    .transition(.opacity)
             }
         }
         .padding(24)
@@ -54,6 +56,7 @@ struct RecordDetail: View {
             RoundedRectangle(cornerRadius: 24, style: .continuous)
                 .fill(.white)
         )
+        .animation(.spring(response: 0.5, dampingFraction: 0.8), value: showsCode)
     }
 
     @ViewBuilder
@@ -94,7 +97,9 @@ struct RecordDetail: View {
 
     private var contentToggleButton: some View {
         Button {
-            showsCode.toggle()
+            withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
+                showsCode.toggle()
+            }
         } label: {
             Image(systemName: showsCode ? "list.dash" : "qrcode")
                 .resizable()
