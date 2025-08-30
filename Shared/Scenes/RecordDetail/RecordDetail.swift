@@ -8,6 +8,23 @@
 
 import SwiftUI
 
+struct PropertyAction {
+    let iconName: String
+    let action: () -> Void
+
+    static func edit(_ action: @escaping () -> Void) -> PropertyAction {
+        PropertyAction(iconName: "square.and.pencil", action: action)
+    }
+
+    static func copy(_ action: @escaping () -> Void) -> PropertyAction {
+        PropertyAction(iconName: "doc.on.doc.fill", action: action)
+    }
+
+    static func share(_ action: @escaping () -> Void) -> PropertyAction {
+        PropertyAction(iconName: "square.and.arrow.up", action: action)
+    }
+}
+
 struct RecordDetail: View {
     @Environment(\.managedObjectContext) private var viewContext
 
@@ -28,6 +45,15 @@ struct RecordDetail: View {
     @State
     private var showsCode = false
 
+    @State
+    private var isEditingTitle = false
+
+    // MARK: - Computed Properties
+
+    private var shortCodeType: String {
+        return record.metadataObjectType.components(separatedBy: ".").last ?? record.metadataObjectType
+    }
+
     // MARK: - Views
 
     var body: some View {
@@ -37,6 +63,13 @@ struct RecordDetail: View {
             buttonStack
         }
         .padding()
+        .fullScreenCover(isPresented: $isEditingTitle) {
+            PropertyEditor(
+                record: record,
+                keyPath: \.title,
+                propertyName: "Title"
+            )
+        }
     }
 
     @ViewBuilder
@@ -62,13 +95,20 @@ struct RecordDetail: View {
     @ViewBuilder
     private var listContent: some View {
         VStack(alignment: .leading, spacing: 16) {
-            propertyItem(title: "Title", value: record.title ?? Const.titlePlaceholder)
-            propertyItem(title: "Code Type", value: record.metadataObjectType)
+            propertyItem(
+                title: "Title",
+                value: record.title ?? Const.titlePlaceholder,
+                action: .edit { isEditingTitle = true }
+            )
+            propertyItem(title: "Code Type", value: shortCodeType)
 
-            if let desc = record.desc {
-                // shouldn't get here, technically
-                propertyItem(title: "Code Content", value: desc)
-            }
+            propertyItem(
+                title: "Code Content",
+                value: record.stringValue,
+                action: .copy {
+                    UIPasteboard.general.string = record.stringValue
+                }
+            )
 
             if let url = record.url {
                 propertyItem(title: "URL", value: url.absoluteString)
@@ -164,11 +204,26 @@ struct RecordDetail: View {
         try? viewContext.save()
     }
 
-    private func propertyItem(title: String, value: String) -> some View {
+    private func propertyItem(title: String, value: String, action: PropertyAction? = nil) -> some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text(title)
-                .font(.avenir(.headline))
-                .foregroundStyle(.secondary)
+            HStack(alignment: .firstTextBaseline, spacing: 4) {
+                Text(title)
+                    .font(.avenir(.headline))
+                    .fontWeight(.black)
+
+                if let action = action {
+                    Button(action: action.action) {
+                        Image(systemName: action.iconName)
+                            .font(.avenir(.headline))
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    .scaleEffect(0.8)
+                }
+
+                Spacer()
+            }
+            .foregroundStyle(.primary)
+
             Text(value)
                 .font(.avenir(.body))
         }
