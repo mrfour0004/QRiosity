@@ -22,23 +22,46 @@ struct CollectedList: View {
         GeometryReader { reader in
             ZStack {
                 Color(.displayP3, white: 0.96, opacity: 1)
-                ScrollView(showsIndicators: false) {
-                    LazyVStack(alignment: .leading, spacing: 32) {
+                
+                if records.isEmpty {
+                    VStack {
                         Text("Collected")
                             .font(.avenir(.largeTitle))
-                        ForEach(records) { record in
-                            Button {
-                                withAnimation {
-                                    modalStore.presentedObject = record
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.horizontal)
+                            .padding(.top, reader.safeAreaInsets.top)
+                        
+                        Spacer()
+                        
+                        EmptyStateView(
+                            title: "No Collected Items",
+                            message: "Tap the heart icon on any scanned code to add it to your collection.",
+                            systemImageName: "heart"
+                        )
+                        
+                        Spacer()
+                        Spacer()
+                    }
+                } else {
+                    ScrollView(showsIndicators: false) {
+                        LazyVStack(alignment: .leading, spacing: 32) {
+                            Text("Collected")
+                                .font(.avenir(.largeTitle))
+                            
+                            ForEach(records) { record in
+                                Button {
+                                    withAnimation {
+                                        modalStore.presentedObject = record
+                                    }
+                                } label: {
+                                    RecordView(record: record)
                                 }
-                            } label: {
-                                RecordView(record: record)
                             }
                         }
+                        .padding()
+                        .padding(.top, reader.safeAreaInsets.top)
+                        .padding(.bottom, reader.safeAreaInsets.bottom)
                     }
-                    .padding()
-                    .padding(.top, reader.safeAreaInsets.top)
-                    .padding(.bottom, reader.safeAreaInsets.bottom)
                 }
             }
             .edgesIgnoringSafeArea(.all)

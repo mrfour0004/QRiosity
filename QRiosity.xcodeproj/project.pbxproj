@@ -29,9 +29,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		5E5D23B924FEA95B00124551 /* QRiosity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = QRiosity.app; path = "/Users/al02413554/Developer/Side Projects/QRiosity/build/Debug-iphoneos/QRiosity.app"; sourceTree = "<absolute>"; };
-		5E5D23CF24FEA95D00124551 /* QRiosityTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = QRiosityTests.xctest; path = "/Users/al02413554/Developer/Side Projects/QRiosity/build/Debug-iphoneos/QRiosity.app/PlugIns/QRiosityTests.xctest"; sourceTree = "<absolute>"; };
-		5E5D23DA24FEA95D00124551 /* QRiosityUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = QRiosityUITests.xctest; path = "/Users/al02413554/Developer/Side Projects/QRiosity/build/Debug-iphoneos/QRiosityUITests-Runner.app/PlugIns/QRiosityUITests.xctest"; sourceTree = "<absolute>"; };
+		9E7B82E32E5B64380026588F /* QRiosity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QRiosity.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9E7B82E42E5B64380026588F /* QRiosityTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QRiosityTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9E7B82E52E5B64380026588F /* QRiosityUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QRiosityUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -101,6 +101,9 @@
 				9EBB9D832DFF27C40009530D /* QRiosityTests */,
 				9EBB9D882DFF27C60009530D /* QRiosityUITests */,
 				9EBB9D8C2DFF27CA0009530D /* Resources */,
+				9E7B82E32E5B64380026588F /* QRiosity.app */,
+				9E7B82E42E5B64380026588F /* QRiosityTests.xctest */,
+				9E7B82E52E5B64380026588F /* QRiosityUITests.xctest */,
 			);
 			sourceTree = "<group>";
 		};
@@ -128,7 +131,7 @@
 				5EC711532708B31700838BC2 /* OpenGraph */,
 			);
 			productName = QRiosity;
-			productReference = 5E5D23B924FEA95B00124551 /* QRiosity.app */;
+			productReference = 9E7B82E32E5B64380026588F /* QRiosity.app */;
 			productType = "com.apple.product-type.application";
 		};
 		5E5D23CE24FEA95D00124551 /* QRiosityTests */ = {
@@ -146,7 +149,7 @@
 			);
 			name = QRiosityTests;
 			productName = QRiosityTests;
-			productReference = 5E5D23CF24FEA95D00124551 /* QRiosityTests.xctest */;
+			productReference = 9E7B82E42E5B64380026588F /* QRiosityTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		5E5D23D924FEA95D00124551 /* QRiosityUITests */ = {
@@ -164,7 +167,7 @@
 			);
 			name = QRiosityUITests;
 			productName = QRiosityUITests;
-			productReference = 5E5D23DA24FEA95D00124551 /* QRiosityUITests.xctest */;
+			productReference = 9E7B82E52E5B64380026588F /* QRiosityUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
