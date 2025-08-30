@@ -110,8 +110,15 @@ struct RecordDetail: View {
         Button {
             record.isFavorite.toggle()
 
+            // If the record is not favorite and also deleted from history, delete it permanently.
             if !record.isFavorite && record.isDeletedFromHistory {
                 deleteRecord()
+            }
+
+            do {
+                try viewContext.save()
+            } catch {
+                print("Failed to save favorite status: \(error.localizedDescription)")
             }
         } label: {
             Image(systemName: record.isFavorite ? "heart.fill" : "heart")
