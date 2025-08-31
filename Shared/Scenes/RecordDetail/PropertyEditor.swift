@@ -68,7 +68,7 @@ struct PropertyEditor: View {
             Text(propertyName)
                 .font(.avenir(.title2))
                 .fontWeight(.black)
-                .foregroundColor(.primary)
+                .foregroundStyle(.primary)
 
             HStack {
                 TextField("Untitled Code", text: $editingValue)
@@ -81,7 +81,7 @@ struct PropertyEditor: View {
                         editingValue = ""
                     } label: {
                         Image(systemName: "xmark.circle.fill")
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
                             .opacity(0.5)
                     }
                     .transition(.scale(scale: 0.7).combined(with: .opacity))

@@ -44,7 +44,7 @@ struct CollectedList: View {
                     }
                 } else {
                     ScrollView(showsIndicators: false) {
-                        LazyVStack(alignment: .leading, spacing: 32) {
+                        LazyVStack(alignment: .leading, spacing: 24) {
                             Text("Collected")
                                 .font(.avenir(.largeTitle))
                             

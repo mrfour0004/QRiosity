@@ -166,7 +166,7 @@ struct LegacyRecordDetail: View {
         } label: {
             Image(systemName: record.isFavorite ? "heart.fill" : "heart")
                 .resizable()
-                .foregroundColor(record.isFavorite ? .red : .secondary)
+                .foregroundStyle(record.isFavorite ? .red : .secondary)
         }
     }
 
@@ -234,7 +234,7 @@ struct LegacyRecordDetail: View {
     }
 }
 
-struct RecordDetail_Previews: PreviewProvider {
+struct LegacyRecordDetail_Previews: PreviewProvider {
     @Environment(\.managedObjectContext)
     private static var viewContext
 

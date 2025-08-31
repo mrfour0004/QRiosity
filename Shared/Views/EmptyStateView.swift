@@ -27,7 +27,7 @@ struct EmptyStateView: View {
                     .lineLimit(nil)
             }
         }
-        .foregroundColor(.secondary)
+        .foregroundStyle(.secondary)
         .padding(.horizontal, 32)
     }
 }

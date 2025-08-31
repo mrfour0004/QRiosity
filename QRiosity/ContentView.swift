@@ -5,8 +5,8 @@
 //  Created by mrfour on 2020/9/2.
 //
 
-import SwiftUI
 import CoreData
+import SwiftUI
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
@@ -30,71 +30,32 @@ struct ContentView: View {
     // MARK: - Body
 
     var body: some View {
-        ZStack(alignment: .bottom) {
-            TabView {
-                scannerTab
-                collectedTab
-                historyTab
-                settingsTab
+        TabView {
+            Tab("Scan", systemImage: "qrcode.viewfinder", role: .search) {
+                ScannerView()
             }
-            .accentColor(.primary) // need a theme
-
-            if let record = modalStore.presentedObject as? CodeRecord {
-                VisualEffect(effect: UIBlurEffect(style: .light))
-                    .zIndex(1)
-                    .transition(.opacity)
-                    .edgesIgnoringSafeArea(.all)
-                    .onTapGesture {
-                        withAnimation {
-                            modalStore.presentedObject = nil
-                        }
-                    }
-
-                LegacyRecordDetail(record: record)
-                    .zIndex(2)
+            Tab("Collected", systemImage: "tray.fill") {
+                CollectedList()
             }
+            Tab("History", systemImage: "rectangle.stack") {
+                HistoryView()
+            }
+//            Tab("Settings", systemImage: "gearshape") {
+//                Text("Settings")
+//            }
+        }
+        .sheet(item: Binding<CodeRecord?>(
+            get: { modalStore.presentedObject as? CodeRecord },
+            set: { modalStore.presentedObject = $0 }
+        )) { record in
+            RecordDetail(record: record)
         }
     }
-
 }
-
 
 // MARK: - Subviews
 
 private extension ContentView {
-
-    var scannerTab: some View {
-        ScannerView()
-            .tabItem {
-                Image(systemName: "qrcode.viewfinder")
-                Text("Scan")
-            }
-    }
-
-    var collectedTab: some View {
-        CollectedList()
-            .tabItem {
-                Image(systemName: "tray.fill")
-                Text("Collected")
-            }
-    }
-
-    var historyTab: some View {
-        HistoryView()
-            .tabItem {
-                Image(systemName: "rectangle.stack")
-                Text("History")
-            }
-    }
-
-    var settingsTab: some View {
-        Text("Settings")
-            .tabItem {
-                Image(systemName: "gearshape")
-                Text("Settings")
-            }
-    }
-
     private func addItem() {
         withAnimation {
             let newItem = CodeRecord(context: viewContext)

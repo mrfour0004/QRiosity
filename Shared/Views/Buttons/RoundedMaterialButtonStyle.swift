@@ -21,7 +21,7 @@ struct RoundedMaterialButtonStyle: ButtonStyle {
         configuration.label
             .frame(width: 24, height: 24)
             // TODO: will have a better color for destructive later
-            .foregroundColor(configuration.role == .destructive ? .red : .secondary)
+            .foregroundStyle(configuration.role == .destructive ? .red : .secondary)
             .padding()
             .background(.ultraThickMaterial, in: Design.shape)
             .scaleEffect(configuration.isPressed ? 0.85 : 1)

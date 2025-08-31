@@ -12,7 +12,7 @@ import Foundation
 import OpenGraph
 
 @objc(CodeRecord)
-public class CodeRecord: NSManagedObject {
+public class CodeRecord: NSManagedObject, Identifiable {
     enum RecordType {
         case url
         case string

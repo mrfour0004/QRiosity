@@ -5,8 +5,8 @@
 //  Created by mrfour on 2020/9/9.
 //
 
-import SwiftUI
 import CoreData
+import SwiftUI
 
 struct RecordView: View {
     enum Design {
@@ -42,7 +42,7 @@ struct RecordView: View {
             .scaledToFit()
             .frame(width: 12, height: 12)
             .padding(6)
-            .foregroundColor(.white)
+            .foregroundStyle(.white)
             .background(Color.black)
             .clipShape(Circle())
     }
@@ -69,7 +69,7 @@ struct RecordView: View {
             record.previewImageURLString
                 .flatMap(URL.init)
                 .flatMap(imageThumbnail)
-            
+
             VStack {
                 HStack {
                     Text(record.desc ?? record.stringValue)
@@ -83,7 +83,7 @@ struct RecordView: View {
                     HStack {
                         Text(host.uppercased())
                             .font(.avenir(.caption2))
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
                         Spacer()
                     }
                 }
@@ -108,7 +108,6 @@ struct RecordView: View {
             @unknown default:
                 imagePlaceholder
             }
-
         }
         .aspectRatio(1, contentMode: .fit)
         .frame(width: Design.imageHeight)
@@ -118,7 +117,6 @@ struct RecordView: View {
     private var imagePlaceholder: some View {
         Color(.displayP3, red: 0.9, green: 0.9, blue: 0.9, opacity: 1)
     }
-
 }
 
 private let dateFormatter: DateFormatter = {
@@ -128,9 +126,8 @@ private let dateFormatter: DateFormatter = {
     return formatter
 }()
 
-//struct RecordView_Previews: PreviewProvider {
+// struct RecordView_Previews: PreviewProvider {
 //    static var previews: some View {
 //        RecordView()
 //    }
-//}
-
+// }

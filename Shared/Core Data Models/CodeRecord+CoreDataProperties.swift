@@ -6,27 +6,20 @@
 //
 //
 
-import Foundation
 import CoreData
+import Foundation
 
-
-extension CodeRecord {
-
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<CodeRecord> {
+public extension CodeRecord {
+    @nonobjc class func fetchRequest() -> NSFetchRequest<CodeRecord> {
         return NSFetchRequest<CodeRecord>(entityName: "CodeRecord")
     }
 
-    @NSManaged public var desc: String?
-    @NSManaged public var isDeletedFromHistory: Bool
-    @NSManaged public var isFavorite: Bool
-    @NSManaged public var metadataObjectType: String
-    @NSManaged public var previewImageURLString: String?
-    @NSManaged public var scannedAt: Date
-    @NSManaged public var stringValue: String
-    @NSManaged public var title: String?
-
-}
-
-extension CodeRecord : Identifiable {
-
+    @NSManaged var desc: String?
+    @NSManaged var isDeletedFromHistory: Bool
+    @NSManaged var isFavorite: Bool
+    @NSManaged var metadataObjectType: String
+    @NSManaged var previewImageURLString: String?
+    @NSManaged var scannedAt: Date
+    @NSManaged var stringValue: String
+    @NSManaged var title: String?
 }
