@@ -26,13 +26,13 @@ struct RecordDetail: View {
     }
 
     private var calculatedInitialHeight: CGFloat {
-        // 當 twoLineTextHeight 還沒測量到時，使用 contentHeight 作為備案
-        // 這樣可以避免初始高度過小導致 ScrollView 可滑動的問題
+        // Use contentHeight as fallback when twoLineTextHeight hasn't been measured yet
+        // This prevents initial height from being too small causing ScrollView to be scrollable
         if twoLineTextHeight > 0 && needsExpansion {
-            // 有截斷需求時，使用測量的兩行高度來計算
+            // When truncation is needed, calculate using measured two-line height
             let navigationHeight: CGFloat = 44
             let qrCodeHeight: CGFloat = 120
-            let twoLineContentHeight = twoLineTextHeight + 50 // 加上 detailField 的 padding 和背景
+            let twoLineContentHeight = twoLineTextHeight + 50 // Add detailField padding and background
             let paddingAndSpacing: CGFloat = 24 * 3 + 16 * 2 // VStack spacing + main padding
 
             return navigationHeight + qrCodeHeight + twoLineContentHeight + paddingAndSpacing
@@ -49,7 +49,7 @@ struct RecordDetail: View {
     }
 
     private var needsExpansion: Bool {
-        // 只需要判斷文字內容是否被截斷
+        // Only need to check if text content is truncated
         return fullContentTextHeight > twoLineTextHeight && twoLineTextHeight > 0
     }
 
@@ -69,7 +69,7 @@ struct RecordDetail: View {
             return 2
         case 0.3 ... 0.7:
             let progressRange = (expansionProgress - 0.3) / 0.4
-            let estimatedLines = Int(2 + progressRange * 8) // 最多展開到約10行
+            let estimatedLines = Int(2 + progressRange * 8) // Max expand to about 10 lines
 
             return estimatedLines
         default:
@@ -107,7 +107,7 @@ struct RecordDetail: View {
                         }
                     )
 
-                    // 隱藏的文字測量視圖
+                    // Hidden text measurement views
                     textMeasurementViews
                 }
                 .scrollDisabled(!needsExpansion || expansionProgress < 0.7)
@@ -205,7 +205,7 @@ struct RecordDetail: View {
 
     private var textMeasurementViews: some View {
         VStack {
-            // 測量完整內容高度
+            // Measure full content height
             Text(record.stringValue)
                 .font(.body)
                 .fixedSize(horizontal: false, vertical: true)
@@ -222,7 +222,7 @@ struct RecordDetail: View {
                     }
                 )
 
-            // 測量兩行內容高度
+            // Measure two-line content height
             Text(record.stringValue)
                 .font(.body)
                 .lineLimit(2)
