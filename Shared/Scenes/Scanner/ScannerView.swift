@@ -17,7 +17,7 @@ struct ScannerView: View {
     @State private var isSessionRunning = false
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
                 Scanner(isSessionRunning: $isSessionRunning)
                     .onCapture { metadataObject in

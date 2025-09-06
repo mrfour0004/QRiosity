@@ -77,8 +77,64 @@ struct RecordDetail: View {
         }
     }
 
+    private var navigationTitleContent: some View {
+        VStack(spacing: 0) {
+            Text(record.title ?? "Untitled")
+                .font(.avenir(.headline))
+                .foregroundColor(.primary)
+            Text(shortCodeType)
+                .font(.avenir(.caption))
+                .fontWeight(.bold)
+                .foregroundColor(.secondary)
+        }
+    }
+
+    private var closeButtonContent: some View {
+        Button {
+            withAnimation {
+                modalStore.presentedObject = nil
+            }
+        } label: {
+            Image(systemName: "xmark")
+        }
+    }
+
+    private var copyButtonContent: some View {
+        Button {
+            UIPasteboard.general.string = record.stringValue
+        } label: {
+            Image(systemName: "doc.on.doc")
+        }
+    }
+
+    private var editButtonContent: some View {
+        Button {
+            isEditingTitle = true
+        } label: {
+            Image(systemName: "pencil")
+        }
+    }
+
+    private var favoriteButtonContent: some View {
+        Button {
+            toggleFavorite()
+        } label: {
+            Image(systemName: record.isFavorite ? "heart.fill" : "heart")
+                .foregroundColor(record.isFavorite ? .red : .primary)
+        }
+    }
+
+    private var deleteButtonContent: some View {
+        Button {
+            isPromptingDeletion = true
+        } label: {
+            Image(systemName: "trash")
+                .foregroundColor(.red)
+        }
+    }
+
     var body: some View {
-        NavigationView {
+        NavigationStack {
             GeometryReader { outerGeometry in
                 ScrollView {
                     VStack(spacing: 24) {
@@ -118,36 +174,33 @@ struct RecordDetail: View {
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
-            .navigationBarTitle("", displayMode: .inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    VStack(spacing: 0) {
-                        Text(record.title ?? "Untitled")
-                            .font(.avenir(.headline))
-                            .foregroundColor(.primary)
-                        Text(shortCodeType)
-                            .font(.avenir(.caption))
-                            .fontWeight(.bold)
-                            .foregroundColor(.secondary)
-                    }
+                    navigationTitleContent
                 }
 
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button {
-                        withAnimation {
-                            modalStore.presentedObject = nil
-                        }
-                    } label: {
-                        Image(systemName: "xmark")
-                    }
+                ToolbarItem(placement: .bottomBar) {
+                    deleteButtonContent
                 }
 
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        isEditingTitle = true
-                    } label: {
-                        Image(systemName: "pencil")
-                    }
+                ToolbarSpacer(.fixed, placement: .bottomBar)
+
+                ToolbarItem(placement: .bottomBar) {
+                    copyButtonContent
+                }
+
+                ToolbarItem(placement: .bottomBar) {
+                    editButtonContent
+                }
+
+                ToolbarItem(placement: .bottomBar) {
+                    favoriteButtonContent
+                }
+
+                ToolbarSpacer(.flexible, placement: .bottomBar)
+
+                ToolbarItem(placement: .bottomBar) {
+                    closeButtonContent
                 }
             }
         }
@@ -257,6 +310,11 @@ struct RecordDetail: View {
         .cornerRadius(12)
     }
 
+    private func toggleFavorite() {
+        record.isFavorite.toggle()
+        try? viewContext.save()
+    }
+
     private func deleteRecord() {
         withAnimation {
             modalStore.presentedObject = nil
@@ -270,7 +328,7 @@ struct RecordDetail_Previews: PreviewProvider {
     @State private static var showSheet = true
 
     static var previews: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 Text("Main Content")
                     .frame(maxWidth: .infinity, maxHeight: .infinity)

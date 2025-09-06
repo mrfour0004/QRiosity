@@ -30,7 +30,7 @@ struct PropertyEditor: View {
     }
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
                 Color(.displayP3, white: 0.96, opacity: 1)
                     .ignoresSafeArea()
