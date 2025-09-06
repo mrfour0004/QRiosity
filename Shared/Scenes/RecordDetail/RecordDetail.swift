@@ -111,19 +111,11 @@ struct RecordDetail: View {
                     textMeasurementViews
                 }
                 .scrollDisabled(!needsExpansion || expansionProgress < 0.7)
-                .background(
-                    GeometryReader { _ in
-                        Color.clear
-                            .onAppear {
-                                currentSheetHeight = outerGeometry.size.height
-                            }
-                            .onChange(of: outerGeometry.size.height) { _, newHeight in
-                                withAnimation(.easeInOut(duration: 0.1)) {
-                                    currentSheetHeight = newHeight
-                                }
-                            }
+                .onSizeChange { size in
+                    withAnimation(.easeInOut(duration: 0.1)) {
+                        currentSheetHeight = size.height
                     }
-                )
+                }
             }
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarTitle("", displayMode: .inline)
