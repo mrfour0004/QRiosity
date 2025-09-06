@@ -15,66 +15,9 @@ struct RecordDetail: View {
     @ObservedObject var record: CodeRecord
     @State private var isPromptingDeletion = false
     @State private var isEditingTitle = false
-    @State private var contentHeight: CGFloat = 0
-    @State private var currentSheetHeight: CGFloat = 0
-    @State private var baseSheetHeight: CGFloat = 0
-    @State private var fullContentTextHeight: CGFloat = 0
-    @State private var twoLineTextHeight: CGFloat = 0
 
     private var shortCodeType: String {
         record.metadataObjectType.components(separatedBy: ".").last ?? record.metadataObjectType
-    }
-
-    private var calculatedInitialHeight: CGFloat {
-        // Use contentHeight as fallback when twoLineTextHeight hasn't been measured yet
-        // This prevents initial height from being too small causing ScrollView to be scrollable
-        if twoLineTextHeight > 0 && needsExpansion {
-            // When truncation is needed, calculate using measured two-line height
-            let navigationHeight: CGFloat = 44
-            let qrCodeHeight: CGFloat = 120
-            let twoLineContentHeight = twoLineTextHeight + 50 // Add detailField padding and background
-            let paddingAndSpacing: CGFloat = 24 * 3 + 16 * 2 // VStack spacing + main padding
-
-            return navigationHeight + qrCodeHeight + twoLineContentHeight + paddingAndSpacing
-        } else {
-            return contentHeight
-        }
-    }
-
-    private var expansionProgress: Double {
-        let minHeight = calculatedInitialHeight
-        let maxHeight = contentHeight
-        guard maxHeight > minHeight else { return 0 }
-        return min(max((currentSheetHeight - minHeight) / (maxHeight - minHeight), 0), 1)
-    }
-
-    private var needsExpansion: Bool {
-        // Only need to check if text content is truncated
-        return fullContentTextHeight > twoLineTextHeight && twoLineTextHeight > 0
-    }
-
-    private var availableDetents: Set<PresentationDetent> {
-        if needsExpansion {
-            return [.height(calculatedInitialHeight), .height(contentHeight)]
-        } else {
-            return [.height(calculatedInitialHeight)]
-        }
-    }
-
-    private var dynamicLineLimit: Int? {
-        guard needsExpansion else { return nil }
-
-        switch expansionProgress {
-        case ..<0.3:
-            return 2
-        case 0.3 ... 0.7:
-            let progressRange = (expansionProgress - 0.3) / 0.4
-            let estimatedLines = Int(2 + progressRange * 8) // Max expand to about 10 lines
-
-            return estimatedLines
-        default:
-            return nil // unlimited
-        }
     }
 
     private var navigationTitleContent: some View {
@@ -135,44 +78,15 @@ struct RecordDetail: View {
 
     var body: some View {
         NavigationStack {
-            GeometryReader { outerGeometry in
-                ScrollView {
-                    VStack(spacing: 24) {
-                        qrCodeSection
+            VStack(spacing: 24) {
+                qrCodeSection
 
-                        detailSection
-                    }
-                    .padding()
-                    .background(
-                        GeometryReader { geometry in
-                            Color.clear
-                                .onAppear {
-                                    let navigationBarHeight: CGFloat = 44
-                                    let safeAreaTop = outerGeometry.safeAreaInsets.top
-                                    let safeAreaBottom = outerGeometry.safeAreaInsets.bottom
-                                    contentHeight = geometry.size.height + navigationBarHeight + safeAreaTop + safeAreaBottom + 32
-                                }
-                                .onChange(of: record.title) {
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                        let navigationBarHeight: CGFloat = 44
-                                        let safeAreaTop = outerGeometry.safeAreaInsets.top
-                                        let safeAreaBottom = outerGeometry.safeAreaInsets.bottom
-                                        contentHeight = geometry.size.height + navigationBarHeight + safeAreaTop + safeAreaBottom + 32
-                                    }
-                                }
-                        }
-                    )
-
-                    // Hidden text measurement views
-                    textMeasurementViews
-                }
-                .scrollDisabled(!needsExpansion || expansionProgress < 0.7)
-                .onSizeChange { size in
-                    withAnimation(.easeInOut(duration: 0.1)) {
-                        currentSheetHeight = size.height
-                    }
-                }
+                Text(record.stringValue)
+                    .font(.body)
+                    .foregroundColor(.primary)
+                    .multilineTextAlignment(.center)
             }
+            .padding()
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
@@ -204,7 +118,7 @@ struct RecordDetail: View {
                 }
             }
         }
-        .presentationDetents(availableDetents)
+        .presentationDetents([.medium, .large])
         .presentationDragIndicator(.visible)
         .fullScreenCover(isPresented: $isEditingTitle) {
             PropertyEditor(
@@ -226,88 +140,6 @@ struct RecordDetail: View {
             .font(.system(size: 120))
             .foregroundColor(.primary)
             .frame(maxWidth: .infinity)
-    }
-
-    private var detailSection: some View {
-        detailField(
-            title: "Content",
-            value: record.stringValue,
-            lineLimit: dynamicLineLimit,
-            action: {
-                UIPasteboard.general.string = record.stringValue
-            }
-        )
-    }
-
-    private var textMeasurementViews: some View {
-        VStack {
-            // Measure full content height
-            Text(record.stringValue)
-                .font(.body)
-                .fixedSize(horizontal: false, vertical: true)
-                .background(
-                    GeometryReader { geometry in
-                        Color.clear.onAppear {
-                            fullContentTextHeight = geometry.size.height
-                        }
-                        .onChange(of: record.stringValue) {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-                                fullContentTextHeight = geometry.size.height
-                            }
-                        }
-                    }
-                )
-
-            // Measure two-line content height
-            Text(record.stringValue)
-                .font(.body)
-                .lineLimit(2)
-                .background(
-                    GeometryReader { geometry in
-                        Color.clear.onAppear {
-                            twoLineTextHeight = geometry.size.height
-                        }
-                        .onChange(of: record.stringValue) {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-                                twoLineTextHeight = geometry.size.height
-                            }
-                        }
-                    }
-                )
-        }
-        .opacity(0)
-        .frame(height: 0)
-        .clipped()
-    }
-
-    private func detailField(title: String, value: String, lineLimit: Int? = nil, action: (() -> Void)? = nil) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Text(title)
-                    .font(.headline)
-                    .foregroundColor(.secondary)
-
-                Spacer()
-
-                if let action = action {
-                    Button(action: action) {
-                        Image(systemName: title == "Title" ? "pencil" : "doc.on.doc")
-                            .font(.caption)
-                            .foregroundColor(.blue)
-                    }
-                }
-            }
-
-            Text(value)
-                .font(.body)
-                .foregroundColor(.primary)
-                .lineLimit(lineLimit)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .animation(.easeInOut(duration: 0.2), value: lineLimit)
-        }
-        .padding()
-        .background(Color(.systemGray6))
-        .cornerRadius(12)
     }
 
     private func toggleFavorite() {
