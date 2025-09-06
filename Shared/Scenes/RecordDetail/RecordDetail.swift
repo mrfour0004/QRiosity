@@ -15,6 +15,7 @@ struct RecordDetail: View {
     @ObservedObject var record: CodeRecord
     @State private var isPromptingDeletion = false
     @State private var isEditingTitle = false
+    @State private var contentHeight: CGFloat = 300
 
     private var shortCodeType: String {
         record.metadataObjectType.components(separatedBy: ".").last ?? record.metadataObjectType
@@ -87,6 +88,9 @@ struct RecordDetail: View {
                     .multilineTextAlignment(.center)
             }
             .padding()
+            .onSizeChange { size in
+                contentHeight = size.height + 120
+            }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
@@ -118,7 +122,7 @@ struct RecordDetail: View {
                 }
             }
         }
-        .presentationDetents([.medium, .large])
+        .presentationDetents([.height(contentHeight)])
         .presentationDragIndicator(.visible)
         .fullScreenCover(isPresented: $isEditingTitle) {
             PropertyEditor(
