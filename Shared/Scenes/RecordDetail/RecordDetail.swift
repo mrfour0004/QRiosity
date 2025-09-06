@@ -184,23 +184,14 @@ struct RecordDetail: View {
     }
 
     private var detailSection: some View {
-        VStack(spacing: 20) {
-            detailField(
-                title: "Content",
-                value: record.stringValue,
-                lineLimit: dynamicLineLimit,
-                action: {
-                    UIPasteboard.general.string = record.stringValue
-                }
-            )
-
-            if let url = record.url {
-                detailField(
-                    title: "URL",
-                    value: url.absoluteString
-                )
+        detailField(
+            title: "Content",
+            value: record.stringValue,
+            lineLimit: dynamicLineLimit,
+            action: {
+                UIPasteboard.general.string = record.stringValue
             }
-        }
+        )
     }
 
     private var textMeasurementViews: some View {
@@ -284,11 +275,35 @@ struct RecordDetail: View {
 }
 
 struct RecordDetail_Previews: PreviewProvider {
-    @Environment(\.managedObjectContext)
-    private static var viewContext
+    @State private static var showSheet = true
 
-    private static func makeCodeRecord() -> CodeRecord {
-        let record = CodeRecord(context: viewContext)
+    static var previews: some View {
+        NavigationView {
+            VStack {
+                Text("Main Content")
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(Color(.systemBackground))
+            }
+        }
+        .sheet(isPresented: .constant(true)) {
+            RecordDetail(record: PreviewHelper.sampleCodeRecord)
+                .environment(\.managedObjectContext, PreviewHelper.preview.container.viewContext)
+                .environmentObject(ModalStore())
+        }
+    }
+}
+
+private enum PreviewHelper {
+    static var preview: PersistenceController = {
+        let controller = PersistenceController(inMemory: true)
+        let context = controller.container.viewContext
+
+        return controller
+    }()
+
+    static var sampleCodeRecord: CodeRecord {
+        let context = preview.container.viewContext
+        let record = CodeRecord(context: context)
         record.title = "Sample QR Code"
         record.desc = "This is a sample QR code for testing purposes"
         record.scannedAt = Date()
@@ -296,10 +311,5 @@ struct RecordDetail_Previews: PreviewProvider {
         record.metadataObjectType = "org.iso.QRCode"
 
         return record
-    }
-
-    static var previews: some View {
-        RecordDetail(record: makeCodeRecord())
-            .environmentObject(ModalStore())
     }
 }
