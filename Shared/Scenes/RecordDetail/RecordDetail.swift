@@ -148,12 +148,16 @@ struct RecordDetail: View {
                 .interpolation(.none)
                 .resizable()
                 .scaledToFit()
-                .padding(.horizontal, 20)
+                .frame(
+                    maxWidth: record.is2DBarcode ? 200 : 320,
+                    maxHeight: record.is2DBarcode ? 200 : 120
+                )
+                .padding(.horizontal, record.is2DBarcode ? 40 : 20)
         } else {
             Image(systemName: "qrcode")
-                .font(.system(size: 120))
+                .font(.system(size: 80))
                 .foregroundColor(.primary)
-                .frame(maxWidth: .infinity)
+                .frame(maxWidth: .infinity, maxHeight: 200)
         }
     }
 
@@ -205,7 +209,7 @@ private enum PreviewHelper {
         record.desc = "This is a sample QR code for testing purposes"
         record.scannedAt = Date()
         record.stringValue = "https://www.example.com"
-//        record.metadataObjectType = "org.iso.Code128"
+        record.metadataObjectType = "org.iso.Code128"
         record.metadataObjectType = "org.iso.QRCode"
 
         return record

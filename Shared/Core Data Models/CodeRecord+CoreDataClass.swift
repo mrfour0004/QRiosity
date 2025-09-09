@@ -22,6 +22,10 @@ public class CodeRecord: NSManagedObject, Identifiable {
         url.flatMap { _ in RecordType.url } ?? .string
     }
 
+    var is2DBarcode: Bool {
+        Set(["QRCode", "Aztec", "PDF417"]).contains(metadataObjectType.split(separator: ".").last ?? "")
+    }
+
     /// An URL value that the code content represents for. Returns `nil` if the content is not an URL.
     var url: URL? {
         let availableSchemes = ["https", "http"]
