@@ -9,7 +9,7 @@
 import AVFoundation
 import CoreData
 import Foundation
-import OpenGraph
+@preconcurrency import OpenGraph
 
 @objc(CodeRecord)
 public class CodeRecord: NSManagedObject, Identifiable {
@@ -38,15 +38,25 @@ public class CodeRecord: NSManagedObject, Identifiable {
 
 extension CodeRecord {
     /// Fetches the metadata for the link if barcode content is a URL.
+    @MainActor
     func fetchLinkMetadataIfNeeded(context: NSManagedObjectContext) {
         guard let url = URL(string: stringValue) else { return }
+        let objectID = self.objectID
 
         Task {
-            guard let openGraph = try? await OpenGraph.fetch(url) else { return }
-            updateMetadata(with: openGraph)
+            do {
+                let openGraph = try await OpenGraph.fetch(url: url)
 
-            if context.hasChanges {
-                try? context.save()
+                await context.perform {
+                    guard let record = try? context.existingObject(with: objectID) as? CodeRecord else { return }
+                    record.updateMetadata(with: openGraph)
+
+                    if context.hasChanges {
+                        try? context.save()
+                    }
+                }
+            } catch {
+                // Handle the error silently as the original code did
             }
         }
     }
@@ -63,7 +73,6 @@ extension CodeRecord {
     }
 }
 
-
 // MARK: - Class function
 
 extension CodeRecord {
@@ -79,7 +88,7 @@ extension CodeRecord {
         type: AVMetadataObject.ObjectType,
         in context: NSManagedObjectContext
     ) -> CodeRecord {
-        //loggingPrint("Creating an instance of CodeRecord for barcode content: \(value), and barcode type: \(type.rawValue)")
+        // loggingPrint("Creating an instance of CodeRecord for barcode content: \(value), and barcode type: \(type.rawValue)")
 
         let instance = CodeRecord(context: context)
         instance.isFavorite = false
