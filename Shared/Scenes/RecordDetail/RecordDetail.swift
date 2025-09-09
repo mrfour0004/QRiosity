@@ -139,11 +139,22 @@ struct RecordDetail: View {
         }
     }
 
+    @ViewBuilder
     private var qrCodeSection: some View {
-        Image(systemName: "qrcode")
-            .font(.system(size: 120))
-            .foregroundColor(.primary)
-            .frame(maxWidth: .infinity)
+        if let generator = BarcodeGeneratorFactory.makeGenerator(type: record.metadataObjectType),
+           let image = generator.generateImage(from: record.stringValue)
+        {
+            Image(uiImage: image)
+                .interpolation(.none)
+                .resizable()
+                .scaledToFit()
+                .padding(.horizontal, 20)
+        } else {
+            Image(systemName: "qrcode")
+                .font(.system(size: 120))
+                .foregroundColor(.primary)
+                .frame(maxWidth: .infinity)
+        }
     }
 
     private func toggleFavorite() {
@@ -180,7 +191,7 @@ struct RecordDetail_Previews: PreviewProvider {
 }
 
 private enum PreviewHelper {
-    static var preview: PersistenceController = {
+    static let preview: PersistenceController = {
         let controller = PersistenceController(inMemory: true)
         let context = controller.container.viewContext
 
@@ -194,6 +205,7 @@ private enum PreviewHelper {
         record.desc = "This is a sample QR code for testing purposes"
         record.scannedAt = Date()
         record.stringValue = "https://www.example.com"
+//        record.metadataObjectType = "org.iso.Code128"
         record.metadataObjectType = "org.iso.QRCode"
 
         return record
