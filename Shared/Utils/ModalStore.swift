@@ -7,8 +7,12 @@
 //
 
 import Combine
+import SwiftUI
 
 /// A store that manages modal-related states.
+@Observable
 class ModalStore: ObservableObject {
-    @Published var presentedObject: Any?
+    var presentedObject: (any Equatable)?
+
+    var isPresenting: Bool { presentedObject != nil }
 }

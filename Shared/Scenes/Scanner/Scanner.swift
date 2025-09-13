@@ -10,13 +10,12 @@ import AVScanner
 import SwiftUI
 
 struct Scanner: UIViewRepresentable {
-
     @Binding var isSessionRunning: Bool
 
     fileprivate var _onCapture: (AVMetadataMachineReadableCodeObject) -> Void = { _ in }
-    fileprivate var onConfigure: () -> Void = { }
+    fileprivate var onConfigure: () -> Void = {}
     fileprivate var onFailingConfigure: (Error) -> Void = { _ in }
-    fileprivate var onSessionStart: () -> Void = { }
+    fileprivate var onSessionStart: () -> Void = {}
     fileprivate var onSessionFailStart: (Error) -> Void = { _ in }
 
     init(isSessionRunning: Binding<Bool>) {
@@ -56,10 +55,8 @@ struct Scanner: UIViewRepresentable {
     }
 }
 
-
 extension Scanner {
-    class Coordinator: NSObject, AVScannerViewDelegate {
-
+    class Coordinator: NSObject, @MainActor AVScannerViewDelegate {
         private let parent: Scanner
 
         init(parent: Scanner) {
@@ -68,25 +65,29 @@ extension Scanner {
 
         // MARK: - AVScannerViewDelegate
 
+        @MainActor
         func scannerViewDidFinishConfiguration(_ scannerView: AVScannerView) {
             parent.onConfigure()
         }
 
+        @MainActor
         func scannerView(_ scannerView: AVScannerView, didFailConfigurationWithError error: Error) {
             parent.onFailingConfigure(error)
         }
 
+        @MainActor
         func scannerViewDidStartSession(_ scannerView: AVScannerView) {
             parent.onSessionStart()
         }
 
+        @MainActor
         func scannerView(_ scannerView: AVScannerView, didFailStartingSessionWithError error: Error) {
             parent.onSessionFailStart(error)
         }
 
+        @MainActor
         func scannerView(_ scannerView: AVScannerView, didCapture metadataObject: AVMetadataMachineReadableCodeObject) {
             parent._onCapture(metadataObject)
         }
-
     }
 }

@@ -15,7 +15,8 @@ struct ContentView: View {
 
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \CodeRecord.scannedAt, ascending: true)],
-        animation: .default)
+        animation: .default
+    )
     private var items: FetchedResults<CodeRecord>
 
     // MARK: - Initializers
@@ -49,6 +50,12 @@ struct ContentView: View {
             set: { modalStore.presentedObject = $0 }
         )) { record in
             RecordDetail(record: record)
+        }
+        .sheet(item: Binding<IdentifiableURL?>(
+            get: { modalStore.presentedObject as? IdentifiableURL },
+            set: { modalStore.presentedObject = $0 }
+        )) { url in
+            SafariView(url: url())
         }
     }
 }

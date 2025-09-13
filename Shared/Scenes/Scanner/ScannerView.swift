@@ -5,67 +5,59 @@
 //  Created by mrfour on 2020/10/9.
 //
 
-import SwiftUI
-import AVScanner
 import AVFoundation
+import AVScanner
+import SwiftUI
 
 struct ScannerView: View {
-
     @Environment(\.managedObjectContext) private var viewContext
 
     @State private var presentedRecord: CodeRecord?
     @State private var isSessionRunning = false
 
     var body: some View {
-        NavigationStack {
-            ZStack {
-                Scanner(isSessionRunning: $isSessionRunning)
-                    .onCapture { metadataObject in
-                        let existingRecord = viewContext.existingCodeRecord(withBarcode: metadataObject.stringValue!)
-                        let record = existingRecord ?? CodeRecord.instantiate(with: metadataObject, in: viewContext)
-                        record.scannedAt = Date() // update the scan time anyway
+        ZStack {
+            Scanner(isSessionRunning: $isSessionRunning)
+                .onCapture { metadataObject in
+                    let existingRecord = viewContext.existingCodeRecord(withBarcode: metadataObject.stringValue!)
+                    let record = existingRecord ?? CodeRecord.instantiate(with: metadataObject, in: viewContext)
+                    record.scannedAt = Date() // update the scan time anyway
 
-                        record.fetchLinkMetadataIfNeeded(context: viewContext)
+                    record.fetchLinkMetadataIfNeeded(context: viewContext)
 
-                        if viewContext.hasChanges {
-                            try? viewContext.save()
-                        }
-                        
-                        presentedRecord = record
-                        isSessionRunning = false
+                    if viewContext.hasChanges {
+                        try? viewContext.save()
                     }
-                    .onAppear { isSessionRunning = true }
-                    .onDisappear { isSessionRunning = false }
-            }
-            .sheet(
-                isPresented: Binding(
-                    get: { presentedRecord != nil },
-                    set: { if !$0 { presentedRecord = nil } }
-                ),
-                onDismiss: {
-                    isSessionRunning = true
-                },
-                content: {
-                    if let url = presentedRecord?.url {
-                        SafariView(url: url)
-                    } else {
-                        Text(presentedRecord?.stringValue ?? "record not found")
-                    }
+
+                    presentedRecord = record
+                    isSessionRunning = false
                 }
-            )
-            .navigationBarTitle("Scanner", displayMode: .inline)
+                .onAppear { isSessionRunning = true }
+                .onDisappear { isSessionRunning = false }
         }
+        .ignoresSafeArea()
+        .sheet(
+            isPresented: Binding(
+                get: { presentedRecord != nil },
+                set: { if !$0 { presentedRecord = nil } }
+            ),
+            onDismiss: {
+                isSessionRunning = true
+            },
+            content: {
+                if let url = presentedRecord?.url {
+                    SafariView(url: url)
+                }
+                else if let presentedRecord {
+                    RecordDetail(record: presentedRecord)
+                }
+            }
+        )
     }
 
     // MARK: - Generating Records
 
-    private func store(_ metadataObject: AVMetadataMachineReadableCodeObject) {
+    private func store(_ metadataObject: AVMetadataMachineReadableCodeObject) {}
 
-    }
-
-    private func present(_ record: CodeRecord) {
-
-    }
-
+    private func present(_ record: CodeRecord) {}
 }
-

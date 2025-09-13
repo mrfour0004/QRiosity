@@ -10,13 +10,13 @@ import SwiftUI
 
 struct RecordDetail: View {
     @Environment(\.managedObjectContext) private var viewContext
-    @EnvironmentObject private var modalStore: ModalStore
+    @Environment(\.dismiss) private var dismiss
 
     @ObservedObject var record: CodeRecord
     @State private var isPromptingDeletion = false
     @State private var isEditingTitle = false
-    @State private var contentHeight: CGFloat = 300
     @State private var isCopied = false
+    @State private var contentHeight: CGFloat = 300
 
     private var shortCodeType: String {
         record.metadataObjectType.components(separatedBy: ".").last ?? record.metadataObjectType
@@ -36,9 +36,7 @@ struct RecordDetail: View {
 
     private var closeButtonContent: some View {
         Button {
-            withAnimation {
-                modalStore.presentedObject = nil
-            }
+            dismiss()
         } label: {
             Image(systemName: "xmark")
                 .symbolColorRenderingMode(.gradient)
@@ -103,6 +101,7 @@ struct RecordDetail: View {
             .padding()
             .onSizeChange { size in
                 contentHeight = size.height + 120
+                print("Content height: \(contentHeight)")
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -163,9 +162,7 @@ struct RecordDetail: View {
     }
 
     private func deleteRecord() {
-        withAnimation {
-            modalStore.presentedObject = nil
-        }
+        dismiss()
         viewContext.delete(record)
         try? viewContext.save()
     }
@@ -185,7 +182,6 @@ struct RecordDetail_Previews: PreviewProvider {
         .sheet(isPresented: .constant(true)) {
             RecordDetail(record: PreviewHelper.sampleCodeRecord)
                 .environment(\.managedObjectContext, PreviewHelper.preview.container.viewContext)
-                .environmentObject(ModalStore())
         }
     }
 }
