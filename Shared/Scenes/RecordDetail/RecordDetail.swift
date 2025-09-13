@@ -16,6 +16,7 @@ struct RecordDetail: View {
     @State private var isPromptingDeletion = false
     @State private var isEditingTitle = false
     @State private var contentHeight: CGFloat = 300
+    @State private var isCopied = false
 
     private var shortCodeType: String {
         record.metadataObjectType.components(separatedBy: ".").last ?? record.metadataObjectType
@@ -40,14 +41,24 @@ struct RecordDetail: View {
             }
         } label: {
             Image(systemName: "xmark")
+                .symbolColorRenderingMode(.gradient)
         }
     }
 
     private var copyButtonContent: some View {
         Button {
             UIPasteboard.general.string = record.stringValue
+            isCopied = true
+            Task {
+                try? await Task.sleep(for: .seconds(1.5))
+                isCopied = false
+            }
         } label: {
-            Image(systemName: "doc.on.doc")
+            Image(systemName: isCopied ? "checkmark" : "doc.on.doc")
+                .symbolColorRenderingMode(.gradient)
+                .contentTransition(.symbolEffect(.replace.magic(fallback: .offUp)))
+                .fontWeight(isCopied ? .bold : nil)
+                .foregroundStyle(isCopied ? .blue : .primary)
         }
     }
 
@@ -56,6 +67,7 @@ struct RecordDetail: View {
             isEditingTitle = true
         } label: {
             Image(systemName: "pencil")
+                .symbolColorRenderingMode(.gradient)
         }
     }
 
@@ -64,6 +76,7 @@ struct RecordDetail: View {
             toggleFavorite()
         } label: {
             Image(systemName: record.isFavorite ? "heart.fill" : "heart")
+                .symbolColorRenderingMode(.gradient)
                 .foregroundColor(record.isFavorite ? .red : .primary)
         }
     }
@@ -93,33 +106,16 @@ struct RecordDetail: View {
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .principal) {
-                    navigationTitleContent
-                }
-
-                ToolbarItem(placement: .bottomBar) {
-                    deleteButtonContent
-                }
-
+                ToolbarItem(placement: .principal) { navigationTitleContent }
+                ToolbarItem(placement: .bottomBar) { deleteButtonContent }
                 ToolbarSpacer(.fixed, placement: .bottomBar)
-
-                ToolbarItem(placement: .bottomBar) {
-                    copyButtonContent
-                }
-
-                ToolbarItem(placement: .bottomBar) {
-                    editButtonContent
-                }
-
-                ToolbarItem(placement: .bottomBar) {
-                    favoriteButtonContent
-                }
-
+                ToolbarItem(placement: .bottomBar) { copyButtonContent }
+                ToolbarSpacer(.fixed, placement: .bottomBar)
+                ToolbarItem(placement: .bottomBar) { editButtonContent }
+                ToolbarSpacer(.fixed, placement: .bottomBar)
+                ToolbarItem(placement: .bottomBar) { favoriteButtonContent }
                 ToolbarSpacer(.flexible, placement: .bottomBar)
-
-                ToolbarItem(placement: .bottomBar) {
-                    closeButtonContent
-                }
+                ToolbarItem(placement: .bottomBar) { closeButtonContent }
             }
         }
         .presentationDetents([.height(contentHeight)])
