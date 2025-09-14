@@ -19,34 +19,19 @@ struct HistoryView: View {
     @EnvironmentObject private var modalStore: ModalStore
 
     var body: some View {
-        GeometryReader { reader in
+        NavigationView {
             ZStack {
                 Color(.displayP3, white: 0.96, opacity: 1)
+                    .ignoresSafeArea()
 
                 if records.isEmpty {
-                    VStack {
-                        Text("History")
-                            .font(.avenir(.largeTitle))
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.horizontal)
-                            .padding(.top, reader.safeAreaInsets.top)
-
-                        Spacer()
-
-                        EmptyStateView(
-                            title: "No Scan History",
-                            message: "Start scanning QR codes and barcodes to see your history here.",
-                        )
-
-                        Spacer()
-                        Spacer()
-                    }
+                    EmptyStateView(
+                        title: "No Scan History",
+                        message: "Start scanning QR codes and barcodes to see your history here."
+                    )
                 } else {
                     ScrollView(showsIndicators: false) {
                         LazyVStack(alignment: .leading, spacing: 24) {
-                            Text("History")
-                                .font(.avenir(.largeTitle))
-
                             ForEach(records) { record in
                                 Button {
                                     withAnimation {
@@ -58,12 +43,11 @@ struct HistoryView: View {
                             }
                         }
                         .padding()
-                        .padding(.top, reader.safeAreaInsets.top)
-                        .padding(.bottom, reader.safeAreaInsets.bottom)
                     }
                 }
             }
-            .edgesIgnoringSafeArea(.all)
+            .navigationTitle("History")
+            .navigationBarTitleDisplayMode(.large)
         }
     }
 }

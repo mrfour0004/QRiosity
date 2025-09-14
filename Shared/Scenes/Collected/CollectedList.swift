@@ -20,34 +20,19 @@ struct CollectedList: View {
     @EnvironmentObject private var modalStore: ModalStore
 
     var body: some View {
-        GeometryReader { reader in
+        NavigationView {
             ZStack {
                 Color(.displayP3, white: 0.96, opacity: 1)
+                    .ignoresSafeArea()
 
                 if records.isEmpty {
-                    VStack {
-                        Text("Collected")
-                            .font(.avenir(.largeTitle))
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.horizontal)
-                            .padding(.top, reader.safeAreaInsets.top)
-
-                        Spacer()
-
-                        EmptyStateView(
-                            title: "No Collected Items",
-                            message: "Tap the heart icon on any scanned code to add it to your collection.",
-                        )
-
-                        Spacer()
-                        Spacer()
-                    }
+                    EmptyStateView(
+                        title: "No Collected Items",
+                        message: "Tap the heart icon on any scanned code to add it to your collection."
+                    )
                 } else {
                     ScrollView(showsIndicators: false) {
                         LazyVStack(alignment: .leading, spacing: 24) {
-                            Text("Collected")
-                                .font(.avenir(.largeTitle))
-
                             ForEach(records) { record in
                                 Button {
                                     withAnimation {
@@ -59,12 +44,11 @@ struct CollectedList: View {
                             }
                         }
                         .padding()
-                        .padding(.top, reader.safeAreaInsets.top)
-                        .padding(.bottom, reader.safeAreaInsets.bottom)
                     }
                 }
             }
-            .edgesIgnoringSafeArea(.all)
+            .navigationTitle("Collected")
+            .navigationBarTitleDisplayMode(.large)
         }
     }
 }
