@@ -18,12 +18,23 @@ struct CollectedList: View {
     private var records: FetchedResults<CodeRecord>
 
     @EnvironmentObject private var modalStore: ModalStore
+    @State private var backgroundOffset: CGFloat = 0
 
     var body: some View {
         NavigationView {
             ZStack {
-                Color(.displayP3, white: 0.96, opacity: 1)
-                    .ignoresSafeArea()
+                Color.clear
+                    .background(.regularMaterial)
+                    .background(
+                        Image(.background2)
+                            .resizable()
+                            .scaledToFill()
+                            .scaleEffect(2)
+                            .offset(x: backgroundOffset, y: backgroundOffset * 0.5)
+                            .onAppear {
+                                startBackgroundAnimation()
+                            }
+                    )
 
                 if records.isEmpty {
                     EmptyStateView(
@@ -49,6 +60,12 @@ struct CollectedList: View {
             }
             .navigationTitle("Collected")
             .navigationBarTitleDisplayMode(.large)
+        }
+    }
+
+    private func startBackgroundAnimation() {
+        withAnimation(.linear(duration: 5).repeatForever(autoreverses: true)) {
+            backgroundOffset = 200
         }
     }
 }

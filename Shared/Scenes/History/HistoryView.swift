@@ -21,8 +21,9 @@ struct HistoryView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                Color(.displayP3, white: 0.96, opacity: 1)
-                    .ignoresSafeArea()
+                Color.clear
+                    .background(.regularMaterial)
+                    .background(Image(.background1).resizable().scaledToFill().scaleEffect(2))
 
                 if records.isEmpty {
                     EmptyStateView(

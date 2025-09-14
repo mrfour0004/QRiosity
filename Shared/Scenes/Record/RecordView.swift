@@ -69,6 +69,8 @@ struct RecordView: View {
             record.previewImageURLString
                 .flatMap(URL.init)
                 .flatMap(imageThumbnail)
+                .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                .padding(4)
 
             VStack {
                 HStack {
@@ -92,7 +94,6 @@ struct RecordView: View {
         }
         .frame(maxWidth: .infinity)
         .glassEffect(.clear, in: RoundedRectangle(cornerRadius: Design.cornerRadius, style: .continuous))
-        .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
     }
 
     private func imageThumbnail(for url: URL) -> some View {
@@ -110,7 +111,6 @@ struct RecordView: View {
         }
         .aspectRatio(1, contentMode: .fit)
         .frame(width: Design.imageHeight)
-        .clipped()
     }
 
     private var imagePlaceholder: some View {
