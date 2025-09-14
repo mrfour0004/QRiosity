@@ -12,7 +12,8 @@ struct HistoryView: View {
 
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \CodeRecord.scannedAt, ascending: false)],
-        animation: .default)
+        animation: .default
+    )
     private var records: FetchedResults<CodeRecord>
 
     @EnvironmentObject private var modalStore: ModalStore
@@ -21,7 +22,7 @@ struct HistoryView: View {
         GeometryReader { reader in
             ZStack {
                 Color(.displayP3, white: 0.96, opacity: 1)
-                
+
                 if records.isEmpty {
                     VStack {
                         Text("History")
@@ -29,15 +30,14 @@ struct HistoryView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.horizontal)
                             .padding(.top, reader.safeAreaInsets.top)
-                        
+
                         Spacer()
-                        
+
                         EmptyStateView(
                             title: "No Scan History",
                             message: "Start scanning QR codes and barcodes to see your history here.",
-                            systemImageName: "clock"
                         )
-                        
+
                         Spacer()
                         Spacer()
                     }
@@ -46,7 +46,7 @@ struct HistoryView: View {
                         LazyVStack(alignment: .leading, spacing: 24) {
                             Text("History")
                                 .font(.avenir(.largeTitle))
-                            
+
                             ForEach(records) { record in
                                 Button {
                                     withAnimation {
@@ -66,8 +66,6 @@ struct HistoryView: View {
             .edgesIgnoringSafeArea(.all)
         }
     }
-
-
 }
 
 struct HistoryView_Previews: PreviewProvider {

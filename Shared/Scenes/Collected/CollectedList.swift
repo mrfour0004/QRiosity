@@ -13,7 +13,8 @@ struct CollectedList: View {
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \CodeRecord.scannedAt, ascending: true)],
         predicate: NSPredicate(format: "isFavorite == 1"),
-        animation: .default)
+        animation: .default
+    )
     private var records: FetchedResults<CodeRecord>
 
     @EnvironmentObject private var modalStore: ModalStore
@@ -22,7 +23,7 @@ struct CollectedList: View {
         GeometryReader { reader in
             ZStack {
                 Color(.displayP3, white: 0.96, opacity: 1)
-                
+
                 if records.isEmpty {
                     VStack {
                         Text("Collected")
@@ -30,15 +31,14 @@ struct CollectedList: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.horizontal)
                             .padding(.top, reader.safeAreaInsets.top)
-                        
+
                         Spacer()
-                        
+
                         EmptyStateView(
                             title: "No Collected Items",
                             message: "Tap the heart icon on any scanned code to add it to your collection.",
-                            systemImageName: "heart"
                         )
-                        
+
                         Spacer()
                         Spacer()
                     }
@@ -47,7 +47,7 @@ struct CollectedList: View {
                         LazyVStack(alignment: .leading, spacing: 24) {
                             Text("Collected")
                                 .font(.avenir(.largeTitle))
-                            
+
                             ForEach(records) { record in
                                 Button {
                                     withAnimation {
