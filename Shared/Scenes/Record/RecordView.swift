@@ -91,8 +91,7 @@ struct RecordView: View {
             .padding(EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12))
         }
         .frame(maxWidth: .infinity)
-        .background(Color.white)
-        .clipShape(RoundedRectangle(cornerRadius: Design.cornerRadius, style: .continuous))
+        .glassEffect(.clear, in: RoundedRectangle(cornerRadius: Design.cornerRadius, style: .continuous))
         .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
     }
 
