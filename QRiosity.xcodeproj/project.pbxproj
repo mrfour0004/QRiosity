@@ -35,6 +35,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		9E5AA1462E7B12B700C93219 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Localizable.xcstrings,
+			);
+			target = 5E5D23B824FEA95B00124551 /* QRiosity */;
+		};
 		9EBB9D802DFF27C00009530D /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -63,7 +70,7 @@
 		9EBB9D7E2DFF27C00009530D /* QRiosity */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (9EBB9D802DFF27C00009530D /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = QRiosity; sourceTree = "<group>"; };
 		9EBB9D832DFF27C40009530D /* QRiosityTests */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (9EBB9D852DFF27C40009530D /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = QRiosityTests; sourceTree = "<group>"; };
 		9EBB9D882DFF27C60009530D /* QRiosityUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (9EBB9D8A2DFF27C60009530D /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = QRiosityUITests; sourceTree = "<group>"; };
-		9EBB9D8C2DFF27CA0009530D /* Resources */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Resources; sourceTree = "<group>"; };
+		9EBB9D8C2DFF27CA0009530D /* Resources */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (9E5AA1462E7B12B700C93219 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Resources; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -201,6 +208,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hant",
 			);
 			mainGroup = 5E5D23B024FEA95B00124551;
 			packageReferences = (

@@ -27,8 +27,8 @@ struct HistoryView: View {
 
                 if records.isEmpty {
                     EmptyStateView(
-                        title: "No Scan History",
-                        message: "Start scanning QR codes and barcodes to see your history here."
+                        title: "No records, yet!",
+                    message: "Start scanning QR codes and barcodes to see your history here."
                     )
                 } else {
                     ScrollView(showsIndicators: false) {
