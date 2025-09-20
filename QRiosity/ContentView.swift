@@ -35,7 +35,7 @@ struct ContentView: View {
             Tab("Scan", systemImage: "qrcode.viewfinder", role: .search) {
                 ScannerView()
             }
-            Tab("Collected", systemImage: "tray.fill") {
+            Tab(.collected, systemImage: "tray.fill") {
                 CollectedList()
             }
             Tab("History", systemImage: "rectangle.stack") {

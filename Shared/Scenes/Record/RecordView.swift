@@ -25,10 +25,11 @@ struct RecordView: View {
             typeIcon
 
             VStack(alignment: .leading, spacing: 12) {
-                VStack(alignment: .leading, spacing: 4) {
+                VStack(alignment: .leading, spacing: 0) {
                     title
                     date
                 }
+                .foregroundStyle(Color(.primary))
                 content
             }
         }
@@ -36,24 +37,30 @@ struct RecordView: View {
 
     // MARK: - Subviews
 
+    @ViewBuilder
     private var typeIcon: some View {
-        Image(systemName: record.type == .url ? "link" : "barcode")
+        let iconName = record.type == .url
+            ? "link"
+            : record.is2DBarcode ? "qrcode" : "barcode"
+        Image(systemName: iconName)
             .resizable()
             .scaledToFit()
             .frame(width: 12, height: 12)
             .padding(6)
-            .foregroundStyle(.white)
-            .background(Color.black)
-            .clipShape(Circle())
+            .foregroundStyle(Color(.primary))
+            .fontWeight(.bold)
+            .fontDesign(.rounded)
+            .glassEffect(in: Circle())
     }
 
     private var title: some View {
         HStack {
-            Text(record.title ?? record.stringValue)
+            Text(record.title ?? "Untitled")
                 .multilineTextAlignment(.leading)
                 .fixedSize(horizontal: false, vertical: true)
                 .lineLimit(2)
                 .font(.avenir(.headline))
+                .foregroundStyle(record.title == nil ? Color(.lightGray) : Color(.primary))
 
             Spacer()
         }
@@ -77,7 +84,8 @@ struct RecordView: View {
                     Text(record.desc ?? record.stringValue)
                         .multilineTextAlignment(.leading)
                         .lineLimit(2)
-                        .font(.avenir(.footnote))
+                        .font(.avenir(.subheadline))
+                        .foregroundStyle(Color(.primary))
                     Spacer(minLength: 12)
                 }
                 if let host = record.url?.host {
@@ -85,7 +93,7 @@ struct RecordView: View {
                     HStack {
                         Text(host.uppercased())
                             .font(.avenir(.caption2))
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(Color(.lightGray))
                         Spacer()
                     }
                 }

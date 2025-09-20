@@ -22,7 +22,14 @@
       }
     },
     "Collected" : {
+      "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Collected"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",

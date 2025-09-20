@@ -73,7 +73,7 @@ struct PropertyEditor: View {
             HStack {
                 TextField("Untitled Code", text: $editingValue)
                     .textFieldStyle(PlainTextFieldStyle())
-                    .font(.avenir(.body))
+                    .font(.avenir(.body).weight(.semibold))
                     .focused($isTextFieldFocused)
 
                 if !editingValue.isEmpty {
@@ -81,7 +81,7 @@ struct PropertyEditor: View {
                         editingValue = ""
                     } label: {
                         Image(systemName: "xmark.circle.fill")
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(Color(.lightGray))
                             .opacity(0.5)
                     }
                     .transition(.scale(scale: 0.7).combined(with: .opacity))
@@ -91,10 +91,7 @@ struct PropertyEditor: View {
         }
         .padding(.horizontal, 24)
         .padding(.vertical, 32)
-        .background(
-            RoundedRectangle(cornerRadius: 24, style: .continuous)
-                .fill(.white)
-        )
+        .glassEffect(in: RoundedRectangle(cornerRadius: 24, style: .continuous))
         .padding(.horizontal, 24)
     }
 
@@ -106,8 +103,8 @@ struct PropertyEditor: View {
                 saveChanges()
             }
             .controlSize(.large)
-            .buttonStyle(.glassProminent)
             .font(.avenir(.headline))
+            .buttonStyle(.glassProminent)
         }
         .padding(.horizontal, 24)
         .padding(.bottom, 24)
@@ -123,4 +120,18 @@ struct PropertyEditor: View {
             print("Failed to save changes: \(error.localizedDescription)")
         }
     }
+}
+
+#Preview {
+    PropertyEditor(
+        record: {
+            let context = PersistenceController.preview.container.viewContext
+            let newRecord = CodeRecord(context: context)
+            newRecord.title = "Sample Title"
+            return newRecord
+        }(),
+        keyPath: \.title,
+        propertyName: "Title"
+    )
+    .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 }

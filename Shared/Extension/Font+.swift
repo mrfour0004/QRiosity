@@ -10,7 +10,7 @@ import SwiftUI
 extension Font {
     static func avenir(_ style: TextStyle) -> Font {
         func makeAvenir(size: CGFloat, weight: Weight = .regular) -> Font {
-            makeFont(name: "Avenir", size: size, weight: weight, textStyle: style)
+            makeFont(name: "Avenir Next", size: size, weight: weight, textStyle: style)
         }
 
         switch style {
@@ -23,7 +23,7 @@ extension Font {
         case .title3:
             return makeAvenir(size: 20)
         case .headline:
-            return makeAvenir(size: 17, weight: .bold)
+            return makeAvenir(size: 18, weight: .bold)
         case .subheadline:
             return makeAvenir(size: 15)
         case .body:

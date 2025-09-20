@@ -41,6 +41,7 @@ struct CollectedList: View {
                         title: "No Collected Items",
                         message: "Tap the heart icon on any scanned code to add it to your collection."
                     )
+                    .padding(.bottom, 24)
                 } else {
                     ScrollView(showsIndicators: false) {
                         LazyVStack(alignment: .leading, spacing: 24) {
@@ -58,7 +59,7 @@ struct CollectedList: View {
                     }
                 }
             }
-            .navigationTitle("Collected")
+            .navigationTitle(.collected)
             .navigationBarTitleDisplayMode(.large)
         }
     }

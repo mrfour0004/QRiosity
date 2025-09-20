@@ -28,7 +28,7 @@ struct HistoryView: View {
                 if records.isEmpty {
                     EmptyStateView(
                         title: "No records, yet!",
-                    message: "Start scanning QR codes and barcodes to see your history here."
+                        message: "Start scanning QR codes and barcodes to see your history here."
                     )
                 } else {
                     ScrollView(showsIndicators: false) {
@@ -47,7 +47,11 @@ struct HistoryView: View {
                     }
                 }
             }
-            .navigationTitle("History")
+            .navigationTitle(
+                Text("History")
+                    .font(.avenir(.largeTitle).weight(.black))
+                    .foregroundStyle(Color(.primary))
+            )
             .navigationBarTitleDisplayMode(.large)
         }
     }
