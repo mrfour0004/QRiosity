@@ -47,11 +47,7 @@ struct HistoryView: View {
                     }
                 }
             }
-            .navigationTitle(
-                Text("History")
-                    .font(.avenir(.largeTitle).weight(.black))
-                    .foregroundStyle(Color(.primary))
-            )
+            .navigationTitle("History")
             .navigationBarTitleDisplayMode(.large)
         }
     }
