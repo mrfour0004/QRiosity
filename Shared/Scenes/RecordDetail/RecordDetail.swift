@@ -86,6 +86,12 @@ struct RecordDetail: View {
             Image(systemName: "trash")
                 .foregroundColor(.red)
         }
+        .confirmationDialog("Delete Record", isPresented: $isPromptingDeletion, titleVisibility: .visible) {
+            Button("Delete", role: .destructive) {
+                deleteRecord()
+            }
+            Button("Cancel", role: .cancel) {}
+        }
     }
 
     var body: some View {
@@ -124,12 +130,6 @@ struct RecordDetail: View {
                 keyPath: \.title,
                 propertyName: "Title"
             )
-        }
-        .confirmationDialog("Delete Record", isPresented: $isPromptingDeletion, titleVisibility: .visible) {
-            Button("Delete", role: .destructive) {
-                deleteRecord()
-            }
-            Button("Cancel", role: .cancel) {}
         }
     }
 

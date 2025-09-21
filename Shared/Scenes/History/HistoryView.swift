@@ -17,6 +17,23 @@ struct HistoryView: View {
     private var records: FetchedResults<CodeRecord>
 
     @EnvironmentObject private var modalStore: ModalStore
+    @State private var showingDeleteConfirmation = false
+
+    private func deleteAll() {
+        for record in records {
+            record.isDeletedFromHistory = true
+
+            if !record.isFavorite {
+                viewContext.delete(record)
+            }
+        }
+
+        do {
+            try viewContext.save()
+        } catch {
+            print("Failed to delete all records: \(error.localizedDescription)")
+        }
+    }
 
     var body: some View {
         NavigationView {
@@ -49,6 +66,23 @@ struct HistoryView: View {
             }
             .navigationTitle("History")
             .navigationBarTitleDisplayMode(.large)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(role: .destructive) {
+                        showingDeleteConfirmation = true
+                    } label: {
+                        Image(systemName: "trash.fill")
+                    }
+                    .disabled(records.isEmpty)
+                    .confirmationDialog("Delete All History", isPresented: $showingDeleteConfirmation) {
+                        Button("Delete All", role: .destructive) {
+                            deleteAll()
+                        }
+                    } message: {
+                        Text("Empty history?")
+                    }
+                }
+            }
         }
     }
 }
