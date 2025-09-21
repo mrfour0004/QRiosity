@@ -101,7 +101,6 @@ struct RecordDetail: View {
             .padding()
             .onSizeChange { size in
                 contentHeight = size.height + 120
-                print("Content height: \(contentHeight)")
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -118,7 +117,7 @@ struct RecordDetail: View {
             }
         }
         .presentationDetents([.height(contentHeight)])
-        .presentationDragIndicator(.visible)
+        .presentationDragIndicator(.hidden)
         .fullScreenCover(isPresented: $isEditingTitle) {
             PropertyEditor(
                 record: record,
