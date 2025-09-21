@@ -8,7 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		5E47417B26E484DD00A964F8 /* AVScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 5E47417A26E484DD00A964F8 /* AVScanner */; };
-		5EC711542708B31700838BC2 /* OpenGraph in Frameworks */ = {isa = PBXBuildFile; productRef = 5EC711532708B31700838BC2 /* OpenGraph */; };
+		9EEF95302E8042760044089F /* SwiftNavigation in Frameworks */ = {isa = PBXBuildFile; productRef = 9EEF952F2E8042760044089F /* SwiftNavigation */; };
+		9EEF95322E8042760044089F /* SwiftUINavigation in Frameworks */ = {isa = PBXBuildFile; productRef = 9EEF95312E8042760044089F /* SwiftUINavigation */; };
+		9EEF95352E80483C0044089F /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 9EEF95342E80483C0044089F /* Alamofire */; };
+		9EEF95382E8049810044089F /* Kanna in Frameworks */ = {isa = PBXBuildFile; productRef = 9EEF95372E8049810044089F /* Kanna */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,8 +81,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9EEF95352E80483C0044089F /* Alamofire in Frameworks */,
+				9EEF95322E8042760044089F /* SwiftUINavigation in Frameworks */,
+				9EEF95302E8042760044089F /* SwiftNavigation in Frameworks */,
 				5E47417B26E484DD00A964F8 /* AVScanner in Frameworks */,
-				5EC711542708B31700838BC2 /* OpenGraph in Frameworks */,
+				9EEF95382E8049810044089F /* Kanna in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -135,7 +141,10 @@
 			name = QRiosity;
 			packageProductDependencies = (
 				5E47417A26E484DD00A964F8 /* AVScanner */,
-				5EC711532708B31700838BC2 /* OpenGraph */,
+				9EEF952F2E8042760044089F /* SwiftNavigation */,
+				9EEF95312E8042760044089F /* SwiftUINavigation */,
+				9EEF95342E80483C0044089F /* Alamofire */,
+				9EEF95372E8049810044089F /* Kanna */,
 			);
 			productName = QRiosity;
 			productReference = 9E7B82E32E5B64380026588F /* QRiosity.app */;
@@ -213,8 +222,10 @@
 			mainGroup = 5E5D23B024FEA95B00124551;
 			packageReferences = (
 				5E47417926E4836F00A964F8 /* XCRemoteSwiftPackageReference "AVScanner" */,
-				5EC711522708B31700838BC2 /* XCRemoteSwiftPackageReference "OpenGraph" */,
 				9E3311312C0CBF9F00B7ABC3 /* XCRemoteSwiftPackageReference "Pow" */,
+				9EEF952E2E8042760044089F /* XCRemoteSwiftPackageReference "swift-navigation" */,
+				9EEF95332E80483C0044089F /* XCRemoteSwiftPackageReference "Alamofire" */,
+				9EEF95362E8049810044089F /* XCRemoteSwiftPackageReference "Kanna" */,
 			);
 			productRefGroup = 5E5D23B024FEA95B00124551;
 			projectDirPath = "";
@@ -583,20 +594,36 @@
 				minimumVersion = 1.0.0;
 			};
 		};
-		5EC711522708B31700838BC2 /* XCRemoteSwiftPackageReference "OpenGraph" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/satoshi-takano/OpenGraph";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
-			};
-		};
 		9E3311312C0CBF9F00B7ABC3 /* XCRemoteSwiftPackageReference "Pow" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "git@github.com:EmergeTools/Pow.git";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.0.4;
+			};
+		};
+		9EEF952E2E8042760044089F /* XCRemoteSwiftPackageReference "swift-navigation" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-navigation";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.4.2;
+			};
+		};
+		9EEF95332E80483C0044089F /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.10.2;
+			};
+		};
+		9EEF95362E8049810044089F /* XCRemoteSwiftPackageReference "Kanna" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/tid-kijyun/Kanna";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.0.1;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -607,10 +634,25 @@
 			package = 5E47417926E4836F00A964F8 /* XCRemoteSwiftPackageReference "AVScanner" */;
 			productName = AVScanner;
 		};
-		5EC711532708B31700838BC2 /* OpenGraph */ = {
+		9EEF952F2E8042760044089F /* SwiftNavigation */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5EC711522708B31700838BC2 /* XCRemoteSwiftPackageReference "OpenGraph" */;
-			productName = OpenGraph;
+			package = 9EEF952E2E8042760044089F /* XCRemoteSwiftPackageReference "swift-navigation" */;
+			productName = SwiftNavigation;
+		};
+		9EEF95312E8042760044089F /* SwiftUINavigation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9EEF952E2E8042760044089F /* XCRemoteSwiftPackageReference "swift-navigation" */;
+			productName = SwiftUINavigation;
+		};
+		9EEF95342E80483C0044089F /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9EEF95332E80483C0044089F /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		9EEF95372E8049810044089F /* Kanna */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9EEF95362E8049810044089F /* XCRemoteSwiftPackageReference "Kanna" */;
+			productName = Kanna;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

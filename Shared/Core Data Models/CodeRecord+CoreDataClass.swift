@@ -6,10 +6,13 @@
 //
 //
 
+import Alamofire
 import AVFoundation
 import CoreData
 import Foundation
-@preconcurrency import OpenGraph
+import Kanna
+
+private typealias OpenGraph = [String: String]
 
 @objc(CodeRecord)
 public class CodeRecord: NSManagedObject, Identifiable {
@@ -49,31 +52,46 @@ extension CodeRecord {
 
         Task {
             do {
-                let openGraph = try await OpenGraph.fetch(url: url)
+                let htmlString = try await AF.request(url).serializingString(encoding: .utf8).value
 
-                await context.perform {
-                    guard let record = try? context.existingObject(with: objectID) as? CodeRecord else { return }
-                    record.updateMetadata(with: openGraph)
+                try await context.perform {
+                    guard let record = try context.existingObject(with: objectID) as? CodeRecord else { return }
+                    try record.updateMetadata(with: HTML(html: htmlString, encoding: .utf8))
 
                     if context.hasChanges {
-                        try? context.save()
+                        try context.save()
                     }
                 }
             } catch {
+                print(error.localizedDescription)
                 // Handle the error silently as the original code did
             }
         }
     }
 
-    private func updateMetadata(with openGraph: OpenGraph) {
-        title = openGraph[.title]?.trimmed ?? stringValue
+    private func updateMetadata(with doc: HTMLDocument) {
+        title = doc.title?.trimmed ?? self.stringValue
 
         if title != stringValue {
             desc = stringValue
         }
 
-        desc = openGraph[.description]?.trimmed ?? desc
-        previewImageURLString = openGraph[.image]?.trimmed
+        guard let metaSet = doc.head?.css("meta") else {
+            return
+        }
+
+        var openGraph = OpenGraph()
+        for meta in metaSet {
+            guard let property = meta["property"]?.lowercased(),
+                  property.hasPrefix("og:"),
+                  let content = meta["content"]
+            else { continue }
+            openGraph[property] = content
+        }
+
+        title = openGraph["og:title"] ?? title
+        desc = openGraph["og:description"] ?? desc
+        previewImageURLString = openGraph["og:image"]?.trimmed
     }
 }
 

@@ -83,7 +83,7 @@ struct RecordView: View {
                 HStack {
                     Text(record.desc ?? record.stringValue)
                         .multilineTextAlignment(.leading)
-                        .lineLimit(2)
+                        .lineLimit(3)
                         .font(.avenir(.subheadline))
                         .foregroundStyle(Color(.primary))
                     Spacer(minLength: 12)
