@@ -12,6 +12,7 @@ struct HistoryView: View {
 
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \CodeRecord.scannedAt, ascending: false)],
+        predicate: NSPredicate(format: "isDeletedFromHistory == %@", NSNumber(value: false)),
         animation: .default
     )
     private var records: FetchedResults<CodeRecord>
@@ -71,7 +72,8 @@ struct HistoryView: View {
                     Button(role: .destructive) {
                         showingDeleteConfirmation = true
                     } label: {
-                        Image(systemName: "trash.fill")
+                        Label("Empty", systemImage: "trash.fill")
+                            .labelStyle(.iconOnly)
                     }
                     .disabled(records.isEmpty)
                     .confirmationDialog("Delete All History", isPresented: $showingDeleteConfirmation) {
