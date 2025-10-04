@@ -15,24 +15,21 @@ import Kanna
 private typealias OpenGraph = [String: String]
 
 @objc(CodeRecord)
-public class CodeRecord: NSManagedObject, Identifiable {
+public nonisolated class CodeRecord: NSManagedObject, Identifiable {
     enum RecordType {
         case url
         case string
     }
 
-    @MainActor
     var type: RecordType {
         url.flatMap { _ in RecordType.url } ?? .string
     }
 
-    @MainActor
     var is2DBarcode: Bool {
         Set(["QRCode", "Aztec", "PDF417"]).contains(metadataObjectType.split(separator: ".").last ?? "")
     }
 
     /// An URL value that the code content represents for. Returns `nil` if the content is not an URL.
-    @MainActor
     var url: URL? {
         let availableSchemes = ["https", "http"]
         guard
@@ -46,9 +43,8 @@ public class CodeRecord: NSManagedObject, Identifiable {
 
 // MARK: - Getting Link Metadata
 
-extension CodeRecord {
+nonisolated extension CodeRecord {
     /// Fetches the metadata for the link if barcode content is a URL.
-    @MainActor
     func fetchLinkMetadataIfNeeded(context: NSManagedObjectContext) {
         guard let url = URL(string: stringValue) else { return }
         let objectID = self.objectID
@@ -59,10 +55,7 @@ extension CodeRecord {
 
                 try await context.perform {
                     guard let record = try context.existingObject(with: objectID) as? CodeRecord else { return }
-                    Task { @MainActor in
-                        try record.updateMetadata(with: HTML(html: htmlString, encoding: .utf8))
-                    }
-
+                    try record.updateMetadata(with: HTML(html: htmlString, encoding: .utf8))
                     if context.hasChanges {
                         try context.save()
                     }

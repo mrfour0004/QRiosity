@@ -9,7 +9,7 @@
 import CoreData
 import Foundation
 
-public extension CodeRecord {
+public nonisolated extension CodeRecord {
     @nonobjc class func fetchRequest() -> NSFetchRequest<CodeRecord> {
         return NSFetchRequest<CodeRecord>(entityName: "CodeRecord")
     }

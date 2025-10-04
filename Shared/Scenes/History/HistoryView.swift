@@ -30,7 +30,9 @@ struct HistoryView: View {
         }
 
         do {
-            try viewContext.save()
+            try withAnimation {
+                try viewContext.save()
+            }
         } catch {
             print("Failed to delete all records: \(error.localizedDescription)")
         }
@@ -51,7 +53,7 @@ struct HistoryView: View {
                 } else {
                     ScrollView(showsIndicators: false) {
                         LazyVStack(alignment: .leading, spacing: 24) {
-                            ForEach(records) { record in
+                            ForEach(records, id: \.id) { record in
                                 Button {
                                     withAnimation {
                                         modalStore.presentedObject = record

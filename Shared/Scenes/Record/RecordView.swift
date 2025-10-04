@@ -21,16 +21,25 @@ struct RecordView: View {
     }
 
     var body: some View {
-        HStack(alignment: .top, spacing: 8) {
-            typeIcon
+        // isFault check is necessary to avoid crash
+        if record.isFault {
+            #if DEBUG
+            Text("Record is Fault")
+            #else
+            EmptyView()
+            #endif
+        } else {
+            HStack(alignment: .top, spacing: 8) {
+                typeIcon
 
-            VStack(alignment: .leading, spacing: 12) {
-                VStack(alignment: .leading, spacing: 0) {
-                    title
-                    date
+                VStack(alignment: .leading, spacing: 12) {
+                    VStack(alignment: .leading, spacing: 0) {
+                        title
+                        date
+                    }
+                    .foregroundStyle(Color(.primary))
+                    content
                 }
-                .foregroundStyle(Color(.primary))
-                content
             }
         }
     }

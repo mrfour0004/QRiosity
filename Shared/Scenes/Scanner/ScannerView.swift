@@ -19,18 +19,20 @@ struct ScannerView: View {
         ZStack {
             Scanner(isSessionRunning: $isSessionRunning)
                 .onCapture { metadataObject in
-                    let existingRecord = viewContext.existingCodeRecord(withBarcode: metadataObject.stringValue!)
-                    let record = existingRecord ?? CodeRecord.instantiate(with: metadataObject, in: viewContext)
-                    record.scannedAt = Date() // update the scan time anyway
+                    Task { @MainActor in
+                        let existingRecord = viewContext.existingCodeRecord(withBarcode: metadataObject.stringValue!)
+                        let record = existingRecord ?? CodeRecord.instantiate(with: metadataObject, in: viewContext)
+                        record.scannedAt = Date() // update the scan time anyway
 
-                    record.fetchLinkMetadataIfNeeded(context: viewContext)
+                        await record.fetchLinkMetadataIfNeeded(context: viewContext)
 
-                    if viewContext.hasChanges {
-                        try? viewContext.save()
+                        if viewContext.hasChanges {
+                            try? viewContext.save()
+                        }
+
+                        presentedRecord = record
+                        isSessionRunning = false
                     }
-
-                    presentedRecord = record
-                    isSessionRunning = false
                 }
                 .onAppear { isSessionRunning = true }
                 .onDisappear { isSessionRunning = false }

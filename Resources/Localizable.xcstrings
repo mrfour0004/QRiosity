@@ -48,6 +48,12 @@
         }
       }
     },
+    "Delete All" : {
+
+    },
+    "Delete All History" : {
+
+    },
     "Delete Record" : {
       "localizations" : {
         "zh-Hant" : {
@@ -78,6 +84,12 @@
         }
       }
     },
+    "Empty" : {
+
+    },
+    "Empty history?" : {
+
+    },
     "History" : {
       "localizations" : {
         "zh-Hant" : {
@@ -107,6 +119,9 @@
           }
         }
       }
+    },
+    "Record is Fault" : {
+
     },
     "Save" : {
       "localizations" : {

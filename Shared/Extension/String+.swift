@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension String {
+nonisolated extension String {
     /// Returns a new string made by removing whitespaces and new lines from both ends of the String.
     var trimmed: String {
         trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
