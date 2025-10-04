@@ -21,15 +21,18 @@ public class CodeRecord: NSManagedObject, Identifiable {
         case string
     }
 
+    @MainActor
     var type: RecordType {
         url.flatMap { _ in RecordType.url } ?? .string
     }
 
+    @MainActor
     var is2DBarcode: Bool {
         Set(["QRCode", "Aztec", "PDF417"]).contains(metadataObjectType.split(separator: ".").last ?? "")
     }
 
     /// An URL value that the code content represents for. Returns `nil` if the content is not an URL.
+    @MainActor
     var url: URL? {
         let availableSchemes = ["https", "http"]
         guard
@@ -56,7 +59,9 @@ extension CodeRecord {
 
                 try await context.perform {
                     guard let record = try context.existingObject(with: objectID) as? CodeRecord else { return }
-                    try record.updateMetadata(with: HTML(html: htmlString, encoding: .utf8))
+                    Task { @MainActor in
+                        try record.updateMetadata(with: HTML(html: htmlString, encoding: .utf8))
+                    }
 
                     if context.hasChanges {
                         try context.save()

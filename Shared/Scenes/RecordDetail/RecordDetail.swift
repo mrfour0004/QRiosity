@@ -17,6 +17,7 @@ struct RecordDetail: View {
     @State private var isEditingTitle = false
     @State private var isCopied = false
     @State private var contentHeight: CGFloat = 300
+    @State private var barcodeHeight: CGFloat = 0
 
     private var shortCodeType: String {
         record.metadataObjectType.components(separatedBy: ".").last ?? record.metadataObjectType
@@ -138,21 +139,50 @@ struct RecordDetail: View {
         if let generator = BarcodeGeneratorFactory.makeGenerator(type: record.metadataObjectType),
            let image = generator.generateImage(from: record.stringValue)
         {
-            Image(uiImage: image)
-                .interpolation(.none)
-                .resizable()
-                .scaledToFit()
-                .frame(
-                    maxWidth: record.is2DBarcode ? 200 : 320,
-                    maxHeight: record.is2DBarcode ? 200 : 120
-                )
-                .padding(.horizontal, record.is2DBarcode ? 40 : 20)
+            GeometryReader { geometry in
+                barcode(for: image, in: geometry.size)
+                    // to avoid glitch before size is calculated
+                    .opacity(barcodeHeight > 0 ? 1 : 0)
+            }
+            .frame(height: barcodeHeight > 0 ? barcodeHeight : (record.is2DBarcode ? 200 : 120))
         } else {
             Image(systemName: "qrcode")
                 .font(.system(size: 80))
                 .foregroundColor(.primary)
-                .frame(maxWidth: .infinity, maxHeight: 200)
+                .frame(height: 120)
         }
+    }
+
+    private func barcode(for image: UIImage, in geometrySize: CGSize) -> some View {
+        let availableWidth = geometrySize.width
+        let calculatedBarcodeWidth: CGFloat
+        let calculatedBarcodeHeight: CGFloat
+        let horizontalPadding: CGFloat
+
+        if record.is2DBarcode {
+            let maxSize = min(availableWidth * 0.7, 200)
+            calculatedBarcodeWidth = maxSize
+            calculatedBarcodeHeight = maxSize
+            horizontalPadding = (availableWidth - maxSize) / 2
+        } else {
+            calculatedBarcodeWidth = min(availableWidth * 0.9, 320)
+            calculatedBarcodeHeight = min(calculatedBarcodeWidth * 0.375, 120) // 保持 8:3 的寬高比
+            horizontalPadding = (availableWidth - calculatedBarcodeWidth) / 2
+        }
+
+        DispatchQueue.main.async {
+            if barcodeHeight != calculatedBarcodeHeight {
+                barcodeHeight = calculatedBarcodeHeight
+            }
+        }
+
+        return Image(uiImage: image)
+            .interpolation(.none)
+            .resizable()
+            .scaledToFit()
+            .frame(width: calculatedBarcodeWidth, height: calculatedBarcodeHeight)
+            .padding(.horizontal, horizontalPadding)
+            .frame(maxWidth: .infinity)
     }
 
     private func toggleFavorite() {
