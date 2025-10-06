@@ -6,13 +6,14 @@
 //  Copyright © 2021 mrfour. All rights reserved.
 //
 
+import SwiftData
 import SwiftUI
 
 struct RecordDetail: View {
-    @Environment(\.managedObjectContext) private var viewContext
+    @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
 
-    @ObservedObject var record: CodeRecord
+    @Bindable var record: CodeRecord
     @State private var isPromptingDeletion = false
     @State private var isEditingTitle = false
     @State private var isCopied = false
@@ -187,13 +188,13 @@ struct RecordDetail: View {
 
     private func toggleFavorite() {
         record.isFavorite.toggle()
-        try? viewContext.save()
+        try? modelContext.save()
     }
 
     private func deleteRecord() {
         dismiss()
-        viewContext.delete(record)
-        try? viewContext.save()
+        modelContext.delete(record)
+        try? modelContext.save()
     }
 }
 
@@ -210,7 +211,7 @@ struct RecordDetail_Previews: PreviewProvider {
         }
         .sheet(isPresented: .constant(true)) {
             RecordDetail(record: PreviewHelper.sampleCodeRecord)
-                .environment(\.managedObjectContext, PreviewHelper.preview.container.viewContext)
+                .modelContainer(PreviewHelper.preview.modelContainer)
         }
     }
 }
@@ -218,20 +219,19 @@ struct RecordDetail_Previews: PreviewProvider {
 private enum PreviewHelper {
     static let preview: PersistenceController = {
         let controller = PersistenceController(inMemory: true)
-        let context = controller.container.viewContext
+        let context = controller.modelContext
 
         return controller
     }()
 
     static var sampleCodeRecord: CodeRecord {
-        let context = preview.container.viewContext
-        let record = CodeRecord(context: context)
+        let record = CodeRecord(
+            stringValue: "https://www.example.com",
+            metadataObjectType: "org.iso.QRCode",
+            scannedAt: Date()
+        )
         record.title = "Sample QR Code"
         record.desc = "This is a sample QR code for testing purposes"
-        record.scannedAt = Date()
-        record.stringValue = "https://www.example.com"
-        record.metadataObjectType = "org.iso.Code128"
-        record.metadataObjectType = "org.iso.QRCode"
 
         return record
     }

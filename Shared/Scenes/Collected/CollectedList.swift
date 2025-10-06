@@ -6,16 +6,13 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct CollectedList: View {
-    @Environment(\.managedObjectContext) private var viewContext
+    @Environment(\.modelContext) private var modelContext
 
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \CodeRecord.scannedAt, ascending: true)],
-        predicate: NSPredicate(format: "isFavorite == 1"),
-        animation: .default
-    )
-    private var records: FetchedResults<CodeRecord>
+    @Query(filter: #Predicate<CodeRecord> { $0.isFavorite == true }, sort: \CodeRecord.scannedAt)
+    private var records: [CodeRecord]
 
     @EnvironmentObject private var modalStore: ModalStore
     @State private var backgroundOffset: CGFloat = 0
@@ -74,6 +71,6 @@ struct CollectedList: View {
 struct CollectedList_Previews: PreviewProvider {
     static var previews: some View {
         CollectedList()
-            .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+            .modelContainer(PersistenceController.preview.modelContainer)
     }
 }

@@ -6,12 +6,13 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct PropertyEditor: View {
-    @Environment(\.managedObjectContext) private var viewContext
+    @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
 
-    @ObservedObject
+    @Bindable
     var record: CodeRecord
     let keyPath: ReferenceWritableKeyPath<CodeRecord, String?>
     let propertyName: String
@@ -99,10 +100,13 @@ struct PropertyEditor: View {
         HStack {
             Spacer()
 
-            Button("Save") {
+            Button {
                 saveChanges()
+            } label: {
+                Label("Save", systemImage: "checkmark")
+                    .labelStyle(.iconOnly)
             }
-            .controlSize(.large)
+            .controlSize(.extraLarge)
             .font(.avenir(.headline))
             .buttonStyle(.glassProminent)
         }
@@ -114,7 +118,7 @@ struct PropertyEditor: View {
         record[keyPath: keyPath] = editingValue.isEmpty ? nil : editingValue
 
         do {
-            try viewContext.save()
+            try modelContext.save()
             dismiss()
         } catch {
             print("Failed to save changes: \(error.localizedDescription)")
@@ -125,13 +129,12 @@ struct PropertyEditor: View {
 #Preview {
     PropertyEditor(
         record: {
-            let context = PersistenceController.preview.container.viewContext
-            let newRecord = CodeRecord(context: context)
+            let newRecord = CodeRecord(stringValue: "https://example.com", metadataObjectType: "QR")
             newRecord.title = "Sample Title"
             return newRecord
         }(),
         keyPath: \.title,
         propertyName: "Title"
     )
-    .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+    .modelContainer(PersistenceController.preview.modelContainer)
 }

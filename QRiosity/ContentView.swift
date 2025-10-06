@@ -5,19 +5,16 @@
 //  Created by mrfour on 2020/9/2.
 //
 
-import CoreData
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
-    @Environment(\.managedObjectContext) private var viewContext
+    @Environment(\.modelContext) private var modelContext
 
     @EnvironmentObject var modalStore: ModalStore
 
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \CodeRecord.scannedAt, ascending: true)],
-        animation: .default
-    )
-    private var items: FetchedResults<CodeRecord>
+    @Query(sort: \CodeRecord.scannedAt, order: .forward)
+    private var items: [CodeRecord]
 
     // MARK: - Initializers
 
@@ -65,29 +62,27 @@ struct ContentView: View {
 private extension ContentView {
     private func addItem() {
         withAnimation {
-            let newItem = CodeRecord(context: viewContext)
-            newItem.scannedAt = Date()
+            let newItem = CodeRecord(stringValue: "Sample", metadataObjectType: "QR")
+            modelContext.insert(newItem)
 
             do {
-                try viewContext.save()
+                try modelContext.save()
             } catch {
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+                fatalError("Unresolved error \(error)")
             }
         }
     }
 
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
-            offsets.map { items[$0] }.forEach(viewContext.delete)
+            offsets.forEach { index in
+                modelContext.delete(items[index])
+            }
 
             do {
-                try viewContext.save()
+                try modelContext.save()
             } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+                fatalError("Unresolved error \(error)")
             }
         }
     }
@@ -101,12 +96,10 @@ private let itemFormatter: DateFormatter = {
 }()
 
 struct ContentView_Previews: PreviewProvider {
-    @Environment(\.managedObjectContext)
-    private static var viewContext
-
     static var previews: some View {
         ContentView()
             .environmentObject(modalStore)
+            .modelContainer(PersistenceController.preview.modelContainer)
     }
 
     static var modalStore: ModalStore = {
@@ -116,12 +109,9 @@ struct ContentView_Previews: PreviewProvider {
     }()
 
     private static func makeCodeRecord() -> CodeRecord {
-        let record = CodeRecord(context: viewContext)
+        let record = CodeRecord(stringValue: "this is the content of barcode", metadataObjectType: "QR")
         record.title = "code title"
         record.desc = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. "
-        record.scannedAt = Date()
-        record.stringValue = "this is the content of barcode"
-        record.metadataObjectType = "QR"
 
         return record
     }

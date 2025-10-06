@@ -5,7 +5,6 @@
 //  Created by mrfour on 2020/9/9.
 //
 
-import CoreData
 import SwiftUI
 
 struct RecordView: View {
@@ -14,32 +13,23 @@ struct RecordView: View {
         static let cornerRadius = 12.0
     }
 
-    private var record: CodeRecord
+    private let record: CodeRecord
 
     init(record: CodeRecord) {
         self.record = record
     }
 
     var body: some View {
-        // isFault check is necessary to avoid crash
-        if record.isFault {
-            #if DEBUG
-            Text("Record is Fault")
-            #else
-            EmptyView()
-            #endif
-        } else {
-            HStack(alignment: .top, spacing: 8) {
-                typeIcon
+        HStack(alignment: .top, spacing: 8) {
+            typeIcon
 
-                VStack(alignment: .leading, spacing: 12) {
-                    VStack(alignment: .leading, spacing: 0) {
-                        title
-                        date
-                    }
-                    .foregroundStyle(Color(.primary))
-                    content
+            VStack(alignment: .leading, spacing: 12) {
+                VStack(alignment: .leading, spacing: 0) {
+                    title
+                    date
                 }
+                .foregroundStyle(Color(.primary))
+                content
             }
         }
     }
@@ -80,6 +70,7 @@ struct RecordView: View {
             .font(.caption)
     }
 
+    @ViewBuilder
     private var content: some View {
         HStack(spacing: 0) {
             record.previewImageURLString
@@ -108,11 +99,12 @@ struct RecordView: View {
                 }
             }
             .padding(EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12))
+            .frame(maxWidth: .infinity)
+            .glassEffect(.clear, in: RoundedRectangle(cornerRadius: Design.cornerRadius, style: .continuous))
         }
-        .frame(maxWidth: .infinity)
-        .glassEffect(.clear, in: RoundedRectangle(cornerRadius: Design.cornerRadius, style: .continuous))
     }
 
+    @ViewBuilder
     private func imageThumbnail(for url: URL) -> some View {
         AsyncImage(url: url, transaction: Transaction(animation: .easeInOut)) { phase in
             switch phase {
@@ -141,9 +133,3 @@ private let dateFormatter: DateFormatter = {
     formatter.timeStyle = .short
     return formatter
 }()
-
-// struct RecordView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        RecordView()
-//    }
-// }

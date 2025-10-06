@@ -6,16 +6,13 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct HistoryView: View {
-    @Environment(\.managedObjectContext) private var viewContext
+    @Environment(\.modelContext) private var modelContext
 
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \CodeRecord.scannedAt, ascending: false)],
-        predicate: NSPredicate(format: "isDeletedFromHistory == %@", NSNumber(value: false)),
-        animation: .default
-    )
-    private var records: FetchedResults<CodeRecord>
+    @Query(filter: #Predicate<CodeRecord> { $0.isDeletedFromHistory == false }, sort: \CodeRecord.scannedAt, order: .reverse)
+    private var records: [CodeRecord]
 
     @EnvironmentObject private var modalStore: ModalStore
     @State private var showingDeleteConfirmation = false
@@ -25,13 +22,13 @@ struct HistoryView: View {
             record.isDeletedFromHistory = true
 
             if !record.isFavorite {
-                viewContext.delete(record)
+                modelContext.delete(record)
             }
         }
 
         do {
             try withAnimation {
-                try viewContext.save()
+                try modelContext.save()
             }
         } catch {
             print("Failed to delete all records: \(error.localizedDescription)")
@@ -94,6 +91,6 @@ struct HistoryView: View {
 struct HistoryView_Previews: PreviewProvider {
     static var previews: some View {
         HistoryView()
-            .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+            .modelContainer(PersistenceController.preview.modelContainer)
     }
 }

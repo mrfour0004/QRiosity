@@ -8,9 +8,10 @@
 import AVFoundation
 import AVScanner
 import SwiftUI
+import SwiftData
 
 struct ScannerView: View {
-    @Environment(\.managedObjectContext) private var viewContext
+    @Environment(\.modelContext) private var modelContext
 
     @State private var presentedRecord: CodeRecord?
     @State private var isSessionRunning = false
@@ -19,16 +20,14 @@ struct ScannerView: View {
         ZStack {
             Scanner(isSessionRunning: $isSessionRunning)
                 .onCapture { metadataObject in
-                    Task { @MainActor in
-                        let existingRecord = viewContext.existingCodeRecord(withBarcode: metadataObject.stringValue!)
-                        let record = existingRecord ?? CodeRecord.instantiate(with: metadataObject, in: viewContext)
+                    Task {
+                        let existingRecord = modelContext.existingCodeRecord(withBarcode: metadataObject.stringValue!)
+                        let record = existingRecord ?? CodeRecord.create(with: metadataObject, in: modelContext)
                         record.scannedAt = Date() // update the scan time anyway
 
-                        await record.fetchLinkMetadataIfNeeded(context: viewContext)
+                        try? modelContext.save()
 
-                        if viewContext.hasChanges {
-                            try? viewContext.save()
-                        }
+                        await record.fetchLinkMetadataIfNeeded(modelContext: modelContext)
 
                         presentedRecord = record
                         isSessionRunning = false
