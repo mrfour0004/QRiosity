@@ -100,8 +100,8 @@ struct RecordView: View {
             }
             .padding(EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12))
             .frame(maxWidth: .infinity)
-            .glassEffect(.clear, in: RoundedRectangle(cornerRadius: Design.cornerRadius, style: .continuous))
         }
+        .glassEffect(.clear, in: RoundedRectangle(cornerRadius: Design.cornerRadius, style: .continuous))
     }
 
     @ViewBuilder

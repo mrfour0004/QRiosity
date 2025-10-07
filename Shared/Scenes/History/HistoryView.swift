@@ -5,8 +5,8 @@
 //  Created by mrfour on 2020/9/9.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct HistoryView: View {
     @Environment(\.modelContext) private var modelContext
@@ -51,13 +51,25 @@ struct HistoryView: View {
                     ScrollView(showsIndicators: false) {
                         LazyVStack(alignment: .leading, spacing: 24) {
                             ForEach(records, id: \.id) { record in
-                                Button {
-                                    withAnimation {
-                                        modalStore.presentedObject = record
+                                RecordView(record: record)
+                                    .onTapGesture {
+                                        if let url = record.url {
+                                            withAnimation {
+                                                modalStore.presentedObject = IdentifiableURL(url)
+                                            }
+                                        } else {
+                                            withAnimation {
+                                                modalStore.presentedObject = record
+                                            }
+                                        }
                                     }
-                                } label: {
-                                    RecordView(record: record)
-                                }
+                                    .onLongPressGesture {
+                                        if record.url != nil {
+                                            withAnimation {
+                                                modalStore.presentedObject = record
+                                            }
+                                        }
+                                    }
                             }
                         }
                         .padding()

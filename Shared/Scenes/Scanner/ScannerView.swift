@@ -7,8 +7,8 @@
 
 import AVFoundation
 import AVScanner
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct ScannerView: View {
     @Environment(\.modelContext) private var modelContext
