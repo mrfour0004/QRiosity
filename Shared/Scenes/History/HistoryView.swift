@@ -47,6 +47,7 @@ struct HistoryView: View {
                         title: "No records, yet!",
                         message: "Start scanning QR codes and barcodes to see your history here."
                     )
+                    .padding(.bottom, 24)
                 } else {
                     ScrollView(showsIndicators: false) {
                         LazyVStack(alignment: .leading, spacing: 24) {
