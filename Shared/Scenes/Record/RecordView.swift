@@ -32,6 +32,7 @@ struct RecordView: View {
                 content
             }
         }
+        .contentShape(Rectangle())
     }
 
     // MARK: - Subviews

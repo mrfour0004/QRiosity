@@ -54,6 +54,9 @@ struct ScannerView: View {
                 }
             }
         )
+        .sensoryFeedback(trigger: presentedRecord) {
+            presentedRecord == nil ? nil : .success
+        }
     }
 
     // MARK: - Generating Records
