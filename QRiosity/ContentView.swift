@@ -5,8 +5,8 @@
 //  Created by mrfour on 2020/9/2.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
@@ -54,6 +54,9 @@ struct ContentView: View {
         )) { url in
             SafariView(url: url())
         }
+        .sensoryFeedback(trigger: modalStore.presentedObject == nil) {
+            modalStore.presentedObject == nil ? nil : .selection
+        }
     }
 }
 
@@ -75,7 +78,7 @@ private extension ContentView {
 
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
-            offsets.forEach { index in
+            for index in offsets {
                 modelContext.delete(items[index])
             }
 
