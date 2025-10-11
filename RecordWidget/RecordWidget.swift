@@ -6,80 +6,139 @@
 //  Copyright © 2025 mrfour. All rights reserved.
 //
 
+import SwiftData
 import SwiftUI
 import WidgetKit
 
-struct Provider: TimelineProvider {
-    func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), emoji: "😀")
+// MARK: - Timeline Provider
+
+struct RecordWidgetProvider: TimelineProvider {
+    typealias Entry = RecordWidgetEntry
+
+    private let persistenceController = PersistenceController.shared
+
+    func placeholder(in context: Context) -> RecordWidgetEntry {
+        .placeholder
     }
 
-    func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-        let entry = SimpleEntry(date: Date(), emoji: "😀")
+    func getSnapshot(in context: Context, completion: @escaping (RecordWidgetEntry) -> Void) {
+        let entry: RecordWidgetEntry
+        if let firstFavorite = fetchFirstFavoriteRecord(supportedByFamily: context.family) {
+            entry = RecordWidgetEntry(
+                date: Date(),
+                title: firstFavorite.title ?? firstFavorite.stringValue
+            )
+        } else {
+            entry = .placeholder
+        }
+
         completion(entry)
     }
 
-    func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
-        var entries: [SimpleEntry] = []
-
-        // Generate a timeline consisting of five entries an hour apart, starting from the current date.
-        let currentDate = Date()
-        for hourOffset in 0 ..< 5 {
-            let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-            let entry = SimpleEntry(date: entryDate, emoji: "😀")
-            entries.append(entry)
+    func getTimeline(in context: Context, completion: @escaping (Timeline<RecordWidgetEntry>) -> Void) {
+        let entry: RecordWidgetEntry
+        if let firstFavorite = fetchFirstFavoriteRecord(supportedByFamily: context.family) {
+            entry = RecordWidgetEntry(
+                date: Date(),
+                title: firstFavorite.title ?? firstFavorite.stringValue
+            )
+        } else {
+            entry = .placeholder
         }
 
-        let timeline = Timeline(entries: entries, policy: .atEnd)
+        // Create timeline with single entry that refreshes after 4 hours
+        let nextUpdate = Calendar.current.date(byAdding: .hour, value: 4, to: Date()) ?? Date()
+        let timeline = Timeline(entries: [entry], policy: .after(nextUpdate))
         completion(timeline)
     }
 
-//    func relevances() async -> WidgetRelevances<Void> {
-//        // Generate a list containing the contexts this widget is relevant in.
-//    }
-}
+    private func fetchFirstFavoriteRecord(supportedByFamily family: WidgetFamily) -> CodeRecord? {
+        let modelContext = persistenceController.modelContext
 
-struct SimpleEntry: TimelineEntry {
-    let date: Date
-    let emoji: String
-}
+        // First try to get a record that matches the preferred type
+        var preferredDescriptor = FetchDescriptor<CodeRecord>(
+            predicate: #Predicate<CodeRecord> { record in record.isFavorite == true },
+            sortBy: [SortDescriptor(\CodeRecord.scannedAt, order: .reverse)]
+        )
+        preferredDescriptor.fetchLimit = 1
 
-struct RecordWidgetEntryView: View {
-    var entry: Provider.Entry
+        do {
+            let preferredRecords = try modelContext.fetch(preferredDescriptor)
+            if let preferredRecord = preferredRecords.first {
+                return preferredRecord
+            }
 
-    var body: some View {
-        VStack {
-            Text("Time:")
-            Text(entry.date, style: .time)
+            // If no preferred type found, get any favorite record
+            var anyDescriptor = FetchDescriptor<CodeRecord>(
+                predicate: #Predicate { $0.isFavorite == true },
+                sortBy: [SortDescriptor(\CodeRecord.scannedAt, order: .reverse)]
+            )
+            anyDescriptor.fetchLimit = 1
 
-            Text("Emoji:")
-            Text(entry.emoji)
+            let anyRecords = try modelContext.fetch(anyDescriptor)
+            return anyRecords.first
+        } catch {
+            print("Error fetching favorite records: \(error)")
+            return nil
         }
     }
 }
+
+// MARK: - Widget Entry
+
+struct RecordWidgetEntry: TimelineEntry {
+    let date: Date
+    let title: String
+}
+
+extension RecordWidgetEntry {
+    static let placeholder = RecordWidgetEntry(
+        date: Date(),
+        title: "No favorite records"
+    )
+}
+
+// MARK: - Widget Views
+
+struct RecordWidgetEntryView: View {
+    var entry: RecordWidgetEntry
+
+    var body: some View {
+        Text(entry.title)
+            .font(.body)
+            .multilineTextAlignment(.center)
+            .padding()
+    }
+}
+
+// MARK: - Widget Configuration
 
 struct RecordWidget: Widget {
     let kind: String = "RecordWidget"
 
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: kind, provider: Provider()) { entry in
-            if #available(iOS 17.0, *) {
-                RecordWidgetEntryView(entry: entry)
-                    .containerBackground(.fill.tertiary, for: .widget)
-            } else {
-                RecordWidgetEntryView(entry: entry)
-                    .padding()
-                    .background()
-            }
+        StaticConfiguration(kind: kind, provider: RecordWidgetProvider()) { entry in
+            RecordWidgetEntryView(entry: entry)
+                .widgetAccentable()
+                .containerBackground(.fill.tertiary, for: .widget)
         }
-        .configurationDisplayName("My Widget")
-        .description("This is an example widget.")
+        .configurationDisplayName("Collected Barcode")
+        .description("Display the most recent barcode from your collected items.")
+        .supportedFamilies(supportedFamilies)
+    }
+
+    private var supportedFamilies: [WidgetFamily] {
+        [.systemSmall, .systemMedium]
     }
 }
+
+// MARK: - Previews
 
 #Preview(as: .systemSmall) {
     RecordWidget()
 } timeline: {
-    SimpleEntry(date: .now, emoji: "😀")
-    SimpleEntry(date: .now, emoji: "🤩")
+    RecordWidgetEntry(
+        date: .now,
+        title: "Sample Title"
+    )
 }

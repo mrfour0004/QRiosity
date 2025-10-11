@@ -27,7 +27,20 @@ struct ScannerView: View {
 
                         try? modelContext.save()
 
-                        await record.fetchLinkMetadataIfNeeded(modelContext: modelContext)
+                        // Fetch metadata for URLs
+                        if let url = record.url {
+                            do {
+                                let metadata = try await LinkMetadataFetcher.fetchMetadata(from: url)
+                                record.updateMetadata(
+                                    title: metadata.title,
+                                    description: metadata.description,
+                                    previewImageURL: metadata.previewImageURL
+                                )
+                                try? modelContext.save()
+                            } catch {
+                                print("Failed to fetch metadata: \(error.localizedDescription)")
+                            }
+                        }
 
                         presentedRecord = record
                         isSessionRunning = false

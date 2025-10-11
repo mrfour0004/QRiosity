@@ -59,6 +59,7 @@
 		9E4E15052E981D5F005C9B85 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		9E4E15072E981D5F005C9B85 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		9E4E153B2E98239B005C9B85 /* RecordWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = RecordWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		9E4E154F2E982482005C9B85 /* RecordWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RecordWidgetExtension.entitlements; sourceTree = "<group>"; };
 		9E7B82E32E5B64380026588F /* QRiosity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QRiosity.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9E7B82E42E5B64380026588F /* QRiosityTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QRiosityTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9E7B82E52E5B64380026588F /* QRiosityUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QRiosityUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -69,6 +70,21 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
+			);
+			target = 9E4E153A2E98239B005C9B85 /* RecordWidgetExtension */;
+		};
+		9E4E15732E98282D005C9B85 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"Extension/String+.swift",
+				Models/CodeRecord.swift,
+				Persistance/Persistence.swift,
+				Utilities/BarcodeGeneration/BarcodeGenerator.swift,
+				Utilities/BarcodeGeneration/BarcodeGeneratorFactory.swift,
+				Utilities/BarcodeGeneration/Generators/AztecCodeGenerator.swift,
+				Utilities/BarcodeGeneration/Generators/Code128Generator.swift,
+				Utilities/BarcodeGeneration/Generators/PDF417Generator.swift,
+				Utilities/BarcodeGeneration/Generators/QRCodeGenerator.swift,
 			);
 			target = 9E4E153A2E98239B005C9B85 /* RecordWidgetExtension */;
 		};
@@ -104,7 +120,7 @@
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		9E4E153E2E98239B005C9B85 /* RecordWidget */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (9E4E154E2E98239C005C9B85 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = RecordWidget; sourceTree = "<group>"; };
-		9EBB9D622DFF27B70009530D /* Shared */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Shared; sourceTree = "<group>"; };
+		9EBB9D622DFF27B70009530D /* Shared */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (9E4E15732E98282D005C9B85 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Shared; sourceTree = "<group>"; };
 		9EBB9D7E2DFF27C00009530D /* QRiosity */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (9EBB9D802DFF27C00009530D /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = QRiosity; sourceTree = "<group>"; };
 		9EBB9D832DFF27C40009530D /* QRiosityTests */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (9EBB9D852DFF27C40009530D /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = QRiosityTests; sourceTree = "<group>"; };
 		9EBB9D882DFF27C60009530D /* QRiosityUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (9EBB9D8A2DFF27C60009530D /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = QRiosityUITests; sourceTree = "<group>"; };
@@ -153,6 +169,7 @@
 		5E5D23B024FEA95B00124551 = {
 			isa = PBXGroup;
 			children = (
+				9E4E154F2E982482005C9B85 /* RecordWidgetExtension.entitlements */,
 				9EBB9D622DFF27B70009530D /* Shared */,
 				9EBB9D7E2DFF27C00009530D /* QRiosity */,
 				9EBB9D832DFF27C40009530D /* QRiosityTests */,
@@ -658,6 +675,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_ENTITLEMENTS = RecordWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -680,6 +698,7 @@
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
@@ -694,6 +713,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_ENTITLEMENTS = RecordWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -715,6 +735,7 @@
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;

@@ -5,13 +5,9 @@
 //  Created by mrfour on 2020/9/2.
 //
 
-import Alamofire
 import AVFoundation
 import Foundation
-import Kanna
 import SwiftData
-
-private typealias OpenGraph = [String: String]
 
 @Model
 final class CodeRecord: Identifiable {
@@ -57,47 +53,13 @@ final class CodeRecord: Identifiable {
     }
 }
 
-// MARK: - Getting Link Metadata
+// MARK: - Metadata Update
 
 extension CodeRecord {
-    /// Fetches the metadata for the link if barcode content is a URL.
-    @MainActor
-    func fetchLinkMetadataIfNeeded(modelContext: ModelContext) async {
-        guard let url = URL(string: stringValue) else { return }
-        
-        do {
-            let htmlString = try await AF.request(url).serializingString(encoding: .utf8).value
-            
-            try updateMetadata(with: HTML(html: htmlString, encoding: .utf8))
-            try modelContext.save()
-        } catch {
-            print("Failed to fetch or update metadata: \(error.localizedDescription)")
-        }
-    }
-    
-    private func updateMetadata(with doc: HTMLDocument) throws {
-        title = doc.title?.trimmed ?? self.stringValue
-        
-        if title != stringValue {
-            desc = stringValue
-        }
-        
-        guard let metaSet = doc.head?.css("meta") else {
-            return
-        }
-        
-        var openGraph = OpenGraph()
-        for meta in metaSet {
-            guard let property = meta["property"]?.lowercased(),
-                  property.hasPrefix("og:"),
-                  let content = meta["content"]
-            else { continue }
-            openGraph[property] = content
-        }
-        
-        title = openGraph["og:title"] ?? title
-        desc = openGraph["og:description"] ?? desc
-        previewImageURLString = openGraph["og:image"]?.trimmed
+    func updateMetadata(title: String?, description: String?, previewImageURL: String?) {
+        self.title = title
+        self.desc = description
+        self.previewImageURLString = previewImageURL
     }
 }
 
