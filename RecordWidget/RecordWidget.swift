@@ -22,24 +22,38 @@ struct RecordWidgetProvider: AppIntentTimelineProvider {
     }
 
     func snapshot(for configuration: SelectRecordIntent, in context: Context) async -> RecordWidgetEntry {
-        return if let recordEntity = configuration.record {
-            RecordWidgetEntry(
+        if let recordEntity = configuration.record {
+            return RecordWidgetEntry(
                 date: Date(),
                 recordEntity: recordEntity
             )
-        } else {
-            .placeholder
         }
+        
+        if let defaultEntity = try? await CodeRecordEntity.defaultQuery.defaultResult() {
+            return RecordWidgetEntry(
+                date: Date(),
+                recordEntity: defaultEntity
+            )
+        }
+        
+        return .placeholder
     }
 
     func timeline(for configuration: SelectRecordIntent, in context: Context) async -> Timeline<RecordWidgetEntry> {
-        let entry: RecordWidgetEntry = if let recordEntity = configuration.record {
-            RecordWidgetEntry(
+        let entry: RecordWidgetEntry
+        
+        if let recordEntity = configuration.record {
+            entry = RecordWidgetEntry(
                 date: Date(),
                 recordEntity: recordEntity
             )
+        } else if let defaultEntity = try? await CodeRecordEntity.defaultQuery.defaultResult() {
+            entry = RecordWidgetEntry(
+                date: Date(),
+                recordEntity: defaultEntity
+            )
         } else {
-            .placeholder
+            entry = .placeholder
         }
 
         let nextUpdate = Calendar.current.date(byAdding: .hour, value: 4, to: Date()) ?? Date()
