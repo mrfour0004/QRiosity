@@ -6,81 +6,45 @@
 //  Copyright © 2025 mrfour. All rights reserved.
 //
 
+import AppIntents
 import SwiftData
 import SwiftUI
 import WidgetKit
 
 // MARK: - Timeline Provider
 
-struct RecordWidgetProvider: TimelineProvider {
+struct RecordWidgetProvider: AppIntentTimelineProvider {
     typealias Entry = RecordWidgetEntry
-
-    private let persistenceController = PersistenceController.shared
+    typealias Intent = SelectRecordIntent
 
     func placeholder(in context: Context) -> RecordWidgetEntry {
         .placeholder
     }
 
-    func getSnapshot(in context: Context, completion: @escaping (RecordWidgetEntry) -> Void) {
-        let entry: RecordWidgetEntry
-        if let firstFavorite = fetchFirstFavoriteRecord(supportedByFamily: context.family) {
-            entry = RecordWidgetEntry(
+    func snapshot(for configuration: SelectRecordIntent, in context: Context) async -> RecordWidgetEntry {
+        return if let recordEntity = configuration.record {
+            RecordWidgetEntry(
                 date: Date(),
-                title: firstFavorite.title ?? firstFavorite.stringValue
+                recordEntity: recordEntity
             )
         } else {
-            entry = .placeholder
+            .placeholder
         }
-
-        completion(entry)
     }
 
-    func getTimeline(in context: Context, completion: @escaping (Timeline<RecordWidgetEntry>) -> Void) {
-        let entry: RecordWidgetEntry
-        if let firstFavorite = fetchFirstFavoriteRecord(supportedByFamily: context.family) {
-            entry = RecordWidgetEntry(
+    func timeline(for configuration: SelectRecordIntent, in context: Context) async -> Timeline<RecordWidgetEntry> {
+        let entry: RecordWidgetEntry = if let recordEntity = configuration.record {
+            RecordWidgetEntry(
                 date: Date(),
-                title: firstFavorite.title ?? firstFavorite.stringValue
+                recordEntity: recordEntity
             )
         } else {
-            entry = .placeholder
+            .placeholder
         }
 
-        // Create timeline with single entry that refreshes after 4 hours
         let nextUpdate = Calendar.current.date(byAdding: .hour, value: 4, to: Date()) ?? Date()
         let timeline = Timeline(entries: [entry], policy: .after(nextUpdate))
-        completion(timeline)
-    }
-
-    private func fetchFirstFavoriteRecord(supportedByFamily family: WidgetFamily) -> CodeRecord? {
-        let modelContext = persistenceController.modelContext
-
-        // First try to get a record that matches the preferred type
-        var preferredDescriptor = FetchDescriptor<CodeRecord>(
-            predicate: #Predicate<CodeRecord> { record in record.isFavorite == true },
-            sortBy: [SortDescriptor(\CodeRecord.scannedAt, order: .reverse)]
-        )
-        preferredDescriptor.fetchLimit = 1
-
-        do {
-            let preferredRecords = try modelContext.fetch(preferredDescriptor)
-            if let preferredRecord = preferredRecords.first {
-                return preferredRecord
-            }
-
-            // If no preferred type found, get any favorite record
-            var anyDescriptor = FetchDescriptor<CodeRecord>(
-                predicate: #Predicate { $0.isFavorite == true },
-                sortBy: [SortDescriptor(\CodeRecord.scannedAt, order: .reverse)]
-            )
-            anyDescriptor.fetchLimit = 1
-
-            let anyRecords = try modelContext.fetch(anyDescriptor)
-            return anyRecords.first
-        } catch {
-            print("Error fetching favorite records: \(error)")
-            return nil
-        }
+        return timeline
     }
 }
 
@@ -89,12 +53,29 @@ struct RecordWidgetProvider: TimelineProvider {
 struct RecordWidgetEntry: TimelineEntry {
     let date: Date
     let title: String
+    let stringValue: String
+    private(set) var image: UIImage?
+
+    init(date: Date, recordEntity: CodeRecordEntity, image: UIImage? = nil) {
+        self.date = date
+        self.title = recordEntity.title
+        self.stringValue = recordEntity.stringValue
+        self.image = image
+    }
+
+    init(date: Date, title: String, stringValue: String, image: UIImage? = nil) {
+        self.date = date
+        self.title = title
+        self.stringValue = stringValue
+        self.image = image
+    }
 }
 
 extension RecordWidgetEntry {
     static let placeholder = RecordWidgetEntry(
         date: Date(),
-        title: "No favorite records"
+        title: "No favorite records",
+        stringValue: ""
     )
 }
 
@@ -104,10 +85,19 @@ struct RecordWidgetEntryView: View {
     var entry: RecordWidgetEntry
 
     var body: some View {
-        Text(entry.title)
-            .font(.body)
-            .multilineTextAlignment(.center)
-            .padding()
+        if let image = entry.image {
+            Image(uiImage: image)
+                .resizable()
+                .frame(width: 150, height: 150)
+                .scaledToFit()
+                .background(.red.opacity(0.5))
+                .clipShape(.rect(corners: .concentric))
+        } else {
+            Text(entry.title)
+                .font(.body)
+                .multilineTextAlignment(.center)
+                .padding()
+        }
     }
 }
 
@@ -117,7 +107,7 @@ struct RecordWidget: Widget {
     let kind: String = "RecordWidget"
 
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: kind, provider: RecordWidgetProvider()) { entry in
+        AppIntentConfiguration(kind: kind, intent: SelectRecordIntent.self, provider: RecordWidgetProvider()) { entry in
             RecordWidgetEntryView(entry: entry)
                 .widgetAccentable()
                 .containerBackground(.fill.tertiary, for: .widget)
@@ -139,6 +129,8 @@ struct RecordWidget: Widget {
 } timeline: {
     RecordWidgetEntry(
         date: .now,
-        title: "Sample Title"
+        title: "Sample Title",
+        stringValue: "https://example.com",
+        image: QRCodeGenerator().generateImage(from: "https://example.com")
     )
 }

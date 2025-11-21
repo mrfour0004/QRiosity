@@ -19,7 +19,7 @@ final class CodeRecord: Identifiable {
     var scannedAt: Date
     var stringValue: String
     var title: String?
-    
+
     init(stringValue: String, metadataObjectType: String, scannedAt: Date = Date()) {
         self.stringValue = stringValue
         self.metadataObjectType = metadataObjectType
@@ -27,20 +27,20 @@ final class CodeRecord: Identifiable {
         self.isFavorite = false
         self.isDeletedFromHistory = false
     }
-    
+
     enum RecordType {
         case url
         case string
     }
-    
+
     var type: RecordType {
         url != nil ? .url : .string
     }
-    
+
     var is2DBarcode: Bool {
         Set(["QRCode", "Aztec", "PDF417"]).contains(metadataObjectType.split(separator: ".").last ?? "")
     }
-    
+
     /// An URL value that the code content represents for. Returns `nil` if the content is not an URL.
     var url: URL? {
         let availableSchemes = ["https", "http"]
@@ -48,7 +48,7 @@ final class CodeRecord: Identifiable {
             let url = URL(string: stringValue),
             let scheme = url.scheme, availableSchemes.contains(scheme.lowercased())
         else { return nil }
-        
+
         return url
     }
 }
@@ -72,7 +72,7 @@ extension CodeRecord {
     ) -> CodeRecord {
         create(withString: codeObject.stringValue!, type: codeObject.type, in: modelContext)
     }
-    
+
     static func create(
         withString value: String,
         type: AVMetadataObject.ObjectType,
@@ -83,7 +83,7 @@ extension CodeRecord {
             metadataObjectType: type.rawValue,
             scannedAt: Date()
         )
-        
+
         modelContext.insert(instance)
         return instance
     }

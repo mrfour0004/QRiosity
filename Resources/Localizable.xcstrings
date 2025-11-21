@@ -65,6 +65,7 @@
       }
     },
     "Delete?" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hant" : {
           "stringUnit" : {
@@ -75,6 +76,7 @@
       }
     },
     "Detele" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hant" : {
           "stringUnit" : {
@@ -119,9 +121,6 @@
           }
         }
       }
-    },
-    "Record is Fault" : {
-
     },
     "Save" : {
       "localizations" : {
