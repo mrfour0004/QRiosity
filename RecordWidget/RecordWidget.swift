@@ -17,48 +17,54 @@ struct RecordWidgetProvider: AppIntentTimelineProvider {
     typealias Entry = RecordWidgetEntry
     typealias Intent = SelectRecordIntent
 
+    let imageStorage: BarcodeImageStorage
+
+    init(imageStorage: BarcodeImageStorage = .shared) {
+        self.imageStorage = imageStorage
+    }
+
     func placeholder(in context: Context) -> RecordWidgetEntry {
         .placeholder
     }
 
     func snapshot(for configuration: SelectRecordIntent, in context: Context) async -> RecordWidgetEntry {
-        if let recordEntity = configuration.record {
-            return RecordWidgetEntry(
-                date: Date(),
-                recordEntity: recordEntity
-            )
+        let entity: CodeRecordEntity? = if let recordEntity = configuration.record {
+            recordEntity
+        } else {
+            try? await CodeRecordEntity.defaultQuery.defaultResult()
         }
-        
-        if let defaultEntity = try? await CodeRecordEntity.defaultQuery.defaultResult() {
-            return RecordWidgetEntry(
-                date: Date(),
-                recordEntity: defaultEntity
-            )
-        }
-        
-        return .placeholder
+
+        guard let entity else { return .placeholder }
+
+        return RecordWidgetEntry(
+            date: Date(),
+            recordEntity: entity,
+            image: image(for: entity)
+        )
     }
 
     func timeline(for configuration: SelectRecordIntent, in context: Context) async -> Timeline<RecordWidgetEntry> {
-        let entry: RecordWidgetEntry
-        
-        if let recordEntity = configuration.record {
-            entry = RecordWidgetEntry(
-                date: Date(),
-                recordEntity: recordEntity
-            )
-        } else if let defaultEntity = try? await CodeRecordEntity.defaultQuery.defaultResult() {
-            entry = RecordWidgetEntry(
-                date: Date(),
-                recordEntity: defaultEntity
-            )
+        let entity: CodeRecordEntity? = if let recordEntity = configuration.record {
+            recordEntity
         } else {
-            entry = .placeholder
+            try? await CodeRecordEntity.defaultQuery.defaultResult()
         }
 
+        let entry = entity.flatMap {
+            RecordWidgetEntry(date: Date(), recordEntity: $0, image: image(for: $0))
+        } ?? .placeholder
+
         let nextUpdate = Calendar.current.date(byAdding: .hour, value: 4, to: Date()) ?? Date()
-        let timeline = Timeline(entries: [entry], policy: .after(nextUpdate))
-        return timeline
+        return Timeline(entries: [entry], policy: .after(nextUpdate))
+    }
+
+    // MARK: - Loading image for barcode
+
+    private func image(for entity: CodeRecordEntity) -> UIImage? {
+        imageStorage.loadImage(
+            barcodeType: entity.metadataObjectType,
+            stringValue: entity.stringValue
+        )
     }
 }
 
@@ -100,12 +106,17 @@ struct RecordWidgetEntryView: View {
 
     var body: some View {
         if let image = entry.image {
-            Image(uiImage: image)
-                .resizable()
-                .frame(width: 150, height: 150)
-                .scaledToFit()
-                .background(.red.opacity(0.5))
-                .clipShape(.rect(corners: .concentric))
+            VStack(spacing: 8) {
+                Image(uiImage: image)
+                    .resizable()
+                    .scaledToFit()
+                    .padding()
+
+                Text(entry.title)
+                    .font(.caption)
+                    .lineLimit(1)
+                    .padding(.horizontal)
+            }
         } else {
             Text(entry.title)
                 .font(.body)

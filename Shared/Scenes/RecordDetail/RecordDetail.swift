@@ -12,6 +12,7 @@ import SwiftUI
 struct RecordDetail: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.barcodeImageStorage) private var barcodeImageStorage
 
     @Bindable var record: CodeRecord
     @State private var isPromptingDeletion = false
@@ -19,6 +20,7 @@ struct RecordDetail: View {
     @State private var isCopied = false
     @State private var contentHeight: CGFloat = 300
     @State private var barcodeHeight: CGFloat = 0
+    @State private var barcodeImage: UIImage?
 
     private var shortCodeType: String {
         record.metadataObjectType.components(separatedBy: ".").last ?? record.metadataObjectType
@@ -146,6 +148,9 @@ struct RecordDetail: View {
                     .opacity(barcodeHeight > 0 ? 1 : 0)
             }
             .frame(height: barcodeHeight > 0 ? barcodeHeight : (record.is2DBarcode ? 200 : 120))
+            .onAppear {
+                barcodeImage = image
+            }
         } else {
             Image(systemName: "qrcode")
                 .font(.system(size: 80))
@@ -188,7 +193,25 @@ struct RecordDetail: View {
 
     private func toggleFavorite() {
         record.isFavorite.toggle()
+
+        record.isFavorite ? saveImage() : deleteImage()
         try? modelContext.save()
+    }
+
+    private func saveImage() {
+        guard let image = barcodeImage else { return }
+        barcodeImageStorage.saveImage(
+            image,
+            barcodeType: record.metadataObjectType,
+            stringValue: record.stringValue
+        )
+    }
+
+    private func deleteImage() {
+        barcodeImageStorage.deleteImage(
+            barcodeType: record.metadataObjectType,
+            stringValue: record.stringValue
+        )
     }
 
     private func deleteRecord() {

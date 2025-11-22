@@ -6,6 +6,7 @@
 //  Copyright © 2021 mrfour. All rights reserved.
 //
 
+import CommonCrypto
 import Foundation
 
 nonisolated extension String {

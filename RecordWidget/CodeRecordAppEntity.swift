@@ -17,6 +17,7 @@ struct CodeRecordEntity: AppEntity {
     var id: String
     var title: String
     var stringValue: String
+    var metadataObjectType: String
     var scannedAt: Date
 
     var displayRepresentation: DisplayRepresentation {
@@ -26,10 +27,11 @@ struct CodeRecordEntity: AppEntity {
         )
     }
 
-    init(id: String, title: String, stringValue: String, scannedAt: Date) {
+    init(id: String, title: String, stringValue: String, metadataObjectType: String, scannedAt: Date) {
         self.id = id
         self.title = title
         self.stringValue = stringValue
+        self.metadataObjectType = metadataObjectType
         self.scannedAt = scannedAt
     }
 
@@ -37,6 +39,7 @@ struct CodeRecordEntity: AppEntity {
         self.id = record.persistentModelID.hashValue.description
         self.title = record.title ?? record.stringValue
         self.stringValue = record.stringValue
+        self.metadataObjectType = record.metadataObjectType
         self.scannedAt = record.scannedAt
     }
 }
