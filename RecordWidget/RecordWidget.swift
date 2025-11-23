@@ -39,6 +39,7 @@ struct RecordWidgetProvider: AppIntentTimelineProvider {
         return RecordWidgetEntry(
             date: Date(),
             recordEntity: entity,
+            showTitle: configuration.showTitle,
             image: image(for: entity)
         )
     }
@@ -51,7 +52,7 @@ struct RecordWidgetProvider: AppIntentTimelineProvider {
         }
 
         let entry = entity.flatMap {
-            RecordWidgetEntry(date: Date(), recordEntity: $0, image: image(for: $0))
+            RecordWidgetEntry(date: Date(), recordEntity: $0, showTitle: configuration.showTitle, image: image(for: $0))
         } ?? .placeholder
 
         let nextUpdate = Calendar.current.date(byAdding: .hour, value: 4, to: Date()) ?? Date()
@@ -74,19 +75,22 @@ struct RecordWidgetEntry: TimelineEntry {
     let date: Date
     let title: String
     let stringValue: String
+    let showTitle: Bool
     private(set) var image: UIImage?
 
-    init(date: Date, recordEntity: CodeRecordEntity, image: UIImage? = nil) {
+    init(date: Date, recordEntity: CodeRecordEntity, showTitle: Bool = true, image: UIImage? = nil) {
         self.date = date
         self.title = recordEntity.title
         self.stringValue = recordEntity.stringValue
+        self.showTitle = showTitle
         self.image = image
     }
 
-    init(date: Date, title: String, stringValue: String, image: UIImage? = nil) {
+    init(date: Date, title: String, stringValue: String, showTitle: Bool = true, image: UIImage? = nil) {
         self.date = date
         self.title = title
         self.stringValue = stringValue
+        self.showTitle = showTitle
         self.image = image
     }
 }
@@ -95,7 +99,8 @@ extension RecordWidgetEntry {
     static let placeholder = RecordWidgetEntry(
         date: Date(),
         title: "No favorite records",
-        stringValue: ""
+        stringValue: "",
+        showTitle: true
     )
 }
 
@@ -106,16 +111,19 @@ struct RecordWidgetEntryView: View {
 
     var body: some View {
         if let image = entry.image {
-            VStack(spacing: 8) {
+            VStack(spacing: 2) {
+                if entry.showTitle {
+                    Text(entry.title)
+                        .font(.caption2)
+                        .fontWeight(.medium)
+                        .lineLimit(1)
+                        .foregroundStyle(.secondary)
+                }
+
                 Image(uiImage: image)
                     .resizable()
                     .scaledToFit()
-                    .padding()
-
-                Text(entry.title)
-                    .font(.caption)
-                    .lineLimit(1)
-                    .padding(.horizontal)
+                    .padding(12)
             }
         } else {
             Text(entry.title)
@@ -137,6 +145,7 @@ struct RecordWidget: Widget {
                 .widgetAccentable()
                 .containerBackground(.fill.tertiary, for: .widget)
         }
+        .contentMarginsDisabled()
         .configurationDisplayName("Collected Barcode")
         .description("Display the most recent barcode from your collected items.")
         .supportedFamilies(supportedFamilies)
