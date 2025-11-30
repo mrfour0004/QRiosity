@@ -176,7 +176,7 @@ struct RecordWidget1D: Widget {
         .contentMarginsDisabled()
         .configurationDisplayName("1D Barcode")
         .description("Display a 1D barcode from your collected items.")
-        .supportedFamilies([.systemMedium, .systemLarge])
+        .supportedFamilies([.systemMedium])
     }
 }
 
