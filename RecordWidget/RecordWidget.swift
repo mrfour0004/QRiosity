@@ -18,9 +18,11 @@ struct RecordWidgetProvider: AppIntentTimelineProvider {
     typealias Intent = SelectRecordIntent
 
     let imageStorage: BarcodeImageStorage
+    let filterType: BarcodeFilterType
 
-    init(imageStorage: BarcodeImageStorage = .shared) {
+    init(imageStorage: BarcodeImageStorage = .shared, filterType: BarcodeFilterType = .twoDimensional) {
         self.imageStorage = imageStorage
+        self.filterType = filterType
     }
 
     func placeholder(in context: Context) -> RecordWidgetEntry {
@@ -28,10 +30,13 @@ struct RecordWidgetProvider: AppIntentTimelineProvider {
     }
 
     func snapshot(for configuration: SelectRecordIntent, in context: Context) async -> RecordWidgetEntry {
+        var query = CodeRecordEntity.defaultQuery
+        query.filterType = filterType
+
         let entity: CodeRecordEntity? = if let recordEntity = configuration.record {
             recordEntity
         } else {
-            try? await CodeRecordEntity.defaultQuery.defaultResult()
+            try? await query.defaultResult()
         }
 
         guard let entity else { return .placeholder }
@@ -45,10 +50,13 @@ struct RecordWidgetProvider: AppIntentTimelineProvider {
     }
 
     func timeline(for configuration: SelectRecordIntent, in context: Context) async -> Timeline<RecordWidgetEntry> {
+        var query = CodeRecordEntity.defaultQuery
+        query.filterType = filterType
+
         let entity: CodeRecordEntity? = if let recordEntity = configuration.record {
             recordEntity
         } else {
-            try? await CodeRecordEntity.defaultQuery.defaultResult()
+            try? await query.defaultResult()
         }
 
         let entry = entity.flatMap {
@@ -136,35 +144,62 @@ struct RecordWidgetEntryView: View {
 
 // MARK: - Widget Configuration
 
-struct RecordWidget: Widget {
-    let kind: String = "RecordWidget"
+struct RecordWidget2D: Widget {
+    let kind: String = "RecordWidget2D"
 
     var body: some WidgetConfiguration {
-        AppIntentConfiguration(kind: kind, intent: SelectRecordIntent.self, provider: RecordWidgetProvider()) { entry in
+        AppIntentConfiguration(kind: kind, intent: SelectRecordIntent.self, provider: RecordWidgetProvider(filterType: .twoDimensional)) { entry in
             RecordWidgetEntryView(entry: entry)
                 .widgetAccentable()
                 .containerBackground(.fill.tertiary, for: .widget)
         }
         .contentMarginsDisabled()
-        .configurationDisplayName("Collected Barcode")
-        .description("Display the most recent barcode from your collected items.")
-        .supportedFamilies(supportedFamilies)
+        .configurationDisplayName("2D Barcode")
+        .description("Display a 2D barcode (QR, Aztec, PDF417) from your collected items.")
+        .supportedFamilies([.systemSmall])
     }
+}
 
-    private var supportedFamilies: [WidgetFamily] {
-        [.systemSmall, .systemMedium]
+struct RecordWidget1D: Widget {
+    let kind: String = "RecordWidget1D"
+
+    var body: some WidgetConfiguration {
+        AppIntentConfiguration(
+            kind: kind,
+            intent: SelectRecordIntent.self,
+            provider: RecordWidgetProvider(filterType: .oneDimensional)
+        ) { entry in
+            RecordWidgetEntryView(entry: entry)
+                .widgetAccentable()
+                .containerBackground(.fill.tertiary, for: .widget)
+        }
+        .contentMarginsDisabled()
+        .configurationDisplayName("1D Barcode")
+        .description("Display a 1D barcode from your collected items.")
+        .supportedFamilies([.systemMedium, .systemLarge])
     }
 }
 
 // MARK: - Previews
 
-#Preview(as: .systemSmall) {
-    RecordWidget()
+#Preview("2D Barcode", as: .systemSmall) {
+    RecordWidget2D()
 } timeline: {
     RecordWidgetEntry(
         date: .now,
-        title: "Sample Title",
+        title: "Sample QR Code",
         stringValue: "https://example.com",
         image: QRCodeGenerator().generateImage(from: "https://example.com")
+    )
+}
+
+#Preview("1D Barcode", as: .systemMedium) {
+    RecordWidget1D()
+} timeline: {
+    RecordWidgetEntry(
+        date: .now,
+        title: "Sample Barcode",
+        stringValue: "1234567890",
+        image: nil
     )
 }

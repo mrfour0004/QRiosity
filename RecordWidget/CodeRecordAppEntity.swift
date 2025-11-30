@@ -44,7 +44,14 @@ struct CodeRecordEntity: AppEntity {
     }
 }
 
+enum BarcodeFilterType {
+    case twoDimensional
+    case oneDimensional
+}
+
 struct CodeRecordEntityQuery: EntityQuery {
+    var filterType: BarcodeFilterType = .twoDimensional
+
     @MainActor
     func entities(for identifiers: [String]) async throws -> [CodeRecordEntity] {
         let records = try collectedRecords()
@@ -68,14 +75,20 @@ struct CodeRecordEntityQuery: EntityQuery {
         let persistenceController = PersistenceController.shared
         let modelContext = persistenceController.modelContext
 
-        var descriptor = FetchDescriptor<CodeRecord>(
+        let descriptor = FetchDescriptor<CodeRecord>(
             predicate: #Predicate { $0.isFavorite },
             sortBy: [SortDescriptor(\CodeRecord.scannedAt, order: .reverse)]
         )
-        descriptor.fetchLimit = fetchLimit
 
         do {
-            return try modelContext.fetch(descriptor)
+            let allRecords = try modelContext.fetch(descriptor)
+            let filtered = allRecords.filter { record in
+                switch filterType {
+                case .twoDimensional: record.is2DBarcode
+                case .oneDimensional: !record.is2DBarcode
+                }
+            }
+            return Array(filtered.prefix(fetchLimit))
         } catch {
             print("Error fetching default record: \(error)")
             return []

@@ -11,7 +11,9 @@ import WidgetKit
 
 @main
 struct RecordWidgetBundle: WidgetBundle {
+    @WidgetBundleBuilder
     var body: some Widget {
-        RecordWidget()
+        RecordWidget2D()
+        RecordWidget1D()
     }
 }
