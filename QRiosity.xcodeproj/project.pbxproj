@@ -76,6 +76,7 @@
 		9E4E15732E98282D005C9B85 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				"Extension/Font+.swift",
 				"Extension/String+.swift",
 				"Extension/String+CommonCrypto.swift",
 				Models/CodeRecord.swift,

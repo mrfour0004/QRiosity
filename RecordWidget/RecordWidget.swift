@@ -83,14 +83,14 @@ struct RecordWidgetEntry: TimelineEntry {
     let date: Date
     let title: String
     let stringValue: String
-    let showTitle: Bool
+    let showsTitle: Bool
     private(set) var image: UIImage?
 
     init(date: Date, recordEntity: CodeRecordEntity, showTitle: Bool = true, image: UIImage? = nil) {
         self.date = date
         self.title = recordEntity.title
         self.stringValue = recordEntity.stringValue
-        self.showTitle = showTitle
+        self.showsTitle = showTitle
         self.image = image
     }
 
@@ -98,7 +98,7 @@ struct RecordWidgetEntry: TimelineEntry {
         self.date = date
         self.title = title
         self.stringValue = stringValue
-        self.showTitle = showTitle
+        self.showsTitle = showTitle
         self.image = image
     }
 }
@@ -119,19 +119,21 @@ struct RecordWidgetEntryView: View {
 
     var body: some View {
         if let image = entry.image {
-            VStack(spacing: 2) {
-                if entry.showTitle {
-                    Text(entry.title)
-                        .font(.caption2)
-                        .fontWeight(.medium)
-                        .lineLimit(1)
-                        .foregroundStyle(.secondary)
-                }
-
+            ZStack(alignment: .bottom) {
                 Image(uiImage: image)
                     .resizable()
                     .scaledToFit()
-                    .padding(12)
+                    .padding(entry.showsTitle ? 16 : 12)
+                    .padding(.bottom, 2)
+
+                if entry.showsTitle {
+                    Text("\(entry.title)") // Interpolation is necessary to avoid unexpected truncation.
+                        .font(.avenir(.caption))
+                        .fontWeight(.bold)
+                        .lineLimit(1)
+                        .padding(.horizontal, 8)
+                        .padding(.bottom, 2)
+                }
             }
         } else {
             Text(entry.title)
