@@ -44,7 +44,7 @@ struct RecordWidgetProvider: AppIntentTimelineProvider {
         return RecordWidgetEntry(
             date: Date(),
             recordEntity: entity,
-            showTitle: configuration.showTitle,
+            showsTitle: configuration.showsTitle,
             image: image(for: entity)
         )
     }
@@ -60,7 +60,7 @@ struct RecordWidgetProvider: AppIntentTimelineProvider {
         }
 
         let entry = entity.flatMap {
-            RecordWidgetEntry(date: Date(), recordEntity: $0, showTitle: configuration.showTitle, image: image(for: $0))
+            RecordWidgetEntry(date: Date(), recordEntity: $0, showsTitle: configuration.showsTitle, image: image(for: $0))
         } ?? .placeholder
 
         let nextUpdate = Calendar.current.date(byAdding: .hour, value: 4, to: Date()) ?? Date()
@@ -86,19 +86,19 @@ struct RecordWidgetEntry: TimelineEntry {
     let showsTitle: Bool
     private(set) var image: UIImage?
 
-    init(date: Date, recordEntity: CodeRecordEntity, showTitle: Bool = true, image: UIImage? = nil) {
+    init(date: Date, recordEntity: CodeRecordEntity, showsTitle: Bool = true, image: UIImage? = nil) {
         self.date = date
         self.title = recordEntity.title
         self.stringValue = recordEntity.stringValue
-        self.showsTitle = showTitle
+        self.showsTitle = showsTitle
         self.image = image
     }
 
-    init(date: Date, title: String, stringValue: String, showTitle: Bool = true, image: UIImage? = nil) {
+    init(date: Date, title: String, stringValue: String, showsTitle: Bool = true, image: UIImage? = nil) {
         self.date = date
         self.title = title
         self.stringValue = stringValue
-        self.showsTitle = showTitle
+        self.showsTitle = showsTitle
         self.image = image
     }
 }
@@ -108,7 +108,7 @@ extension RecordWidgetEntry {
         date: Date(),
         title: "No favorite records",
         stringValue: "",
-        showTitle: true
+        showsTitle: true
     )
 }
 

@@ -14,17 +14,17 @@ struct SelectRecordIntent: WidgetConfigurationIntent {
 
     @Parameter(title: "Collected Barcode")
     var record: CodeRecordEntity?
-    
-    @Parameter(title: "Show Title", default: true)
-    var showTitle: Bool
 
-    init(record: CodeRecordEntity? = nil, showTitle: Bool = true) {
+    @Parameter(title: "Show Title", default: true)
+    var showsTitle: Bool
+
+    init(record: CodeRecordEntity? = nil, showsTitle: Bool = true) {
         self.record = record
-        self.showTitle = showTitle
+        self.showsTitle = showsTitle
     }
 
     init() {
         self.record = nil
-        self.showTitle = true
+        self.showsTitle = true
     }
 }
