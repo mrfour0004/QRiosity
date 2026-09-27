@@ -28,7 +28,7 @@ struct RecordView: View {
                     title
                     date
                 }
-                .foregroundStyle(Color(.primary))
+                .foregroundStyle(Color(.main))
                 content
             }
         }
@@ -47,7 +47,7 @@ struct RecordView: View {
             .scaledToFit()
             .frame(width: 12, height: 12)
             .padding(6)
-            .foregroundStyle(Color(.primary))
+            .foregroundStyle(Color(.main))
             .fontWeight(.bold)
             .fontDesign(.rounded)
             .glassEffect(in: Circle())
@@ -60,7 +60,7 @@ struct RecordView: View {
                 .fixedSize(horizontal: false, vertical: true)
                 .lineLimit(2)
                 .font(.avenir(.headline))
-                .foregroundStyle(record.title == nil ? Color(.lightGray) : Color(.primary))
+                .foregroundStyle(record.title == nil ? Color(.lightGray) : Color(.main))
 
             Spacer()
         }
@@ -86,7 +86,7 @@ struct RecordView: View {
                         .multilineTextAlignment(.leading)
                         .lineLimit(3)
                         .font(.avenir(.subheadline))
-                        .foregroundStyle(Color(.primary))
+                        .foregroundStyle(Color(.main))
                     Spacer(minLength: 12)
                 }
                 if let host = record.url?.host {
