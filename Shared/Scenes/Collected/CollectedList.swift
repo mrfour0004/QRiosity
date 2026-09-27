@@ -70,6 +70,7 @@ struct CollectedList: View {
             }
             .navigationTitle(.collected)
             .navigationBarTitleDisplayMode(.large)
+            .scrollEdgeEffectStyle(.soft, for: .all)
         }
     }
 

@@ -29,7 +29,7 @@ struct ContentView: View {
 
     var body: some View {
         TabView {
-            Tab("Scan", systemImage: "qrcode.viewfinder", role: .search) {
+            Tab("Scan", systemImage: "qrcode.viewfinder", role: .prominent) {
                 ScannerView()
             }
             Tab(.collected, systemImage: "tray.fill") {
