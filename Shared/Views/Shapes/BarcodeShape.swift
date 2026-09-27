@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct BarcodeShape: Shape {
-    func path(in rect: CGRect) -> Path {
+    nonisolated func path(in rect: CGRect) -> Path {
         var path = Path()
 
         let barCount = 6
