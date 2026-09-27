@@ -25,7 +25,13 @@ struct Scanner: UIViewRepresentable {
     // MARK: - UIViewRepresentable
 
     func makeUIView(context: Context) -> AVScannerView {
-        let scannerView = AVScannerView()
+        try? AVAudioSession.sharedInstance().setCategory(.ambient, mode: .default)
+
+        let session = AVCaptureSession()
+        session.automaticallyConfiguresApplicationAudioSession = false
+        let sessionController = AVCaptureSessionController(session: session)
+
+        let scannerView = AVScannerView(controller: sessionController)
         scannerView.initSession()
         scannerView.delegate = context.coordinator
         scannerView.supportedMetadataObjectTypes = [.qr, .code128, .aztec, .pdf417]
