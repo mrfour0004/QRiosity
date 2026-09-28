@@ -51,9 +51,10 @@ struct PersistenceController {
         if inMemory {
             modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
         } else {
-            let storeURL = FileManager.default
-                .containerURL(forSecurityApplicationGroupIdentifier: "group.com.mrfour.test")!
-                .appendingPathComponent("CodeReader.sqlite")
+            let baseURL = FileManager.default
+                .containerURL(forSecurityApplicationGroupIdentifier: "group.com.mrfour.test")
+                ?? FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
+            let storeURL = baseURL.appendingPathComponent("CodeReader.sqlite")
 
             modelConfiguration = ModelConfiguration(
                 schema: schema,

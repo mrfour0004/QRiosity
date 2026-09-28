@@ -8,6 +8,7 @@
 
 import SwiftData
 import SwiftUI
+import UIKit
 
 struct RecordDetail: View {
     @Environment(\.modelContext) private var modelContext
@@ -18,9 +19,67 @@ struct RecordDetail: View {
     @State private var isPromptingDeletion = false
     @State private var isEditingTitle = false
     @State private var isCopied = false
-    @State private var contentHeight: CGFloat = 300
-    @State private var barcodeHeight: CGFloat = 0
+    @State private var selectedDetent: PresentationDetent
     @State private var barcodeImage: UIImage?
+
+    init(record: CodeRecord) {
+        self.record = record
+        let initialHeight: CGFloat = record.is2DBarcode ? 440 : 360
+        _selectedDetent = State(initialValue: .height(initialHeight))
+    }
+
+    private var isExpanded: Bool {
+        selectedDetent == .height(textMetrics.expandedHeight)
+    }
+
+    private var collapsedHeight: CGFloat {
+        record.is2DBarcode ? 440 : 360
+    }
+
+    private var windowSize: CGSize {
+        let scene = UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .first
+        return scene?.coordinateSpace.bounds.size ?? CGSize(width: 393, height: 852)
+    }
+
+    private var textMetrics: (needsExpansion: Bool, expandedHeight: CGFloat, collapsedTextHeight: CGFloat, expandedTextHeight: CGFloat) {
+        let text = record.stringValue
+        let font = UIFont.preferredFont(forTextStyle: .body)
+        let availableWidth = max(windowSize.width - 48, 280)
+
+        let singleLineHeight = font.lineHeight
+        let boundingRect = (text as NSString).boundingRect(
+            with: CGSize(width: availableWidth, height: .greatestFiniteMagnitude),
+            options: [.usesLineFragmentOrigin, .usesFontLeading],
+            attributes: [.font: font],
+            context: nil
+        )
+
+        let textHeight = ceil(boundingRect.height)
+        let isMultiLine = textHeight > (singleLineHeight * 1.3)
+
+        let baseHeight = collapsedHeight
+        let additionalHeight = max(textHeight - singleLineHeight, 0)
+        let maxAllowedHeight = windowSize.height * 0.85
+        let calculatedExpandedHeight = min(baseHeight + additionalHeight + 20, maxAllowedHeight)
+
+        return (
+            needsExpansion: isMultiLine,
+            expandedHeight: max(calculatedExpandedHeight, baseHeight + 50),
+            collapsedTextHeight: ceil(singleLineHeight) + 4,
+            expandedTextHeight: textHeight + 16
+        )
+    }
+
+    private var availableDetents: Set<PresentationDetent> {
+        let metrics = textMetrics
+        if metrics.needsExpansion {
+            return [.height(collapsedHeight), .height(metrics.expandedHeight)]
+        } else {
+            return [.height(collapsedHeight)]
+        }
+    }
 
     private var shortCodeType: String {
         record.metadataObjectType.components(separatedBy: ".").last ?? record.metadataObjectType
@@ -100,34 +159,59 @@ struct RecordDetail: View {
 
     var body: some View {
         NavigationStack {
-            VStack(spacing: 24) {
-                qrCodeSection
+            ScrollView {
+                VStack(spacing: 24) {
+                    qrCodeSection
 
-                Text(record.stringValue)
-                    .font(.body)
-                    .foregroundColor(.primary)
-                    .multilineTextAlignment(.center)
+                    VStack(spacing: 6) {
+                        ZStack(alignment: .top) {
+                            Text(record.stringValue)
+                                .lineLimit(1)
+                                .truncationMode(.tail)
+                                .opacity(isExpanded ? 0 : 1)
+
+                            Text(record.stringValue)
+                                .lineLimit(nil)
+                                .opacity(isExpanded ? 1 : 0)
+                        }
+                        .font(.body)
+                        .foregroundStyle(.primary)
+                        .multilineTextAlignment(.center)
+                        .frame(
+                            maxHeight: isExpanded ? textMetrics.expandedTextHeight : textMetrics.collapsedTextHeight,
+                            alignment: .top
+                        )
+                        .clipped()
+                        .contentTransition(.opacity)
+
+                        if textMetrics.needsExpansion {
+                            Image(systemName: isExpanded ? "chevron.compact.up" : "chevron.compact.down")
+                                .font(.caption)
+                                .foregroundStyle(.tertiary)
+                                .contentTransition(.symbolEffect(.replace))
+                        }
+                    }
+                    .animation(.easeInOut(duration: 0.3), value: isExpanded)
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        guard textMetrics.needsExpansion else { return }
+                        selectedDetent = isExpanded ? .height(collapsedHeight) : .height(textMetrics.expandedHeight)
+                    }
+                }
+                .padding()
+                .frame(maxWidth: .infinity)
             }
-            .padding()
-            .onSizeChange { size in
-                contentHeight = size.height + 120
-            }
+            .scrollBounceBehavior(.basedOnSize)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) { navigationTitleContent }
-                ToolbarItem(placement: .bottomBar) { deleteButtonContent }
-                ToolbarSpacer(.fixed, placement: .bottomBar)
-                ToolbarItem(placement: .bottomBar) { copyButtonContent }
-                ToolbarSpacer(.fixed, placement: .bottomBar)
-                ToolbarItem(placement: .bottomBar) { editButtonContent }
-                ToolbarSpacer(.fixed, placement: .bottomBar)
-                ToolbarItem(placement: .bottomBar) { favoriteButtonContent }
-                ToolbarSpacer(.flexible, placement: .bottomBar)
-                ToolbarItem(placement: .bottomBar) { closeButtonContent }
             }
         }
-        .presentationDetents([.height(contentHeight)])
-        .presentationDragIndicator(.hidden)
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+            bottomToolbar
+        }
+        .presentationDetents(availableDetents, selection: $selectedDetent)
+        .presentationDragIndicator(textMetrics.needsExpansion ? .visible : .hidden)
         .fullScreenCover(isPresented: $isEditingTitle) {
             PropertyEditor(
                 record: record,
@@ -137,58 +221,49 @@ struct RecordDetail: View {
         }
     }
 
+    private var bottomToolbar: some View {
+        GlassEffectContainer(spacing: 8) {
+            HStack(spacing: 12) {
+                deleteButtonContent
+                copyButtonContent
+                editButtonContent
+                favoriteButtonContent
+
+                Spacer(minLength: 12)
+
+                closeButtonContent
+            }
+            .buttonStyle(.glass)
+            .buttonBorderShape(.circle)
+            .controlSize(.large)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 8)
+    }
+
     @ViewBuilder
     private var qrCodeSection: some View {
         if let generator = BarcodeGeneratorFactory.makeGenerator(type: record.metadataObjectType),
            let image = generator.generateImage(from: record.stringValue)
         {
-            GeometryReader { geometry in
-                barcode(for: image, in: geometry.size)
-                    // to avoid glitch before size is calculated
-                    .opacity(barcodeHeight > 0 ? 1 : 0)
-            }
-            .frame(height: barcodeHeight > 0 ? barcodeHeight : (record.is2DBarcode ? 200 : 120))
-            .onAppear {
-                barcodeImage = image
-            }
+            Image(uiImage: image)
+                .interpolation(.none)
+                .resizable()
+                .scaledToFit()
+                .frame(
+                    maxWidth: record.is2DBarcode ? 200 : 320,
+                    maxHeight: record.is2DBarcode ? 200 : 120
+                )
+                .frame(height: record.is2DBarcode ? 200 : 120)
+                .onAppear {
+                    barcodeImage = image
+                }
         } else {
             Image(systemName: "qrcode")
                 .font(.system(size: 80))
                 .foregroundColor(.primary)
                 .frame(height: 120)
         }
-    }
-
-    private func barcode(for image: UIImage, in geometrySize: CGSize) -> some View {
-        let availableWidth = geometrySize.width
-        let calculatedBarcodeWidth: CGFloat
-        let calculatedBarcodeHeight: CGFloat
-        let horizontalPadding: CGFloat
-
-        if record.is2DBarcode {
-            let maxSize = min(availableWidth * 0.7, 200)
-            calculatedBarcodeWidth = maxSize
-            calculatedBarcodeHeight = maxSize
-            horizontalPadding = (availableWidth - maxSize) / 2
-        } else {
-            calculatedBarcodeWidth = min(availableWidth * 0.9, 320)
-            calculatedBarcodeHeight = min(calculatedBarcodeWidth * 0.375, 120) // 保持 8:3 的寬高比
-            horizontalPadding = (availableWidth - calculatedBarcodeWidth) / 2
-        }
-
-        DispatchQueue.main.async {
-            if barcodeHeight != calculatedBarcodeHeight {
-                barcodeHeight = calculatedBarcodeHeight
-            }
-        }
-
-        return Image(uiImage: image)
-            .interpolation(.none)
-            .resizable()
-            .scaledToFit()
-            .frame(width: calculatedBarcodeWidth, height: calculatedBarcodeHeight)
-            .padding(.horizontal, horizontalPadding)
-            .frame(maxWidth: .infinity)
     }
 
     private func toggleFavorite() {
@@ -222,8 +297,6 @@ struct RecordDetail: View {
 }
 
 struct RecordDetail_Previews: PreviewProvider {
-    @State private static var showSheet = true
-
     static var previews: some View {
         NavigationStack {
             VStack {
@@ -240,12 +313,7 @@ struct RecordDetail_Previews: PreviewProvider {
 }
 
 private enum PreviewHelper {
-    static let preview: PersistenceController = {
-        let controller = PersistenceController(inMemory: true)
-        let context = controller.modelContext
-
-        return controller
-    }()
+    static let preview = PersistenceController(inMemory: true)
 
     static var sampleCodeRecord: CodeRecord {
         let record = CodeRecord(
