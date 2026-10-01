@@ -34,7 +34,7 @@ struct Scanner: UIViewRepresentable {
         let scannerView = AVScannerView(controller: sessionController)
         scannerView.initSession()
         scannerView.delegate = context.coordinator
-        scannerView.supportedMetadataObjectTypes = [.qr, .code128, .aztec, .pdf417]
+        scannerView.supportedMetadataObjectTypes = [.qr, .code128, .aztec, .pdf417, .code39]
         return scannerView
     }
 
