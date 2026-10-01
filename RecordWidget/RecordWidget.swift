@@ -70,10 +70,25 @@ struct RecordWidgetProvider: AppIntentTimelineProvider {
     // MARK: - Loading image for barcode
 
     private func image(for entity: CodeRecordEntity) -> UIImage? {
-        imageStorage.loadImage(
+        if let image = imageStorage.loadImage(
+            barcodeType: entity.metadataObjectType,
+            stringValue: entity.stringValue
+        ) {
+            return image
+        }
+
+        guard let generator = BarcodeGeneratorFactory.makeGenerator(type: entity.metadataObjectType),
+              let image = generator.generateImage(from: entity.stringValue)
+        else {
+            return nil
+        }
+
+        imageStorage.saveImage(
+            image,
             barcodeType: entity.metadataObjectType,
             stringValue: entity.stringValue
         )
+        return image
     }
 }
 
