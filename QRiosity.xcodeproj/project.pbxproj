@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		5E47417B26E484DD00A964F8 /* AVScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 5E47417A26E484DD00A964F8 /* AVScanner */; };
+		5EDBC6E6306AC3CB0026ED68 /* BarGlyph in Frameworks */ = {isa = PBXBuildFile; productRef = 5EDBC6E5306AC3CB0026ED68 /* BarGlyph */; };
+		5EDBC6EB306ACC0B0026ED68 /* BarGlyph in Frameworks */ = {isa = PBXBuildFile; productRef = 5EDBC6EA306ACC0B0026ED68 /* BarGlyph */; };
 		9E4E153C2E98239B005C9B85 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E4E15052E981D5F005C9B85 /* WidgetKit.framework */; };
 		9E4E153D2E98239B005C9B85 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E4E15072E981D5F005C9B85 /* SwiftUI.framework */; };
 		9E4E154A2E98239C005C9B85 /* RecordWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 9E4E153B2E98239B005C9B85 /* RecordWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -139,6 +141,7 @@
 				9EEF95352E80483C0044089F /* Alamofire in Frameworks */,
 				9EEF95322E8042760044089F /* SwiftUINavigation in Frameworks */,
 				9EEF95302E8042760044089F /* SwiftNavigation in Frameworks */,
+				5EDBC6E6306AC3CB0026ED68 /* BarGlyph in Frameworks */,
 				5E47417B26E484DD00A964F8 /* AVScanner in Frameworks */,
 				9EEF95382E8049810044089F /* Kanna in Frameworks */,
 			);
@@ -162,6 +165,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5EDBC6EB306ACC0B0026ED68 /* BarGlyph in Frameworks */,
 				9E4E153D2E98239B005C9B85 /* SwiftUI.framework in Frameworks */,
 				9E4E153C2E98239B005C9B85 /* WidgetKit.framework in Frameworks */,
 			);
@@ -224,6 +228,7 @@
 				9EEF95312E8042760044089F /* SwiftUINavigation */,
 				9EEF95342E80483C0044089F /* Alamofire */,
 				9EEF95372E8049810044089F /* Kanna */,
+				5EDBC6E5306AC3CB0026ED68 /* BarGlyph */,
 			);
 			productName = QRiosity;
 			productReference = 9E7B82E32E5B64380026588F /* QRiosity.app */;
@@ -282,6 +287,7 @@
 			);
 			name = RecordWidgetExtension;
 			packageProductDependencies = (
+				5EDBC6EA306ACC0B0026ED68 /* BarGlyph */,
 			);
 			productName = RecordWidgetExtension;
 			productReference = 9E4E153B2E98239B005C9B85 /* RecordWidgetExtension.appex */;
@@ -330,6 +336,7 @@
 				9EEF952E2E8042760044089F /* XCRemoteSwiftPackageReference "swift-navigation" */,
 				9EEF95332E80483C0044089F /* XCRemoteSwiftPackageReference "Alamofire" */,
 				9EEF95362E8049810044089F /* XCRemoteSwiftPackageReference "Kanna" */,
+				5EDBC6E4306AC3CB0026ED68 /* XCRemoteSwiftPackageReference "BarGlyph" */,
 			);
 			productRefGroup = 5E5D23B024FEA95B00124551;
 			projectDirPath = "";
@@ -810,6 +817,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		5EDBC6E4306AC3CB0026ED68 /* XCRemoteSwiftPackageReference "BarGlyph" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:mrfour0004/BarGlyph.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.0;
+			};
+		};
 		9E3311312C0CBF9F00B7ABC3 /* XCRemoteSwiftPackageReference "Pow" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "git@github.com:EmergeTools/Pow.git";
@@ -849,6 +864,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5E47417926E4836F00A964F8 /* XCRemoteSwiftPackageReference "AVScanner" */;
 			productName = AVScanner;
+		};
+		5EDBC6E5306AC3CB0026ED68 /* BarGlyph */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5EDBC6E4306AC3CB0026ED68 /* XCRemoteSwiftPackageReference "BarGlyph" */;
+			productName = BarGlyph;
+		};
+		5EDBC6EA306ACC0B0026ED68 /* BarGlyph */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5EDBC6E4306AC3CB0026ED68 /* XCRemoteSwiftPackageReference "BarGlyph" */;
+			productName = BarGlyph;
 		};
 		9EEF952F2E8042760044089F /* SwiftNavigation */ = {
 			isa = XCSwiftPackageProductDependency;

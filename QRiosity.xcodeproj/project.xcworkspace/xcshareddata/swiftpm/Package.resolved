@@ -1,5 +1,5 @@
 {
-  "originHash" : "7659475d28b586712dc2164c782a9d47184978354226d7e5c20371122a7e78d0",
+  "originHash" : "121c6ad2bc4115b564ff198b68747188511e9b1fff2db6609d9ba6ada65f6075",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -17,6 +17,15 @@
       "state" : {
         "revision" : "36d0d9da79528e77731680ecb043181310c69fd4",
         "version" : "1.0.1"
+      }
+    },
+    {
+      "identity" : "barglyph",
+      "kind" : "remoteSourceControl",
+      "location" : "git@github.com:mrfour0004/BarGlyph.git",
+      "state" : {
+        "revision" : "644b141b55d13ac0ebae813a67bf6cffbca9973b",
+        "version" : "0.1.0"
       }
     },
     {
