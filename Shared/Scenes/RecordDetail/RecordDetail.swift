@@ -202,12 +202,13 @@ struct RecordDetail: View {
                 .frame(maxWidth: .infinity)
             }
             .scrollBounceBehavior(.basedOnSize)
+            .scrollEdgeEffectStyle(.soft, for: .all)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) { navigationTitleContent }
             }
         }
-        .safeAreaInset(edge: .bottom, spacing: 0) {
+        .safeAreaBar(edge: .bottom, spacing: 0) {
             bottomToolbar
         }
         .presentationDetents(availableDetents, selection: $selectedDetent)
@@ -246,18 +247,26 @@ struct RecordDetail: View {
         if let generator = BarcodeGeneratorFactory.makeGenerator(type: record.metadataObjectType),
            let image = generator.generateImage(from: record.stringValue)
         {
-            Image(uiImage: image)
-                .interpolation(.none)
-                .resizable()
-                .scaledToFit()
-                .frame(
-                    maxWidth: record.is2DBarcode ? 200 : 320,
-                    maxHeight: record.is2DBarcode ? 200 : 120
-                )
-                .frame(height: record.is2DBarcode ? 200 : 120)
-                .onAppear {
-                    barcodeImage = image
+            Group {
+                if record.is2DBarcode {
+                    Image(uiImage: image)
+                        .interpolation(.none)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxWidth: 200, maxHeight: 200)
+                        .frame(height: 200)
+                } else {
+                    Image(uiImage: image)
+                        .interpolation(.none)
+                        .resizable()
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 100)
+                        .frame(height: 120)
                 }
+            }
+            .onAppear {
+                barcodeImage = image
+            }
         } else {
             Image(systemName: "qrcode")
                 .font(.system(size: 80))
