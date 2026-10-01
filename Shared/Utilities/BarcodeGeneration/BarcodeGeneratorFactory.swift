@@ -13,6 +13,8 @@ struct BarcodeGeneratorFactory {
         switch type {
         case "org.iso.QRCode":
             return QRCodeGenerator()
+        case "org.iso.Code39":
+            return Code39Generator()
         case "org.iso.Code128":
             return Code128Generator()
         case "org.iso.PDF417":

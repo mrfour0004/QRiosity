@@ -84,6 +84,7 @@
 				Utilities/BarcodeGeneration/BarcodeGenerator.swift,
 				Utilities/BarcodeGeneration/BarcodeGeneratorFactory.swift,
 				Utilities/BarcodeGeneration/Generators/AztecCodeGenerator.swift,
+				Utilities/BarcodeGeneration/Generators/Code39Generator.swift,
 				Utilities/BarcodeGeneration/Generators/Code128Generator.swift,
 				Utilities/BarcodeGeneration/Generators/PDF417Generator.swift,
 				Utilities/BarcodeGeneration/Generators/QRCodeGenerator.swift,
