@@ -36,7 +36,8 @@ struct CodeRecordEntity: AppEntity {
     }
 
     init(from record: CodeRecord) {
-        self.id = record.persistentModelID.hashValue.description
+        // Content and symbology identify the same barcode across app and widget processes.
+        self.id = "\(record.metadataObjectType)_\(record.stringValue)".sha256()
         self.title = record.title ?? record.stringValue
         self.stringValue = record.stringValue
         self.metadataObjectType = record.metadataObjectType
@@ -50,18 +51,27 @@ enum BarcodeFilterType {
 }
 
 struct CodeRecordEntityQuery: EntityQuery {
-    var filterType: BarcodeFilterType = .twoDimensional
+    // The configuration picker has no provider filter; offer all collected barcodes.
+    var filterType: BarcodeFilterType?
 
     @MainActor
     func entities(for identifiers: [String]) async throws -> [CodeRecordEntity] {
+        let requestedIDs = Set(identifiers)
         let records = try collectedRecords()
-        return records.map(CodeRecordEntity.init)
+        let entities = records.map(CodeRecordEntity.init)
+        var seenIDs = Set<String>()
+        return entities.filter {
+            requestedIDs.contains($0.id) && seenIDs.insert($0.id).inserted
+        }
     }
 
     @MainActor
     func suggestedEntities() async throws -> [CodeRecordEntity] {
         let records = try collectedRecords()
-        return records.map(CodeRecordEntity.init)
+        var seenIDs = Set<String>()
+        return records.map(CodeRecordEntity.init).filter {
+            seenIDs.insert($0.id).inserted
+        }
     }
 
     @MainActor
@@ -71,7 +81,7 @@ struct CodeRecordEntityQuery: EntityQuery {
     }
 
     @MainActor
-    private func collectedRecords(fetchLimit: Int = 20) throws -> [CodeRecord] {
+    private func collectedRecords(fetchLimit: Int? = nil) throws -> [CodeRecord] {
         let persistenceController = PersistenceController.shared
         let modelContext = persistenceController.modelContext
 
@@ -80,18 +90,17 @@ struct CodeRecordEntityQuery: EntityQuery {
             sortBy: [SortDescriptor(\CodeRecord.scannedAt, order: .reverse)]
         )
 
-        do {
-            let allRecords = try modelContext.fetch(descriptor)
-            let filtered = allRecords.filter { record in
-                switch filterType {
-                case .twoDimensional: record.is2DBarcode
-                case .oneDimensional: !record.is2DBarcode
-                }
+        let allRecords = try modelContext.fetch(descriptor)
+        let filtered = allRecords.filter { record in
+            switch filterType {
+            case .twoDimensional: record.is2DBarcode
+            case .oneDimensional: !record.is2DBarcode
+            case nil: true
             }
-            return Array(filtered.prefix(fetchLimit))
-        } catch {
-            print("Error fetching default record: \(error)")
-            return []
         }
+        if let fetchLimit {
+            return Array(filtered.prefix(fetchLimit))
+        }
+        return filtered
     }
 }
