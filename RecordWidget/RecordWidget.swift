@@ -143,18 +143,16 @@ struct RecordWidgetEntryView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            if entry.showsTitle {
-                HStack(spacing: 8) {
-                    Image(systemName: isLinear ? "barcode" : "qrcode")
-                        .foregroundStyle(Color(red: 0.12, green: 0.44, blue: 0.48))
-                        .accessibilityHidden(true)
-                    Text(verbatim: entry.title)
-                        .font(.system(.caption, design: .rounded, weight: .semibold))
-                        .lineLimit(1)
-                }
-                .foregroundStyle(Color(red: 0.13, green: 0.23, blue: 0.30))
-                .padding(.horizontal, 4)
+            HStack(spacing: 8) {
+                Image(systemName: isLinear ? "barcode" : "qrcode")
+                    .foregroundStyle(Color(red: 0.12, green: 0.44, blue: 0.48))
+                    .accessibilityHidden(true)
+                Text(verbatim: entry.title)
+                    .font(.system(.caption, design: .rounded, weight: .semibold))
+                    .lineLimit(1)
             }
+            .foregroundStyle(Color(red: 0.13, green: 0.23, blue: 0.30))
+            .padding(.horizontal, 4)
 
             if let image = entry.image {
                 VStack(spacing: isLinear ? 8 : 5) {
@@ -176,18 +174,20 @@ struct RecordWidgetEntryView: View {
                     }
                     .accessibilityHidden(true)
 
-                    Text(verbatim: entry.stringValue)
-                        .font(.system(.caption2, design: .monospaced))
-                        .tracking(isLinear ? 1.2 : 0)
-                        .foregroundStyle(Color(red: 0.22, green: 0.29, blue: 0.33))
-                        .lineLimit(1)
-                        .truncationMode(.middle)
-                        .frame(maxWidth: .infinity)
+                    if entry.showsContent {
+                        Text(verbatim: entry.stringValue)
+                            .font(.system(.caption2, design: .monospaced))
+                            .tracking(isLinear ? 1.2 : 0)
+                            .foregroundStyle(Color(red: 0.22, green: 0.29, blue: 0.33))
+                            .lineLimit(1)
+                            .truncationMode(.middle)
+                            .frame(maxWidth: .infinity)
+                    }
                 }
                 .padding(isLinear ? 14 : 10)
-                .background(.white, in: RoundedRectangle(cornerRadius: 14))
+                .background(.white, in: ContainerRelativeShape())
                 .overlay {
-                    RoundedRectangle(cornerRadius: 14)
+                    ContainerRelativeShape()
                         .strokeBorder(.black.opacity(0.06), lineWidth: 1)
                 }
                 .accessibilityLabel(Text(verbatim: entry.stringValue))
