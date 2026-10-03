@@ -9,7 +9,7 @@
 import CoreImage.CIFilterBuiltins
 import UIKit
 
-struct Code128Generator: BarcodeGenerator {
+nonisolated struct Code128Generator: BarcodeGenerator {
     func generateImage(from content: String) -> UIImage? {
         guard let data = content.data(using: .ascii) else {
             return nil

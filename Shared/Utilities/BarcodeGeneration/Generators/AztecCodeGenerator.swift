@@ -9,7 +9,7 @@
 import CoreImage.CIFilterBuiltins
 import UIKit
 
-struct AztecCodeGenerator: BarcodeGenerator {
+nonisolated struct AztecCodeGenerator: BarcodeGenerator {
     func generateImage(from content: String) -> UIImage? {
         guard let data = content.data(using: .utf8) else {
             return nil

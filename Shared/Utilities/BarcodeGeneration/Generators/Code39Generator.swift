@@ -1,7 +1,7 @@
 import BarGlyph
 import UIKit
 
-struct Code39Generator: BarcodeGenerator {
+nonisolated struct Code39Generator: BarcodeGenerator {
     func generateImage(from content: String) -> UIImage? {
         guard let image = try? BarGlyph.image(
             for: content,

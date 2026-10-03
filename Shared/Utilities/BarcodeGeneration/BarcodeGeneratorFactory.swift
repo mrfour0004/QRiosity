@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct BarcodeGeneratorFactory {
+nonisolated struct BarcodeGeneratorFactory {
     static func makeGenerator(type: String) -> BarcodeGenerator? {
         switch type {
         case "org.iso.QRCode":

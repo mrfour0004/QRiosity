@@ -8,6 +8,6 @@
 
 import UIKit
 
-protocol BarcodeGenerator {
+nonisolated protocol BarcodeGenerator {
     func generateImage(from content: String) -> UIImage?
 }
