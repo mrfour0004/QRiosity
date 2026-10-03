@@ -38,9 +38,7 @@ struct HistoryView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                Color.clear
-                    .background(.regularMaterial)
-                    .background(Image(.background1).resizable().scaledToFill().scaleEffect(2))
+                FlowingGradientBackground(palette: .history)
 
                 if records.isEmpty {
                     EmptyStateView(

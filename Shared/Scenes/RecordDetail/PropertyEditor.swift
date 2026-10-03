@@ -33,8 +33,7 @@ struct PropertyEditor: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                Color(.displayP3, white: 0.96, opacity: 1)
-                    .ignoresSafeArea()
+                FlowingGradientBackground(palette: .collected)
 
                 VStack(spacing: 0) {
                     Spacer()

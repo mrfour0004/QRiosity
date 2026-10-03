@@ -15,23 +15,11 @@ struct CollectedList: View {
     private var records: [CodeRecord]
 
     @EnvironmentObject private var modalStore: ModalStore
-    @State private var backgroundOffset: CGFloat = 0
 
     var body: some View {
         NavigationView {
             ZStack {
-                Color.clear
-                    .background(.regularMaterial)
-                    .background(
-                        Image(.background2)
-                            .resizable()
-                            .scaledToFill()
-                            .scaleEffect(2)
-                            .offset(x: backgroundOffset, y: backgroundOffset * 0.5)
-                            .onAppear {
-                                startBackgroundAnimation()
-                            }
-                    )
+                FlowingGradientBackground(palette: .collected)
 
                 if records.isEmpty {
                     EmptyStateView(
@@ -71,12 +59,6 @@ struct CollectedList: View {
             .navigationTitle(.collected)
             .navigationBarTitleDisplayMode(.large)
             .scrollEdgeEffectStyle(.soft, for: .all)
-        }
-    }
-
-    private func startBackgroundAnimation() {
-        withAnimation(.linear(duration: 5).repeatForever(autoreverses: true)) {
-            backgroundOffset = 200
         }
     }
 }
