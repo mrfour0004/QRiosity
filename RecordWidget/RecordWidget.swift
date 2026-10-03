@@ -44,7 +44,7 @@ struct RecordWidgetProvider: AppIntentTimelineProvider {
         return RecordWidgetEntry(
             date: Date(),
             recordEntity: entity,
-            showsTitle: configuration.showsTitle,
+            showsContent: configuration.showsContent,
             image: image(for: entity)
         )
     }
@@ -60,7 +60,7 @@ struct RecordWidgetProvider: AppIntentTimelineProvider {
         }
 
         let entry = entity.flatMap {
-            RecordWidgetEntry(date: Date(), recordEntity: $0, showsTitle: configuration.showsTitle, image: image(for: $0))
+            RecordWidgetEntry(date: Date(), recordEntity: $0, showsContent: configuration.showsContent, image: image(for: $0))
         } ?? .placeholder
 
         let nextUpdate = Calendar.current.date(byAdding: .hour, value: 4, to: Date()) ?? Date()
@@ -98,27 +98,27 @@ struct RecordWidgetEntry: TimelineEntry {
     let date: Date
     let title: String
     let stringValue: String
-    let showsTitle: Bool
+    let showsContent: Bool
     let isLinear: Bool
     private(set) var image: UIImage?
 
-    init(date: Date, recordEntity: CodeRecordEntity, showsTitle: Bool = true, image: UIImage? = nil) {
+    init(date: Date, recordEntity: CodeRecordEntity, showsContent: Bool = true, image: UIImage? = nil) {
         self.date = date
         self.title = recordEntity.title
         self.stringValue = recordEntity.stringValue
         self.isLinear = !["QRCode", "Aztec", "PDF417"].contains(
             recordEntity.metadataObjectType.split(separator: ".").last.map(String.init) ?? ""
         )
-        self.showsTitle = showsTitle
+        self.showsContent = showsContent
         self.image = image
     }
 
-    init(date: Date, title: String, stringValue: String, showsTitle: Bool = true, isLinear: Bool = false, image: UIImage? = nil) {
+    init(date: Date, title: String, stringValue: String, showsContent: Bool = true, isLinear: Bool = false, image: UIImage? = nil) {
         self.date = date
         self.title = title
         self.stringValue = stringValue
         self.isLinear = isLinear
-        self.showsTitle = showsTitle
+        self.showsContent = showsContent
         self.image = image
     }
 }
@@ -128,7 +128,7 @@ extension RecordWidgetEntry {
         date: Date(),
         title: "No favorite records",
         stringValue: "",
-        showsTitle: true
+        showsContent: true
     )
 }
 
