@@ -21,6 +21,7 @@ struct RecordDetail: View {
     @State private var isCopied = false
     @State private var selectedDetent: PresentationDetent
     @State private var barcodeImage: UIImage?
+    @State private var isLoadingBarcode = true
 
     init(record: CodeRecord) {
         self.record = record
@@ -211,6 +212,20 @@ struct RecordDetail: View {
         .safeAreaBar(edge: .bottom, spacing: 0) {
             bottomToolbar
         }
+        .task(id: [record.metadataObjectType, record.stringValue]) {
+            let type = record.metadataObjectType
+            let content = record.stringValue
+            barcodeImage = nil
+            isLoadingBarcode = true
+            let image = await DetailBarcodeRenderer.shared.image(type: type, content: content)
+            guard !Task.isCancelled else { return }
+            barcodeImage = image
+            isLoadingBarcode = false
+            // Favoriting while the image loads should still save the completed image.
+            if record.isFavorite {
+                saveImage()
+            }
+        }
         .presentationDetents(availableDetents, selection: $selectedDetent)
         .presentationDragIndicator(textMetrics.needsExpansion ? .visible : .hidden)
         .fullScreenCover(isPresented: $isEditingTitle) {
@@ -244,9 +259,7 @@ struct RecordDetail: View {
 
     @ViewBuilder
     private var qrCodeSection: some View {
-        if let generator = BarcodeGeneratorFactory.makeGenerator(type: record.metadataObjectType),
-           let image = generator.generateImage(from: record.stringValue)
-        {
+        if let image = barcodeImage {
             Group {
                 if record.is2DBarcode {
                     Image(uiImage: image)
@@ -264,9 +277,10 @@ struct RecordDetail: View {
                         .frame(height: 120)
                 }
             }
-            .onAppear {
-                barcodeImage = image
-            }
+        } else if isLoadingBarcode {
+            ProgressView()
+                .frame(maxWidth: .infinity)
+                .frame(height: record.is2DBarcode ? 200 : 120)
         } else {
             Image(systemName: "qrcode")
                 .font(.system(size: 80))
@@ -302,6 +316,32 @@ struct RecordDetail: View {
         dismiss()
         modelContext.delete(record)
         try? modelContext.save()
+    }
+}
+
+/// Actor isolation keeps Core Image initialization and rendering off the UI executor.
+private actor DetailBarcodeRenderer {
+    static let shared = DetailBarcodeRenderer()
+
+    private let cache = NSCache<NSString, UIImage>()
+
+    init() {
+        cache.countLimit = 24
+        cache.totalCostLimit = 16 * 1024 * 1024
+    }
+
+    func image(type: String, content: String) -> UIImage? {
+        let key = "\(type.utf8.count):\(type)\(content)" as NSString
+        if let image = cache.object(forKey: key) {
+            return image
+        }
+        guard let image = BarcodeGeneratorFactory.makeGenerator(type: type)?
+            .generateImage(from: content) else {
+            return nil
+        }
+        let cost = image.cgImage.map { $0.bytesPerRow * $0.height } ?? 0
+        cache.setObject(image, forKey: key, cost: cost)
+        return image
     }
 }
 
