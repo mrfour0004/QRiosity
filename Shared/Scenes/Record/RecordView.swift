@@ -28,7 +28,7 @@ struct RecordView: View {
                     title
                     date
                 }
-                .foregroundStyle(Color(.main))
+                .foregroundStyle(.primary)
                 content
             }
         }
@@ -47,7 +47,7 @@ struct RecordView: View {
             .scaledToFit()
             .frame(width: 12, height: 12)
             .padding(6)
-            .foregroundStyle(Color(.main))
+            .foregroundStyle(.primary)
             .fontWeight(.bold)
             .fontDesign(.rounded)
             .glassEffect(in: Circle())
@@ -60,7 +60,7 @@ struct RecordView: View {
                 .fixedSize(horizontal: false, vertical: true)
                 .lineLimit(2)
                 .font(.avenir(.headline))
-                .foregroundStyle(record.title == nil ? Color(.lightGray) : Color(.main))
+                .foregroundStyle(record.title == nil ? Color.secondary : Color.primary)
 
             Spacer()
         }
@@ -69,6 +69,7 @@ struct RecordView: View {
     private var date: some View {
         Text("\(record.scannedAt, formatter: dateFormatter)")
             .font(.caption)
+            .foregroundStyle(.secondary)
     }
 
     @ViewBuilder
@@ -86,7 +87,7 @@ struct RecordView: View {
                         .multilineTextAlignment(.leading)
                         .lineLimit(3)
                         .font(.avenir(.subheadline))
-                        .foregroundStyle(Color(.main))
+                        .foregroundStyle(.primary)
                     Spacer(minLength: 12)
                 }
                 if let host = record.url?.host {
@@ -94,7 +95,7 @@ struct RecordView: View {
                     HStack {
                         Text(host.uppercased())
                             .font(.avenir(.caption2))
-                            .foregroundStyle(Color(.lightGray))
+                            .foregroundStyle(.secondary)
                         Spacer()
                     }
                 }
