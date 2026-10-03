@@ -57,8 +57,7 @@ struct PropertyEditor: View {
                     }
                 }
             }
-            .task {
-                try? await Task.sleep(for: .milliseconds(500))
+            .onAppear {
                 isTextFieldFocused = true
             }
         }
