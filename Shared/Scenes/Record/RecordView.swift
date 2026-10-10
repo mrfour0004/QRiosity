@@ -30,6 +30,7 @@ struct RecordView: View {
                 }
                 .foregroundStyle(.primary)
                 content
+                if record.hasLabels { RecordLabelIcons(labels: record.labels) }
             }
         }
         .contentShape(Rectangle())
@@ -83,7 +84,7 @@ struct RecordView: View {
 
             VStack {
                 HStack {
-                    Text(record.desc ?? record.stringValue)
+                    Text(record.recordDescription ?? record.stringValue)
                         .multilineTextAlignment(.leading)
                         .lineLimit(3)
                         .font(.avenir(.subheadline))

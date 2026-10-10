@@ -10,6 +10,8 @@ import SwiftData
 import SwiftUI
 import UIKit
 
+// MARK: - RecordDetail
+
 struct RecordDetail: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
@@ -17,6 +19,8 @@ struct RecordDetail: View {
 
     @Bindable var record: CodeRecord
     @State private var isPromptingDeletion = false
+    @State private var isEditingLabels = false
+    @State private var saveFailed = false
     @State private var isEditingTitle = false
     @State private var isCopied = false
     @State private var selectedDetent: PresentationDetent
@@ -133,16 +137,6 @@ struct RecordDetail: View {
         }
     }
 
-    private var favoriteButtonContent: some View {
-        Button {
-            toggleFavorite()
-        } label: {
-            Image(systemName: record.isFavorite ? "heart.fill" : "heart")
-                .symbolColorRenderingMode(.gradient)
-                .foregroundColor(record.isFavorite ? .red : .primary)
-        }
-    }
-
     private var deleteButtonContent: some View {
         Button {
             isPromptingDeletion = true
@@ -221,11 +215,18 @@ struct RecordDetail: View {
             guard !Task.isCancelled else { return }
             barcodeImage = image
             isLoadingBarcode = false
-            // Favoriting while the image loads should still save the completed image.
-            if record.isFavorite {
+            if record.hasLabels {
                 saveImage()
             }
         }
+        .sheet(isPresented: $isEditingLabels) {
+            LabelSelectionView(record: record) {
+                if record.hasLabels { saveImage() }
+            }
+        }
+        .alert("Unable to Save", isPresented: $saveFailed) {
+            Button("OK", role: .cancel) {}
+        } message: { Text("Your changes could not be saved. Please try again.") }
         .presentationDetents(availableDetents, selection: $selectedDetent)
         .presentationDragIndicator(textMetrics.needsExpansion ? .visible : .hidden)
         .fullScreenCover(isPresented: $isEditingTitle) {
@@ -243,7 +244,8 @@ struct RecordDetail: View {
                 deleteButtonContent
                 copyButtonContent
                 editButtonContent
-                favoriteButtonContent
+                Button { isEditingLabels = true } label: { Image(systemName: "tag") }
+                    .accessibilityLabel("Labels")
 
                 Spacer(minLength: 12)
 
@@ -289,13 +291,9 @@ struct RecordDetail: View {
         }
     }
 
-    private func toggleFavorite() {
-        record.isFavorite.toggle()
-
-        record.isFavorite ? saveImage() : deleteImage()
-        try? modelContext.save()
-    }
-
+    /// Caches the rendered image for widgets after a code receives a label.
+    ///
+    /// Call again when rendering finishes if labels were assigned while loading.
     private func saveImage() {
         guard let image = barcodeImage else { return }
         barcodeImageStorage.saveImage(
@@ -305,19 +303,15 @@ struct RecordDetail: View {
         )
     }
 
-    private func deleteImage() {
-        barcodeImageStorage.deleteImage(
-            barcodeType: record.metadataObjectType,
-            stringValue: record.stringValue
-        )
-    }
-
     private func deleteRecord() {
-        dismiss()
-        modelContext.delete(record)
-        try? modelContext.save()
+        do {
+            try LabelStore.delete(record, in: modelContext)
+            dismiss()
+        } catch { saveFailed = true }
     }
 }
+
+// MARK: - DetailBarcodeRenderer
 
 /// Actor isolation keeps Core Image initialization and rendering off the UI executor.
 private actor DetailBarcodeRenderer {
@@ -344,6 +338,8 @@ private actor DetailBarcodeRenderer {
         return image
     }
 }
+
+// MARK: - RecordDetail_Previews
 
 struct RecordDetail_Previews: PreviewProvider {
     static var previews: some View {
