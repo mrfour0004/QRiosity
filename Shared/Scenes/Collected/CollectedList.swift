@@ -1,71 +1,136 @@
-//
-//  CollectedList.swift
-//  QRiosity
-//
-//  Created by mrfour on 2020/9/9.
-//
-
-import SwiftUI
 import SwiftData
+import SwiftUI
+
+// MARK: - CollectedList
 
 struct CollectedList: View {
-    @Environment(\.modelContext) private var modelContext
-
-    @Query(filter: #Predicate<CodeRecord> { $0.isFavorite == true }, sort: \CodeRecord.scannedAt)
-    private var records: [CodeRecord]
-
-    @EnvironmentObject private var modalStore: ModalStore
+    @Query(sort: \CodeLabel.creationDate) private var labels: [CodeLabel]
+    @State private var selectedLabelID: UUID?
+    @State private var isManagingLabels = false
 
     var body: some View {
         NavigationView {
-            ZStack {
-                FlowingGradientBackground(palette: .collected)
-
-                if records.isEmpty {
-                    EmptyStateView(
-                        title: "No Collected Items",
-                        message: "Tap the heart icon on any scanned code to add it to your collection."
-                    )
-                    .padding(.bottom, 24)
-                } else {
-                    ScrollView(showsIndicators: false) {
-                        LazyVStack(alignment: .leading, spacing: 24) {
-                            ForEach(records) { record in
-                                RecordView(record: record)
-                                    .onTapGesture {
-                                        if let url = record.url {
-                                            withAnimation {
-                                                modalStore.presentedObject = IdentifiableURL(url)
-                                            }
-                                        } else {
-                                            withAnimation {
-                                                modalStore.presentedObject = record
-                                            }
-                                        }
-                                    }
-                                    .onLongPressGesture {
-                                        if record.url != nil {
-                                            withAnimation {
-                                                modalStore.presentedObject = record
-                                            }
-                                        }
-                                    }
-                            }
+            GeometryReader { geometry in
+                ScrollView(showsIndicators: false) {
+                    LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
+                        Section {
+                            LabeledRecordsView(labelID: selectedLabelID)
+                                .frame(minHeight: geometry.size.height, alignment: .top)
+                        } header: {
+                            LabelFilterBar(labels: labels, selection: $selectedLabelID)
+                                .padding(.top, 16)
+                                .accessibilityIdentifier("labelFilterBar")
                         }
-                        .padding()
+                    }
+                }
+                .accessibilityIdentifier("collectedScrollView")
+                .scrollEdgeEffectStyle(.soft, for: .all)
+            }
+            .background { FlowingGradientBackground(palette: .collected) }
+            .navigationTitle(.collected)
+            .navigationBarTitleDisplayMode(.large)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button { isManagingLabels = true } label: {
+                        Label("Manage Labels", systemImage: "slider.horizontal.3")
                     }
                 }
             }
-            .navigationTitle(.collected)
-            .navigationBarTitleDisplayMode(.large)
-            .scrollEdgeEffectStyle(.soft, for: .all)
+            .sheet(isPresented: $isManagingLabels) { LabelManagementView() }
+            .onChange(of: labels.map(\.id)) { _, ids in
+                if let selectedLabelID, !ids.contains(selectedLabelID) { self.selectedLabelID = nil }
+            }
         }
     }
 }
 
-struct CollectedList_Previews: PreviewProvider {
-    static var previews: some View {
-        CollectedList()
-            .modelContainer(PersistenceController.preview.modelContainer)
+// MARK: - LabelFilterBar
+
+private struct LabelFilterBar: View {
+    let labels: [CodeLabel]
+    @Binding var selection: UUID?
+
+    var body: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 8) {
+                Button { selection = nil } label: { Text("All") }
+                    .tint(selection == nil ? .accentColor : .secondary)
+                    .accessibilityAddTraits(selection == nil ? .isSelected : [])
+                    .buttonStyle(LabelFilterButtonStyle(isSelected: selection == nil))
+                ForEach(labels) { label in
+                    Button { selection = label.id } label: {
+                        Label {
+                            if label.title != nil { CodeLabelTitle(label: label) }
+                        } icon: { Image(systemName: label.displaySymbol) }
+                    }
+                    .buttonStyle(LabelFilterButtonStyle(isSelected: selection == label.id))
+                    .tint(selection == label.id ? .accentColor : .secondary)
+                    .accessibilityLabel(CodeLabelTitle(label: label).text)
+                    .accessibilityAddTraits(selection == label.id ? .isSelected : [])
+                }
+            }
+            .padding(.horizontal)
+            .padding(.vertical, 8)
+        }
+    }
+}
+
+// MARK: - LabelFilterButtonStyle
+
+/// A glass button style that emphasizes the selected label filter.
+private struct LabelFilterButtonStyle: PrimitiveButtonStyle {
+    let isSelected: Bool
+
+    func makeBody(configuration: Configuration) -> some View {
+        if isSelected {
+            Button(configuration)
+                .buttonStyle(.glassProminent)
+        } else {
+            Button(configuration)
+                .buttonStyle(.glass)
+        }
+    }
+}
+
+// MARK: - LabeledRecordsView
+
+private struct LabeledRecordsView: View {
+    @Query private var records: [CodeRecord]
+    @EnvironmentObject private var modalStore: ModalStore
+    @State private var recordBeingLabeled: CodeRecord?
+
+    init(labelID: UUID?) {
+        let predicate: Predicate<CodeRecord>
+        if let labelID {
+            predicate = #Predicate { $0.labels.contains { $0.id == labelID } }
+        } else {
+            predicate = #Predicate { !$0.labels.isEmpty }
+        }
+        _records = Query(filter: predicate, sort: \CodeRecord.scannedAt, order: .reverse)
+    }
+
+    var body: some View {
+        GlassEffectContainer {
+            if records.isEmpty {
+                EmptyStateView(title: "No Labeled Codes", message: "Add labels to a code from its details or History.")
+                    .containerRelativeFrame(.vertical)
+            } else {
+                LazyVStack(alignment: .leading, spacing: 24) {
+                    ForEach(records) { record in
+                        RecordView(record: record)
+                            .onTapGesture {
+                                if let url = record.url { modalStore.presentedObject = IdentifiableURL(url) }
+                                else { modalStore.presentedObject = record }
+                            }
+                            .contextMenu {
+                                Button("Details", systemImage: "info.circle") { modalStore.presentedObject = record }
+                                Button("Labels", systemImage: "tag") { recordBeingLabeled = record }
+                            }
+                    }
+                }
+                .padding()
+            }
+        }
+        .sheet(item: $recordBeingLabeled) { record in LabelSelectionView(record: record) }
     }
 }
