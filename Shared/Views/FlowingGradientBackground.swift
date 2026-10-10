@@ -88,9 +88,9 @@ struct FlowingGradientBackground: View {
         // Broad, fading stops produce a blurred appearance without a full-screen blur pass.
         RadialGradient(
             stops: [
-                .init(color: color.opacity(isDark ? 0.30 : 0.34), location: 0),
-                .init(color: color.opacity(isDark ? 0.13 : 0.16), location: 0.4),
-                .init(color: color.opacity(0), location: 1)
+                Gradient.Stop(color: color.opacity(isDark ? 0.30 : 0.34), location: 0),
+                Gradient.Stop(color: color.opacity(isDark ? 0.13 : 0.16), location: 0.4),
+                Gradient.Stop(color: color.opacity(0), location: 1)
             ],
             center: center,
             startRadius: 0,

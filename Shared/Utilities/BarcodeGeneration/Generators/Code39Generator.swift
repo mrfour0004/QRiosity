@@ -6,10 +6,10 @@ nonisolated struct Code39Generator: BarcodeGenerator {
         guard let image = try? BarGlyph.image(
             for: content,
             symbology: .code39,
-            options: .init(
+            options: BarGlyph.Options(
                 moduleSize: 3,
                 barHeight: 240,
-                backgroundColor: .init(red: 0, green: 0, blue: 0, alpha: 0)
+                backgroundColor: UIColor(red: 0, green: 0, blue: 0, alpha: 0)
             )
         ) else {
             return nil
