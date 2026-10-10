@@ -114,7 +114,7 @@ struct ContentView_Previews: PreviewProvider {
     private static func makeCodeRecord() -> CodeRecord {
         let record = CodeRecord(stringValue: "this is the content of barcode", metadataObjectType: "QR")
         record.title = "code title"
-        record.desc = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. "
+        record.recordDescription = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. "
 
         return record
     }

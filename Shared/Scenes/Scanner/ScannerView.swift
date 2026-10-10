@@ -22,7 +22,7 @@ struct ScannerView: View {
                 .onCapture { metadataObject in
                     Task {
                         let existingRecord = modelContext.existingCodeRecord(withBarcode: metadataObject.stringValue!)
-                        let record = existingRecord ?? CodeRecord.create(with: metadataObject, in: modelContext)
+                        let record = existingRecord ?? CodeRecord.insert(metadataObject, in: modelContext)
                         record.scannedAt = Date() // update the scan time anyway
 
                         try? modelContext.save()
@@ -34,7 +34,7 @@ struct ScannerView: View {
                                 record.updateMetadata(
                                     title: metadata.title,
                                     description: metadata.description,
-                                    previewImageURL: metadata.previewImageURL
+                                    previewImageURLString: metadata.previewImageURL
                                 )
                                 try? modelContext.save()
                             } catch {

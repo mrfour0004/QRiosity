@@ -9,11 +9,19 @@ import AVFoundation
 import Foundation
 import SwiftData
 
+// MARK: - CodeRecord
+
 @Model
 final class CodeRecord: Identifiable {
-    var desc: String?
+    /// The descriptive text associated with the code.
+    @Attribute(originalName: "desc") var recordDescription: String?
     var isDeletedFromHistory: Bool = false
+    /// The legacy favorite value used only when migrating to labels.
+    ///
+    /// Use ``isBookmarked`` to read the current Bookmark membership.
     var isFavorite: Bool = false
+    /// The labels that classify and retain this record.
+    @Relationship(deleteRule: .nullify) var labels: [CodeLabel] = []
     var metadataObjectType: String
     var previewImageURLString: String?
     var scannedAt: Date
@@ -27,6 +35,13 @@ final class CodeRecord: Identifiable {
         self.isFavorite = false
         self.isDeletedFromHistory = false
     }
+
+    /// A Boolean value indicating whether this record belongs to Bookmark.
+    var isBookmarked: Bool { labels.contains { $0.isBookmark } }
+    /// A Boolean value indicating whether labels retain this record outside History.
+    var hasLabels: Bool { !labels.isEmpty }
+
+    // MARK: - RecordType
 
     enum RecordType {
         case url
@@ -56,30 +71,49 @@ final class CodeRecord: Identifiable {
 // MARK: - Metadata Update
 
 extension CodeRecord {
-    func updateMetadata(title: String?, description: String?, previewImageURL: String?) {
+    /// Replaces the metadata fetched for the record's URL.
+    ///
+    /// - Parameters:
+    ///   - title: The page title, or `nil` if unavailable.
+    ///   - description: The page description, or `nil` if unavailable.
+    ///   - previewImageURLString: The preview image address as a string, or `nil` if unavailable.
+    func updateMetadata(title: String?, description: String?, previewImageURLString: String?) {
         self.title = title
-        self.desc = description
-        self.previewImageURLString = previewImageURL
+        self.recordDescription = description
+        self.previewImageURLString = previewImageURLString
     }
 }
 
-// MARK: - Class function
+// MARK: - Insertion
 
 extension CodeRecord {
-    static func create(
-        with codeObject: AVMetadataMachineReadableCodeObject,
+    /// Inserts a new record for a scanned code into the context.
+    ///
+    /// - Parameters:
+    ///   - codeObject: The scanned code, which must have a string value.
+    ///   - modelContext: The context into which the record is inserted.
+    /// - Returns: The inserted record.
+    static func insert(
+        _ codeObject: AVMetadataMachineReadableCodeObject,
         in modelContext: ModelContext
     ) -> CodeRecord {
-        create(withString: codeObject.stringValue!, type: codeObject.type, in: modelContext)
+        insert(stringValue: codeObject.stringValue!, type: codeObject.type, in: modelContext)
     }
 
-    static func create(
-        withString value: String,
+    /// Inserts a new record with the specified content into the context.
+    ///
+    /// - Parameters:
+    ///   - stringValue: The content of the code.
+    ///   - type: The barcode symbology of the code.
+    ///   - modelContext: The context into which the record is inserted.
+    /// - Returns: The inserted record.
+    static func insert(
+        stringValue: String,
         type: AVMetadataObject.ObjectType,
         in modelContext: ModelContext
     ) -> CodeRecord {
         let instance = CodeRecord(
-            stringValue: value,
+            stringValue: stringValue,
             metadataObjectType: type.rawValue,
             scannedAt: Date()
         )
@@ -88,5 +122,3 @@ extension CodeRecord {
         return instance
     }
 }
-
-// MARK: - Extensions for compatibility

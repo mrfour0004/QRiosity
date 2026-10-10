@@ -367,7 +367,7 @@ private enum PreviewHelper {
             scannedAt: Date()
         )
         record.title = "Sample QR Code"
-        record.desc = "This is a sample QR code for testing purposes"
+        record.recordDescription = "This is a sample QR code for testing purposes"
 
         return record
     }
