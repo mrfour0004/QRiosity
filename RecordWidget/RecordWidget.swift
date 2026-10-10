@@ -34,7 +34,7 @@ struct RecordWidgetProvider: AppIntentTimelineProvider {
         query.filterType = filterType
 
         let entity: CodeRecordEntity? = if let recordEntity = configuration.record {
-            recordEntity
+            try? await query.entities(for: [recordEntity.id]).first
         } else {
             try? await query.defaultResult()
         }
@@ -54,7 +54,7 @@ struct RecordWidgetProvider: AppIntentTimelineProvider {
         query.filterType = filterType
 
         let entity: CodeRecordEntity? = if let recordEntity = configuration.record {
-            recordEntity
+            try? await query.entities(for: [recordEntity.id]).first
         } else {
             try? await query.defaultResult()
         }
@@ -63,7 +63,7 @@ struct RecordWidgetProvider: AppIntentTimelineProvider {
             RecordWidgetEntry(date: Date(), recordEntity: $0, showsContent: configuration.showsContent, image: image(for: $0))
         } ?? .placeholder
 
-        let nextUpdate = Calendar.current.date(byAdding: .hour, value: 4, to: Date()) ?? Date()
+        let nextUpdate = Calendar.current.date(byAdding: .minute, value: entity == nil ? 1 : 240, to: Date()) ?? Date()
         return Timeline(entries: [entry], policy: .after(nextUpdate))
     }
 
@@ -126,7 +126,7 @@ struct RecordWidgetEntry: TimelineEntry {
 extension RecordWidgetEntry {
     static let placeholder = RecordWidgetEntry(
         date: Date(),
-        title: "No favorite records",
+        title: String(localized: "No Labeled Codes"),
         stringValue: "",
         showsContent: true
     )
@@ -237,7 +237,7 @@ struct RecordWidget2D: Widget {
         }
         .contentMarginsDisabled()
         .configurationDisplayName("2D Barcode")
-        .description("Display a 2D barcode (QR, Aztec, PDF417) from your collected items.")
+        .description("Display a 2D barcode (QR, Aztec, PDF417) from your labeled codes.")
         .supportedFamilies([.systemSmall])
     }
 }
@@ -258,7 +258,7 @@ struct RecordWidget1D: Widget {
         }
         .contentMarginsDisabled()
         .configurationDisplayName("1D Barcode")
-        .description("Display a 1D barcode from your collected items.")
+        .description("Display a 1D barcode from your labeled codes.")
         .supportedFamilies([.systemMedium])
     }
 }

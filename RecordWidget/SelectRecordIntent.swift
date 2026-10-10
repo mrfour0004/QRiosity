@@ -10,9 +10,9 @@ import AppIntents
 
 struct SelectRecordIntent: WidgetConfigurationIntent {
     static var title: LocalizedStringResource = "Select Record"
-    static var description = IntentDescription("Choose a barcode from your collected items to display in the widget.")
+    static var description = IntentDescription("Choose a barcode from your labeled codes to display in the widget.")
 
-    @Parameter(title: "Collected Barcode")
+    @Parameter(title: "Labeled Barcode")
     var record: CodeRecordEntity?
 
     @Parameter(title: "Show Barcode Content", default: true)

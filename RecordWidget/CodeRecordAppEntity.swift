@@ -11,7 +11,7 @@ import Foundation
 import SwiftData
 
 struct CodeRecordEntity: AppEntity {
-    static var typeDisplayRepresentation: TypeDisplayRepresentation = "Collected Barcode"
+    static var typeDisplayRepresentation: TypeDisplayRepresentation = "Labeled Barcode"
     static var defaultQuery = CodeRecordEntityQuery()
 
     var id: String
@@ -35,8 +35,10 @@ struct CodeRecordEntity: AppEntity {
         self.scannedAt = scannedAt
     }
 
+    /// Creates an entity whose identity is derived from the barcode content and symbology.
+    ///
+    /// The identifier remains compatible with previously configured widgets.
     init(from record: CodeRecord) {
-        // Content and symbology identify the same barcode across app and widget processes.
         self.id = "\(record.metadataObjectType)_\(record.stringValue)".sha256()
         self.title = record.title ?? record.stringValue
         self.stringValue = record.stringValue
@@ -51,14 +53,13 @@ enum BarcodeFilterType {
 }
 
 struct CodeRecordEntityQuery: EntityQuery {
-    // The configuration picker has no provider filter; offer all collected barcodes.
+    /// The barcode family to offer, or `nil` to include all labeled codes.
     var filterType: BarcodeFilterType?
 
     @MainActor
     func entities(for identifiers: [String]) async throws -> [CodeRecordEntity] {
         let requestedIDs = Set(identifiers)
-        let records = try collectedRecords()
-        let entities = records.map(CodeRecordEntity.init)
+        let entities = try labeledEntities()
         var seenIDs = Set<String>()
         return entities.filter {
             requestedIDs.contains($0.id) && seenIDs.insert($0.id).inserted
@@ -67,26 +68,28 @@ struct CodeRecordEntityQuery: EntityQuery {
 
     @MainActor
     func suggestedEntities() async throws -> [CodeRecordEntity] {
-        let records = try collectedRecords()
+        let entities = try labeledEntities()
         var seenIDs = Set<String>()
-        return records.map(CodeRecordEntity.init).filter {
+        return entities.filter {
             seenIDs.insert($0.id).inserted
         }
     }
 
     @MainActor
     func defaultResult() async throws -> CodeRecordEntity? {
-        let record = try collectedRecords(fetchLimit: 1).first
-        return record.map(CodeRecordEntity.init)
+        try labeledEntities(fetchLimit: 1).first
     }
 
+    /// Returns current labeled records as entities while their fetch context is alive.
+    ///
+    /// A fresh context sees changes saved by the app in another process.
     @MainActor
-    private func collectedRecords(fetchLimit: Int? = nil) throws -> [CodeRecord] {
-        let persistenceController = PersistenceController.shared
-        let modelContext = persistenceController.modelContext
+    private func labeledEntities(fetchLimit: Int? = nil) throws -> [CodeRecordEntity] {
+        let persistenceController = try PersistenceController.shared
+        let modelContext = ModelContext(persistenceController.modelContainer)
 
         let descriptor = FetchDescriptor<CodeRecord>(
-            predicate: #Predicate { $0.isFavorite },
+            predicate: #Predicate { !$0.labels.isEmpty },
             sortBy: [SortDescriptor(\CodeRecord.scannedAt, order: .reverse)]
         )
 
@@ -99,8 +102,8 @@ struct CodeRecordEntityQuery: EntityQuery {
             }
         }
         if let fetchLimit {
-            return Array(filtered.prefix(fetchLimit))
+            return filtered.prefix(fetchLimit).map(CodeRecordEntity.init)
         }
-        return filtered
+        return filtered.map(CodeRecordEntity.init)
     }
 }
