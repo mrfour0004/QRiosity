@@ -81,8 +81,13 @@
 				"Extension/Font+.swift",
 				"Extension/String+.swift",
 				"Extension/String+CommonCrypto.swift",
+				Models/CodeLabel.swift,
 				Models/CodeRecord.swift,
+				Models/LabelSymbol.swift,
+				Persistance/LabelStore.swift,
 				Persistance/Persistence.swift,
+				Persistance/StoreLock.swift,
+				Persistance/StoreSchema.swift,
 				Utilities/BarcodeGeneration/BarcodeGenerator.swift,
 				Utilities/BarcodeGeneration/BarcodeGeneratorFactory.swift,
 				Utilities/BarcodeGeneration/Generators/AztecCodeGenerator.swift,
@@ -108,13 +113,6 @@
 			);
 			target = 5E5D23B824FEA95B00124551 /* QRiosity */;
 		};
-		9EBB9D852DFF27C40009530D /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				QRiosityTests.swift,
-			);
-			target = 5E5D23CE24FEA95D00124551 /* QRiosityTests */;
-		};
 		9EBB9D8A2DFF27C60009530D /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -122,15 +120,29 @@
 			);
 			target = 5E5D23D924FEA95D00124551 /* QRiosityUITests */;
 		};
+		C0DE00000000000000000001 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Localizable.xcstrings,
+			);
+			target = 9E4E153A2E98239B005C9B85 /* RecordWidgetExtension */;
+		};
+		C0DE00000000000000000002 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 5E5D23CE24FEA95D00124551 /* QRiosityTests */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		9E4E153E2E98239B005C9B85 /* RecordWidget */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (9E4E154E2E98239C005C9B85 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = RecordWidget; sourceTree = "<group>"; };
 		9EBB9D622DFF27B70009530D /* Shared */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (9E4E15732E98282D005C9B85 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Shared; sourceTree = "<group>"; };
 		9EBB9D7E2DFF27C00009530D /* QRiosity */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (9EBB9D802DFF27C00009530D /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = QRiosity; sourceTree = "<group>"; };
-		9EBB9D832DFF27C40009530D /* QRiosityTests */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (9EBB9D852DFF27C40009530D /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = QRiosityTests; sourceTree = "<group>"; };
+		9EBB9D832DFF27C40009530D /* QRiosityTests */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (C0DE00000000000000000002 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = QRiosityTests; sourceTree = "<group>"; };
 		9EBB9D882DFF27C60009530D /* QRiosityUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (9EBB9D8A2DFF27C60009530D /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = QRiosityUITests; sourceTree = "<group>"; };
-		9EBB9D8C2DFF27CA0009530D /* Resources */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (9E5AA1462E7B12B700C93219 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Resources; sourceTree = "<group>"; };
+		9EBB9D8C2DFF27CA0009530D /* Resources */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (9E5AA1462E7B12B700C93219 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, C0DE00000000000000000001 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Resources; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -246,6 +258,9 @@
 			);
 			dependencies = (
 				5E5D23D124FEA95D00124551 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				9EBB9D832DFF27C40009530D /* QRiosityTests */,
 			);
 			name = QRiosityTests;
 			productName = QRiosityTests;
