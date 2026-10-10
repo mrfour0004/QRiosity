@@ -357,8 +357,10 @@ struct RecordDetail_Previews: PreviewProvider {
     }
 }
 
+// MARK: - PreviewHelper
+
 private enum PreviewHelper {
-    static let preview = PersistenceController(inMemory: true)
+    static let preview = try! PersistenceController(storage: .inMemory)
 
     static var sampleCodeRecord: CodeRecord {
         let record = CodeRecord(

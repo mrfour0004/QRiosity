@@ -8,11 +8,25 @@
 import AVFoundation
 import SwiftData
 
+/// A migrated SwiftData container shared by the app and widget.
+@MainActor
 struct PersistenceController {
-    static let shared = PersistenceController()
+    private static var cached: PersistenceController?
+
+    /// The process's shared controller, retrying initialization after failures.
+    ///
+    /// - Throws: A store initialization or migration error.
+    static var shared: PersistenceController {
+        get throws {
+            if let cached { return cached }
+            let controller = try PersistenceController()
+            cached = controller
+            return controller
+        }
+    }
 
     static let preview: PersistenceController = {
-        let result = PersistenceController(inMemory: true)
+        let result = try! PersistenceController(storage: .inMemory)
         let modelContext = result.modelContext
 
         for index in 0 ..< 10 {
@@ -21,7 +35,7 @@ struct PersistenceController {
                 metadataObjectType: index == 0 ? AVMetadataObject.ObjectType.qr.rawValue : AVMetadataObject.ObjectType.code39.rawValue,
                 scannedAt: Date()
             )
-            instance.isFavorite = true
+            instance.labels = (try? modelContext.fetch(FetchDescriptor<CodeLabel>())) ?? []
 
             if index == 0 {
                 instance.title = "mrfour0004 on GitHub"
@@ -44,17 +58,40 @@ struct PersistenceController {
         modelContainer.mainContext
     }
 
-    init(inMemory: Bool = false) {
-        let schema = Schema([CodeRecord.self])
+    /// Where a controller keeps its data.
+    enum Storage {
+        /// The persistent store in the App Group container shared by the app and widget.
+        case appGroup
+        /// Temporary, memory-only storage.
+        case inMemory
+        /// A persistent store at the specified file location.
+        case file(URL)
+    }
+
+    /// Creates a container and completes schema and label migrations before returning.
+    ///
+    /// - Parameter storage: Where to keep the data.
+    /// - Throws: A locking, container initialization, or data migration error.
+    init(storage: Storage = .appGroup) throws {
+        let schema = Schema(versionedSchema: StoreSchemaV2.self)
+        var storeLock: StoreLock?
         let modelConfiguration: ModelConfiguration
 
-        if inMemory {
+        switch storage {
+        case .inMemory:
             modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
-        } else {
-            let baseURL = FileManager.default
-                .containerURL(forSecurityApplicationGroupIdentifier: "group.com.mrfour.test")
-                ?? FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
-            let storeURL = baseURL.appendingPathComponent("CodeReader.sqlite")
+        case .appGroup, .file:
+            let storeURL: URL
+            if case .file(let url) = storage {
+                storeURL = url
+            } else {
+                let baseURL = FileManager.default
+                    .containerURL(forSecurityApplicationGroupIdentifier: "group.com.mrfour.test")
+                    ?? FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
+                storeURL = baseURL.appendingPathComponent("CodeReader.sqlite")
+            }
+            try FileManager.default.createDirectory(at: storeURL.deletingLastPathComponent(), withIntermediateDirectories: true)
+            storeLock = try StoreLock(url: storeURL.appendingPathExtension("migration.lock"))
 
             modelConfiguration = ModelConfiguration(
                 schema: schema,
@@ -63,10 +100,14 @@ struct PersistenceController {
             )
         }
 
-        do {
-            modelContainer = try ModelContainer(for: schema, configurations: [modelConfiguration])
-        } catch {
-            fatalError("Failed to create ModelContainer: \(error)")
-        }
+        defer { withExtendedLifetime(storeLock) {} }
+        modelContainer = try ModelContainer(
+            for: schema,
+            migrationPlan: StoreMigrationPlan.self,
+            configurations: [modelConfiguration]
+        )
+        let migrationContext = ModelContext(modelContainer)
+        migrationContext.autosaveEnabled = false
+        try LabelMigration.run(in: migrationContext)
     }
 }
