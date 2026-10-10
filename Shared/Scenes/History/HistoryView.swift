@@ -16,23 +16,12 @@ struct HistoryView: View {
 
     @EnvironmentObject private var modalStore: ModalStore
     @State private var showingDeleteConfirmation = false
+    @State private var recordBeingLabeled: CodeRecord?
+    @State private var saveFailed = false
 
     private func deleteAll() {
-        for record in records {
-            record.isDeletedFromHistory = true
-
-            if !record.isFavorite {
-                modelContext.delete(record)
-            }
-        }
-
-        do {
-            try withAnimation {
-                try modelContext.save()
-            }
-        } catch {
-            print("Failed to delete all records: \(error.localizedDescription)")
-        }
+        do { try LabelStore.clearHistory(records, in: modelContext) }
+        catch { saveFailed = true }
     }
 
     var body: some View {
@@ -62,12 +51,9 @@ struct HistoryView: View {
                                             }
                                         }
                                     }
-                                    .onLongPressGesture {
-                                        if record.url != nil {
-                                            withAnimation {
-                                                modalStore.presentedObject = record
-                                            }
-                                        }
+                                    .contextMenu {
+                                        Button("Details", systemImage: "info.circle") { modalStore.presentedObject = record }
+                                        Button("Labels", systemImage: "tag") { recordBeingLabeled = record }
                                     }
                             }
                         }
@@ -75,6 +61,10 @@ struct HistoryView: View {
                     }
                 }
             }
+            .sheet(item: $recordBeingLabeled) { record in LabelSelectionView(record: record) }
+            .alert("Unable to Save", isPresented: $saveFailed) {
+                Button("OK", role: .cancel) {}
+            } message: { Text("Your changes could not be saved. Please try again.") }
             .navigationTitle("History")
             .navigationBarTitleDisplayMode(.large)
             .scrollEdgeEffectStyle(.soft, for: .all)
@@ -92,7 +82,7 @@ struct HistoryView: View {
                             deleteAll()
                         }
                     } message: {
-                        Text("Empty history?")
+                        Text("Codes with labels will be kept. Other codes will be deleted.")
                     }
                 }
             }
