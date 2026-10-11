@@ -206,6 +206,7 @@ struct RecordDetail: View {
         .safeAreaBar(edge: .bottom, spacing: 0) {
             bottomToolbar
         }
+        .environment(\.colorScheme, .light)
         .task(id: [record.metadataObjectType, record.stringValue]) {
             let type = record.metadataObjectType
             let content = record.stringValue
@@ -229,6 +230,10 @@ struct RecordDetail: View {
         } message: { Text("Your changes could not be saved. Please try again.") }
         .presentationDetents(availableDetents, selection: $selectedDetent)
         .presentationDragIndicator(textMetrics.needsExpansion ? .visible : .hidden)
+        .presentationBackground {
+            FlowingGradientBackground(palette: .detail)
+                .environment(\.colorScheme, .light)
+        }
         .fullScreenCover(isPresented: $isEditingTitle) {
             PropertyEditor(
                 record: record,

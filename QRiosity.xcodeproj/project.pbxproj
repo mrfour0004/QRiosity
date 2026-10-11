@@ -84,6 +84,7 @@
 				Models/CodeLabel.swift,
 				Models/CodeRecord.swift,
 				Models/LabelSymbol.swift,
+				Models/StoreMetadata.swift,
 				Persistance/LabelStore.swift,
 				Persistance/Persistence.swift,
 				Persistance/StoreLock.swift,

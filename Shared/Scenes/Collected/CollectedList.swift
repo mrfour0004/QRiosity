@@ -61,7 +61,7 @@ private struct LabelFilterBar: View {
                     Button { selection = label.id } label: {
                         Label {
                             if label.title != nil { CodeLabelTitle(label: label) }
-                        } icon: { Image(systemName: label.displaySymbol) }
+                        } icon: { Image(systemName: label.displaySymbolName) }
                     }
                     .buttonStyle(LabelFilterButtonStyle(isSelected: selection == label.id))
                     .tint(selection == label.id ? .accentColor : .secondary)

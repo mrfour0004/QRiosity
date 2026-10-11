@@ -4,6 +4,7 @@ import SwiftUI
 struct FlowingGradientBackground: View {
     enum Palette {
         case collected
+        case detail
         case history
 
         var colors: [Color] {
@@ -12,6 +13,10 @@ struct FlowingGradientBackground: View {
                 [Color(red: 0.22, green: 0.77, blue: 0.65),
                  Color(red: 0.28, green: 0.61, blue: 0.85),
                  Color(red: 0.94, green: 0.73, blue: 0.53)]
+            case .detail:
+                [Color(red: 0.30, green: 0.66, blue: 0.88),
+                 Color(red: 0.55, green: 0.46, blue: 0.83),
+                 Color(red: 0.32, green: 0.73, blue: 0.68)]
             case .history:
                 [Color(red: 0.39, green: 0.57, blue: 0.91),
                  Color(red: 0.66, green: 0.46, blue: 0.83),
