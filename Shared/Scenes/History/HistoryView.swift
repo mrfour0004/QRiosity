@@ -14,9 +14,7 @@ struct HistoryView: View {
     @Query(filter: #Predicate<CodeRecord> { $0.isDeletedFromHistory == false }, sort: \CodeRecord.scannedAt, order: .reverse)
     private var records: [CodeRecord]
 
-    @EnvironmentObject private var modalStore: ModalStore
     @State private var showingDeleteConfirmation = false
-    @State private var recordBeingLabeled: CodeRecord?
     @State private var saveFailed = false
 
     private func deleteAll() {
@@ -39,29 +37,13 @@ struct HistoryView: View {
                     ScrollView(showsIndicators: false) {
                         LazyVStack(alignment: .leading, spacing: 24) {
                             ForEach(records, id: \.id) { record in
-                                RecordView(record: record)
-                                    .onTapGesture {
-                                        if let url = record.url {
-                                            withAnimation {
-                                                modalStore.presentedObject = IdentifiableURL(url)
-                                            }
-                                        } else {
-                                            withAnimation {
-                                                modalStore.presentedObject = record
-                                            }
-                                        }
-                                    }
-                                    .contextMenu {
-                                        Button("Details", systemImage: "info.circle") { modalStore.presentedObject = record }
-                                        Button("Labels", systemImage: "tag") { recordBeingLabeled = record }
-                                    }
+                                RecordListItem(record: record)
                             }
                         }
                         .padding()
                     }
                 }
             }
-            .sheet(item: $recordBeingLabeled) { record in LabelSelectionView(record: record) }
             .alert("Unable to Save", isPresented: $saveFailed) {
                 Button("OK", role: .cancel) {}
             } message: { Text("Your changes could not be saved. Please try again.") }

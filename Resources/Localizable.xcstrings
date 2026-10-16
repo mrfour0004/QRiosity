@@ -645,6 +645,17 @@
         }
       }
     },
+    "Point your camera at a QR code or barcode." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "將相機對準 QR Code 或條碼。"
+          }
+        }
+      }
+    },
     "Preview" : {
       "extractionState" : "manual",
       "localizations" : {

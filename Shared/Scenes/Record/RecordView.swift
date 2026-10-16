@@ -7,6 +7,52 @@
 
 import SwiftUI
 
+/// A record row with the same tap, long-press, and label actions in every list.
+struct RecordListItem: View {
+    let record: CodeRecord
+
+    @EnvironmentObject private var modalStore: ModalStore
+    @State private var recordBeingLabeled: CodeRecord?
+
+    var body: some View {
+        HStack(spacing: 0) {
+            if let url = record.url {
+                RecordView(record: record)
+                    .gesture(
+                        LongPressGesture()
+                            .exclusively(before: TapGesture())
+                            .onEnded { value in
+                                switch value {
+                                case .first:
+                                    present(record)
+                                case .second:
+                                    present(IdentifiableURL(url))
+                                }
+                            }
+                    )
+                    .accessibilityElement(children: .combine)
+                    .accessibilityAddTraits(.isButton)
+                    .accessibilityAction { present(IdentifiableURL(url)) }
+                    .accessibilityAction(named: Text("Details")) { present(record) }
+            } else {
+                RecordView(record: record)
+                    .onTapGesture { present(record) }
+                    .contextMenu {
+                        Button("Details", systemImage: "info.circle") { present(record) }
+                        Button("Labels", systemImage: "tag") { recordBeingLabeled = record }
+                    }
+            }
+        }
+        .sheet(item: $recordBeingLabeled) { record in LabelSelectionView(record: record) }
+    }
+
+    private func present(_ object: any Equatable) {
+        withAnimation {
+            modalStore.presentedObject = object
+        }
+    }
+}
+
 struct RecordView: View {
     enum Design {
         static let imageHeight = 100.0

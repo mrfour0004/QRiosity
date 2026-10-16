@@ -14,6 +14,7 @@ QRiosity is a SwiftUI iOS app for scanning, generating, saving, and displaying Q
 
 ## Change Guidelines
 
+- Prefer the smallest change that satisfies the request. Reuse existing components and responsibility boundaries; add features, layers, callbacks, or stored state only for a current requirement or a demonstrated correctness issue. Derive values from existing state where possible. During self-review, remove additions that cannot be justified by either criterion.
 - Follow the existing SwiftUI, SwiftData, and file organization patterns. Put logic needed by both the app and widget in `Shared/`, and make sure new files belong to the required targets.
 - `CodeRecord` is the shared SwiftData model. When changing its fields, queries, or deletion behavior, check history, favorites, record details, and widget reads together.
 - The app and widget share data and barcode images through the App Group `group.com.mrfour.test`. Changes to this identifier, entitlements, persistence location, or `BarcodeImageStorage` filenames must account for both targets and existing data.

@@ -96,8 +96,6 @@ private struct LabelFilterButtonStyle: PrimitiveButtonStyle {
 
 private struct LabeledRecordsView: View {
     @Query private var records: [CodeRecord]
-    @EnvironmentObject private var modalStore: ModalStore
-    @State private var recordBeingLabeled: CodeRecord?
 
     init(labelID: UUID?) {
         let predicate: Predicate<CodeRecord>
@@ -117,20 +115,11 @@ private struct LabeledRecordsView: View {
             } else {
                 LazyVStack(alignment: .leading, spacing: 24) {
                     ForEach(records) { record in
-                        RecordView(record: record)
-                            .onTapGesture {
-                                if let url = record.url { modalStore.presentedObject = IdentifiableURL(url) }
-                                else { modalStore.presentedObject = record }
-                            }
-                            .contextMenu {
-                                Button("Details", systemImage: "info.circle") { modalStore.presentedObject = record }
-                                Button("Labels", systemImage: "tag") { recordBeingLabeled = record }
-                            }
+                        RecordListItem(record: record)
                     }
                 }
                 .padding()
             }
         }
-        .sheet(item: $recordBeingLabeled) { record in LabelSelectionView(record: record) }
     }
 }

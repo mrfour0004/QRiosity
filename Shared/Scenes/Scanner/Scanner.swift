@@ -9,92 +9,83 @@ import AVFoundation
 import AVScanner
 import SwiftUI
 
+/// Bridges AVScanner session control and capture callbacks to SwiftUI.
 struct Scanner: UIViewRepresentable {
-    @Binding var isSessionRunning: Bool
-
-    fileprivate var _onCapture: (AVMetadataMachineReadableCodeObject) -> Void = { _ in }
-    fileprivate var onConfigure: () -> Void = {}
-    fileprivate var onFailingConfigure: (Error) -> Void = { _ in }
-    fileprivate var onSessionStart: () -> Void = {}
-    fileprivate var onSessionFailStart: (Error) -> Void = { _ in }
-
-    init(isSessionRunning: Binding<Bool>) {
-        _isSessionRunning = isSessionRunning
-    }
-
-    // MARK: - UIViewRepresentable
+    let isSessionRunning: Bool
+    let onCapture: (AVMetadataMachineReadableCodeObject) -> Void
 
     func makeUIView(context: Context) -> AVScannerView {
         try? AVAudioSession.sharedInstance().setCategory(.ambient, mode: .default)
 
         let session = AVCaptureSession()
         session.automaticallyConfiguresApplicationAudioSession = false
-        let sessionController = AVCaptureSessionController(session: session)
-
-        let scannerView = AVScannerView(controller: sessionController)
-        scannerView.initSession()
-        scannerView.delegate = context.coordinator
-        scannerView.supportedMetadataObjectTypes = [.qr, .code128, .aztec, .pdf417, .code39]
-        return scannerView
+        let controller = AVCaptureSessionController(session: session)
+        let view = AVScannerView(controller: controller)
+        view.delegate = context.coordinator
+        view.initSession()
+        view.supportedMetadataObjectTypes = [.qr, .code128, .aztec, .pdf417, .code39]
+        return view
     }
 
     func updateUIView(_ uiView: AVScannerView, context: Context) {
-        if isSessionRunning {
-            uiView.startSession()
-            uiView.videoPreviewLayer.frame = uiView.bounds
-        } else {
-            uiView.stopSession()
-        }
+        context.coordinator.parent = self
+        context.coordinator.updateSession(uiView)
     }
 
-    // MARK: - Coordinating
+    static func dismantleUIView(_ uiView: AVScannerView, coordinator: Coordinator) {
+        coordinator.isConfigured = false
+        uiView.delegate = nil
+        uiView.stopSession()
+    }
 
     func makeCoordinator() -> Coordinator {
         Coordinator(parent: self)
     }
 
-    // MARK: - AVScannerView Delegating
-
-    func onCapture(perform: @escaping (AVMetadataMachineReadableCodeObject) -> Void) -> Self {
-        var modified = self
-        modified._onCapture = perform
-        return modified
-    }
-}
-
-extension Scanner {
-    class Coordinator: NSObject, @MainActor AVScannerViewDelegate {
-        private let parent: Scanner
+    final class Coordinator: NSObject, @MainActor AVScannerViewDelegate {
+        var parent: Scanner
+        var isConfigured = false
 
         init(parent: Scanner) {
             self.parent = parent
         }
 
-        // MARK: - AVScannerViewDelegate
+        func updateSession(_ view: AVScannerView) {
+            guard isConfigured else { return }
+            if parent.isSessionRunning {
+                view.startSession()
+            } else {
+                view.stopSession()
+            }
+        }
 
-        @MainActor
         func scannerViewDidFinishConfiguration(_ scannerView: AVScannerView) {
-            parent.onConfigure()
+            isConfigured = true
+            updateSession(scannerView)
         }
 
-        @MainActor
-        func scannerView(_ scannerView: AVScannerView, didFailConfigurationWithError error: Error) {
-            parent.onFailingConfigure(error)
-        }
-
-        @MainActor
         func scannerViewDidStartSession(_ scannerView: AVScannerView) {
-            parent.onSessionStart()
+            if !isConfigured || !parent.isSessionRunning { scannerView.stopSession() }
         }
 
-        @MainActor
+        func scannerView(_ scannerView: AVScannerView, didFailConfigurationWithError error: Error) {
+            print("Scanner configuration failed: \(error)")
+        }
+
         func scannerView(_ scannerView: AVScannerView, didFailStartingSessionWithError error: Error) {
-            parent.onSessionFailStart(error)
+            print("Scanner session failed to start: \(error)")
         }
 
-        @MainActor
-        func scannerView(_ scannerView: AVScannerView, didCapture metadataObject: AVMetadataMachineReadableCodeObject) {
-            parent._onCapture(metadataObject)
+        func scannerView(
+            _ scannerView: AVScannerView,
+            didCapture metadataObject: AVMetadataMachineReadableCodeObject
+        ) {
+            guard isConfigured, parent.isSessionRunning else { return }
+            guard metadataObject.stringValue != nil else {
+                scannerView.startSession()
+                return
+            }
+            parent.onCapture(metadataObject)
         }
     }
 }
