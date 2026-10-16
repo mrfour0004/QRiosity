@@ -30,23 +30,43 @@ struct CodeLabelBadge: View {
     }
 }
 
-// MARK: - RecordLabelIcons
+// MARK: - RecordLabelSummary
 
-/// A compact, scrollable summary of a record’s labels.
-struct RecordLabelIcons: View {
+/// An inline label and overflow count, with all labels available to VoiceOver.
+struct RecordLabelSummary: View {
     let labels: [CodeLabel]
+
     var body: some View {
-        let ordered = labels.sorted { $0.creationDate < $1.creationDate }
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 8) {
-                ForEach(ordered) { label in
-                    Image(systemName: label.displaySymbolName)
-                        .foregroundStyle(label.isBookmark ? Color.accentColor : Color.secondary)
-                        .accessibilityLabel(CodeLabelTitle(label: label).text)
+        if let firstLabel = labels.min(by: { $0.creationDate < $1.creationDate }) {
+            HStack(spacing: 5) {
+                Image(systemName: firstLabel.displaySymbolName)
+                    .foregroundStyle(firstLabel.isBookmark ? Color.accentColor : Color.secondary)
+                    .fixedSize()
+
+                if let title = firstLabel.title {
+                    Text(verbatim: title)
+                        .lineLimit(1)
+                        .truncationMode(.tail)
+                }
+
+                if labels.count > 1 {
+                    Text("+\(labels.count - 1)", comment: "Number of additional labels on a code record.")
+                        .monospacedDigit()
+                        .fixedSize()
                 }
             }
+            .font(.caption)
+            .foregroundStyle(.secondary)
+            .accessibilityRepresentation {
+                HStack {
+                    Text("Labels")
+                    ForEach(labels) { label in
+                        CodeLabelBadge(label: label)
+                    }
+                }
+                .accessibilityElement(children: .combine)
+            }
         }
-        .font(.caption)
     }
 }
 

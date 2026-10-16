@@ -26,11 +26,23 @@ struct RecordView: View {
             VStack(alignment: .leading, spacing: 12) {
                 VStack(alignment: .leading, spacing: 0) {
                     title
-                    date
+                    HStack(spacing: 8) {
+                        date
+                            .lineLimit(1)
+                            .layoutPriority(1)
+
+                        if record.hasLabels {
+                            Rectangle()
+                                .fill(.quaternary)
+                                .frame(width: 1, height: 10)
+                                .accessibilityHidden(true)
+
+                            RecordLabelSummary(labels: record.labels)
+                        }
+                    }
                 }
                 .foregroundStyle(.primary)
                 content
-                if record.hasLabels { RecordLabelIcons(labels: record.labels) }
             }
         }
         .contentShape(Rectangle())
