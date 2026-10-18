@@ -1,5 +1,5 @@
 {
-  "originHash" : "121c6ad2bc4115b564ff198b68747188511e9b1fff2db6609d9ba6ada65f6075",
+  "originHash" : "bdd0abe29e0833edfe85cc98d435db6d765eea30a90ac4f89391be6d0680f2f1",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -8,15 +8,6 @@
       "state" : {
         "revision" : "bda9ed57d72988a3a2ada33d824583541f86eac6",
         "version" : "5.12.2"
-      }
-    },
-    {
-      "identity" : "avscanner",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/mrfour0004/AVScanner",
-      "state" : {
-        "revision" : "36d0d9da79528e77731680ecb043181310c69fd4",
-        "version" : "1.0.1"
       }
     },
     {
@@ -44,6 +35,15 @@
       "state" : {
         "revision" : "1b4b1dda28c50b95f0872927ee2226fe8b58950e",
         "version" : "1.0.6"
+      }
+    },
+    {
+      "identity" : "qrious",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mrfour0004/QRious.git",
+      "state" : {
+        "revision" : "fdda655346f1b75785bad36231e40704cdc0725a",
+        "version" : "2.1.0"
       }
     },
     {

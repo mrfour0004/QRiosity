@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5E47417B26E484DD00A964F8 /* AVScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 5E47417A26E484DD00A964F8 /* AVScanner */; };
+		5E47417B26E484DD00A964F8 /* QRious in Frameworks */ = {isa = PBXBuildFile; productRef = 5E47417A26E484DD00A964F8 /* QRious */; };
 		5EDBC6E6306AC3CB0026ED68 /* BarGlyph in Frameworks */ = {isa = PBXBuildFile; productRef = 5EDBC6E5306AC3CB0026ED68 /* BarGlyph */; };
 		5EDBC6EB306ACC0B0026ED68 /* BarGlyph in Frameworks */ = {isa = PBXBuildFile; productRef = 5EDBC6EA306ACC0B0026ED68 /* BarGlyph */; };
 		9E4E153C2E98239B005C9B85 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E4E15052E981D5F005C9B85 /* WidgetKit.framework */; };
@@ -155,7 +155,7 @@
 				9EEF95322E8042760044089F /* SwiftUINavigation in Frameworks */,
 				9EEF95302E8042760044089F /* SwiftNavigation in Frameworks */,
 				5EDBC6E6306AC3CB0026ED68 /* BarGlyph in Frameworks */,
-				5E47417B26E484DD00A964F8 /* AVScanner in Frameworks */,
+				5E47417B26E484DD00A964F8 /* QRious in Frameworks */,
 				9EEF95382E8049810044089F /* Kanna in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -236,7 +236,7 @@
 			);
 			name = QRiosity;
 			packageProductDependencies = (
-				5E47417A26E484DD00A964F8 /* AVScanner */,
+				5E47417A26E484DD00A964F8 /* QRious */,
 				9EEF952F2E8042760044089F /* SwiftNavigation */,
 				9EEF95312E8042760044089F /* SwiftUINavigation */,
 				9EEF95342E80483C0044089F /* Alamofire */,
@@ -347,7 +347,7 @@
 			);
 			mainGroup = 5E5D23B024FEA95B00124551;
 			packageReferences = (
-				5E47417926E4836F00A964F8 /* XCRemoteSwiftPackageReference "AVScanner" */,
+				5E47417926E4836F00A964F8 /* XCRemoteSwiftPackageReference "QRious" */,
 				9E3311312C0CBF9F00B7ABC3 /* XCRemoteSwiftPackageReference "Pow" */,
 				9EEF952E2E8042760044089F /* XCRemoteSwiftPackageReference "swift-navigation" */,
 				9EEF95332E80483C0044089F /* XCRemoteSwiftPackageReference "Alamofire" */,
@@ -825,12 +825,12 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		5E47417926E4836F00A964F8 /* XCRemoteSwiftPackageReference "AVScanner" */ = {
+		5E47417926E4836F00A964F8 /* XCRemoteSwiftPackageReference "QRious" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/mrfour0004/AVScanner";
+			repositoryURL = "https://github.com/mrfour0004/QRious.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
+				minimumVersion = 2.1.0;
 			};
 		};
 		5EDBC6E4306AC3CB0026ED68 /* XCRemoteSwiftPackageReference "BarGlyph" */ = {
@@ -876,10 +876,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		5E47417A26E484DD00A964F8 /* AVScanner */ = {
+		5E47417A26E484DD00A964F8 /* QRious */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5E47417926E4836F00A964F8 /* XCRemoteSwiftPackageReference "AVScanner" */;
-			productName = AVScanner;
+			package = 5E47417926E4836F00A964F8 /* XCRemoteSwiftPackageReference "QRious" */;
+			productName = QRious;
 		};
 		5EDBC6E5306AC3CB0026ED68 /* BarGlyph */ = {
 			isa = XCSwiftPackageProductDependency;

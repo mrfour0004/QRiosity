@@ -6,6 +6,7 @@
 //
 
 import AVFoundation
+import QRious
 import SwiftData
 import SwiftUI
 
@@ -23,18 +24,19 @@ struct ScannerView: View {
     }
 
     var body: some View {
-        Scanner(isSessionRunning: shouldRunSession, onCapture: store)
-            .ignoresSafeArea()
-            .safeAreaInset(edge: .top) {
-                Text("Point your camera at a QR code or barcode.")
-                    .font(.subheadline)
-                    .foregroundStyle(.white)
-                    .multilineTextAlignment(.center)
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(.black.opacity(0.5))
+        AVScanner(
+            supportedMetadataObjectTypes: [.qr, .code128, .aztec, .pdf417, .code39],
+            isSessionRunning: shouldRunSession
+        )
+            .onCapture(store)
+            .onError { error in
+                print("Scanner failed: \(error)")
             }
-            .onAppear { isVisible = true }
+            .ignoresSafeArea()
+            .onAppear {
+                try? AVAudioSession.sharedInstance().setCategory(.ambient, mode: .default)
+                isVisible = true
+            }
             .onDisappear {
                 isVisible = false
                 captureTask?.cancel()
